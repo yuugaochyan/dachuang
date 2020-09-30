@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模板</title>
+    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>
+</head>
+<body>
+    <div id="app1" v-once>
+        <!-- v-once一次插值 数据改变时插值处的值不会改变 -->
+        {{msg}} 
+        <!-- 用双大括号包含一个变量进行文本插值 -->
+
+        <p>使用mustaches双大括号语法：
+            {{ rawHTML }}</p>
+        <p v-html="rawHTML"></p>
+        <!-- 使用v-html指令 -->
+
+        <!-- 用v-bind绑定属性 -->
+        <div v-bind:class="color">可以绑定类、ID</div>
+        </p>
+
+        <!-- 支持JS表达式 -->
+        <p>{{number +1}}</p>
+        <p>{{ok ? 'Yes' : 'No'}}</p>
+        <p>{{ message.split('').reverse().join('')}}</p>
+        <!-- 以无内容拆分->反序->结合成字符串 -->
+    </div>
+
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: "#app1",
+            data: {
+                msg: "hi Vue",
+                // 在data中声明取值
+                rawHTML: '<span style="color:red">应当是红色</span>',
+                color: 'red',
+                // 类变为red
+                number: 10,
+                ok: false,
+                message: "vue",
+            },
+        })
+        vm.msg = "改变"; //v-once所以不会改变
+    </script>
+
+    <style type="text/CSS">
+        .red {
+            color:red;
+        }
+        .blue {
+            color: bule;
+            font-size: 100px;
+        }
+    </style>
+
+
+    <div id="app2">
+        <!-- 指令是带有v-前缀的特殊特性 -->
+        <!-- 指令特性的值的预期是单个JS表达式 -->
+        <!-- 指令的职责：表达式值改变时将其产生的连带影响 -->
+        <!-- 响应式地作用于DOM -->
+        <p v-if="seen">现在你看到我了</p>
+        <!-- p标签是否被渲染取决于seen的值 -->
+
+        <!-- 一些指令能接受一个参数 以冒号表示 -->
+        <a v-bind:href="url">...</a>
+
+        <!-- 修饰符是用.指明的后缀 -->
+        <!-- 用于指出一个指令以特殊方式绑定 -->
+        <div @click="click1">  
+            <!-- 为某个元素绑定click事件 -->
+            <div @click.stop="click2">
+                click me
+                <!-- .stop:当前click事件结束后就停止 不执行父事件 -->
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: "#app2",
+            data: {
+                seen: true,
+                url: "rubbish.html",
+            },
+            methods: {
+                // 声明对应方法和方法的函数体
+                click1: function(){
+                    console.log('click1!!');
+                },
+                click2: function(){
+                    console.log('click2!!');
+                }
+            }
+        })
+    </script>
+
+
+    <!-- 给v-bind:class一个对象以动态的切换class -->
+    <div id="app3">
+        <!-- active样式是否绑定取决于isActive -->
+        <!-- bind可以与普通class共存 -->
+        <!-- bind可以绑定多个类 -->
+        <!-- bind也支持数组 -->
+        <!-- ="[isActive ? 'active' : '']"  动态绑定样式 -->
+        <div 
+        class="test"
+        v-bind:class="{active: isActive , green: isGreen}" 
+        style="width: 200px;height: 200px;text-align: center;line-height: 200px;">
+            hi vue
+        </div>
+
+        <!-- v-bind：style绑定内源样式 -->
+        <div
+        v-bind:style="{color: color, fontSize: size, background: isRed ? 'red' : ''}">
+            hi vue??
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: "#app3",
+            data: {
+                isActive: true,
+                isGreen: true,
+                color: 'gray',
+                size: '50px',
+                isRed: true,
+            }
+        });
+    </script>
+
+    <style>
+        .active {
+            background-color: plum;
+        }
+        .test {
+            font-size: 50px;
+        }
+        .green {
+            color: green;
+        }
+    </style>
+
+</body>
+</html>
