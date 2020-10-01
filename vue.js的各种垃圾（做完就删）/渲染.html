@@ -3,29 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>渲染</title>
+    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>
 </head>
 <body>
-    <!-- v-if条件指令表达式为真时才被渲染 -->
     <div id="app">
-        <div v-if="type === 'A'">
+        <!-- v-if条件指令表达式为真时才被渲染 -->
+        <div v-if="type == 'A'">
             A
         </div>
-        <div v-else-if="type === 'B'">
+        <div v-else-if="type == 'B'">
             B
         </div>
-        <div v-else-if="type === 'C'">
+        <div v-else-if="type == 'C'">
             C
         </div>
         <div v-else>
             not A/B/C
         </div>
+
+        <!-- v-show总是渲染元素 只是简单地基于CSS进行切换 适合频繁切换 -->
+        <h1 v-show="ok">!!!</h1>
+
+        <!-- v-for用数组渲染列表 -->
+        <!-- 用item in items语法 item是源数据数组 item是被迭代的数组元素的别名 -->
+        <ul>
+            <!-- 增加v-bind:key来跟踪以便排序 -->
+            <li v-for="item,index in items" :key="index">
+                {{index}}
+                {{item.message}}
+            </li>
+        </ul>
+
+        <!-- 用v-for遍历一个对象的属性 -->
+        <ul>
+            <li v-for="value,key in object" :key="key">
+                {{key}}
+                {{value}}
+            </li>
+        </ul>
     </div>
+    
     <script type="text/javascript">
         var vm = new Vue({
             el: "#app",
             data: {
                 type: "",
+                ok: true ,
+                // items数组 每个数组元素都是一个对象
+                items: [
+                    { message: 'Foo' },
+                    { message: 'Bar' }
+                ],
+                object: {
+                    title: 'wdnmd',
+                    author: '你的爹',
+                    publishedAt: '???',
+                }
             }
         });
     </script>

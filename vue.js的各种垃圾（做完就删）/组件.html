@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 组件是可复用的Vue实例 -->
+        <button-counter title="title1." @clicknow="clicknow"></button-counter>
+        <!-- 用标签调用 标签名称就是组件名称 -->
+        <button-counter title="title2."></button-counter>
+    </div>
+
+    <script type="text/javascript">
+    // 创建一个button-counter组件
+    Vue.component('button-counter',
+    // 组件的数据和模板内容
+    {
+        // 为组件定义属性
+        props: ['title'],
+        data: function(){
+            return{
+                count: 0
+            }
+        },
+        // 模板内容是一个点击时会加一的按钮
+        // 一个组件的模板必须具备根节点
+        template:'<div><h3>!!</h3><button v-on:click="clickFun">{{title}}You clicked me {{ count }} times.</button></div>',
+        methods: {
+            clickFun: function(){
+                this.count++;
+                this.$emit('clicknow',this.count);
+                // 用emit方法触发一个事件 事件名称+可携带参数
+                // 在组件父级可以通过事件绑定接受emit触发的事件
+            }
+        }
+    })
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            
+        },
+        methods: {
+            clicknow: function(e){
+                console.log(e);
+            },
+        },
+    })
+    </script>
+</body>
+</html>

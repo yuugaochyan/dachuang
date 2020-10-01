@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 双向绑定 对象属性message -->
+        <!-- 输入值时message值会被重新渲染 -->
+        <input v-model="message" placeholder="edit me">
+        <p>message is:{{message}}</p>
+
+        <textarea v-model="message2" placeholder="多行文本"></textarea>
+        <p style="white-space: pre-line;">{{message2}}</p>
+
+        <!-- 多个复选框绑定到同一个数组 -->
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="mike">Mike</label>
+        <p>Checked names: {{ checkedNames }}</p>
+
+        <br>
+        <input type="radio" id="one" value="One" v-model="picked">
+        <label for="one">One</label>
+        <br>
+        <input type="radio" id="two" value="Two" v-model="picked">
+        <label for="two">Two</label>
+        <p>Picked: {{ picked }}</p>
+
+        <button type="button" @click="submit">提交</button>
+    </div>
+
+    <script>
+        var vm= new Vue({
+            el: "#app",
+            data: {
+                message: "test",
+                message2: "牛",
+                checkedNames: ['Jack'],
+                picked: "One"
+            },
+            methods: {
+                submit: function(){
+                    console.log(this.message);
+                    var postObj = {
+                        msg1: this.message,
+                        msg2: this.message2,
+                        checkval: this.checkedNames
+                    }
+                    console.log(postObj);
+                }
+            }
+            // 当表单元素值发生变化时 data对象对应属性都能收到对应值
+        })
+    </script>
+</body>
+</html>
