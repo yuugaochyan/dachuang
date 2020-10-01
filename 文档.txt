@@ -1,2 +1,8 @@
-6ebcfd082f56d5a73147d0385ef395f47f1882aa 
-Sync: 上传完成。Gist ID:9e7769517b70105eba7353ddf6360568。
+大主页index{
+    导航栏{
+        概况浏览（当前页面）
+        工厂一览->factory
+        我的信息->user
+    }
+    
+}
