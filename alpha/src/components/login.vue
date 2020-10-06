@@ -31,7 +31,7 @@
                     <!-- 提交按钮 -->
                     <el-form-item class="btns">
                         <el-button type="primary" @click="onSubmit">马上开始</el-button>
-                        <el-button type="info">新用户</el-button>
+                        <el-button type="info" @click="onSubmit2">新用户</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -52,14 +52,19 @@ export default {
     },
     methods: {
         onSubmit(){
-            this.$refs.loginFormRef.validate(( /* async */ valid)=>{
+            this.$refs.loginFormRef.validate(  /*async*/  valid=>{
                 if(!valid) return;
-                // const {data:res } = await this.$http.post('login',this.loginForm);
-                // this.$message.sucess("登陆成功");
+                //问后端
+                    //const {data:res } = await this.$http.post('login',this.loginForm);
+                    //this.$message.sucess("登陆成功");
 
-                // window.sessionStorage.setItem('token', res.data.token)
+                //window.sessionStorage.setItem('token', res.data.token)
                 this.$router.push('/home')
             });
+        },
+
+        onSubmit2(){
+            this.$router.push('/register')
         }
 
     }
