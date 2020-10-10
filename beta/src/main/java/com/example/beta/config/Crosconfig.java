@@ -15,3 +15,4 @@ public class Crosconfig implements WebMvcConfigurer {
                 .allowCredentials(true);
     }
 }
+

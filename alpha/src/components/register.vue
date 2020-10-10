@@ -24,6 +24,9 @@
 </template>
 
 <script>
+
+import  axios from "axios";
+
 export default {
     name: 'app',
     data(){
@@ -36,15 +39,12 @@ export default {
     },
     methods:{
     registbtn(){
-        this.axios({
-            method:'get',
-            url:'http://localhost:8888/vue?mail='+this.mail+'&password='+this.password,
+        axios.get("http://localhost:8888/vue").then(function (resp){
+          console.log(resp.data)
         })
-        .then(function (response) {
-            console.log(response.data)
-        })
+        }
     }
-    }
+
 
 }
 </script>
