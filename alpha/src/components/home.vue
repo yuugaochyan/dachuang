@@ -13,7 +13,8 @@
                     <el-menu
                     background-color="#545c64"
                     text-color="#fff"
-                    active-text-color="#ffd04b">
+                    active-text-color="#ffd04b"
+                    unique-opened="true">
 
                     <el-submenu index="1">
                     <template slot="title">
@@ -95,13 +96,14 @@
                 <!-- 右侧主体 -->
                 <el-container>
                     <el-main>Main</el-main>
-                    <el-footer>Footer</el-footer>
+                    
                 </el-container>
             </el-container>
         </el-container>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     
 }
@@ -129,14 +131,13 @@ export default {
     }
 }
 
-.el-footer {
-    background-color: #353535;
-    color: rgb(255, 255, 255);
-}
 
 .el-aside {
     background-color: #212444;
     color: rgb(255, 255, 255);
+    .el-menu {
+        border-right: 0;
+    }
     
 }
 
