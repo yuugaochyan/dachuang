@@ -1,24 +1,31 @@
-//? 用户名username 密码password 邮箱mail
+//? 用户名-username 密码-password 邮箱-mail
 <template>
     <div id="app">
         <div class="container">
+
             <div class="banner">
-                <el-page-header class="pageHeader" @back="goBack" content="注册页面">
-                </el-page-header>
+                <!-- <el-page-header class="pageHeader" @back="goBack" content="注册页面"> -->
+                <!-- </el-page-header> -->
+                <el-link class="back" :underline="false" icon="el-icon-back" type="warning" @click="goBack">返回登录</el-link>
+                <span class="cut">|</span>
+                <span class="title1">注册页面</span>
+
+
+
             </div>
 
             <div class="regContainer">
-                <div class="title">
-                        <div class="lt">用户名</div>
-                        <div class="lt">密码</div>
-                        <div class="lt">邮箱</div>
-                </div>
+                <!-- <div class="title"> -->
+                        <!-- <div class="lt">用户名</div> -->
+                        <!-- <div class="lt">密码</div> -->
+                        <!-- <div class="lt">邮箱</div> -->
+                <!-- </div> -->
                 <div class="regForm">
                     <el-form :model="regForm" 
                     ref="regFormRef"
-                    label-width="0px">
+                    label-width="80px">
                     <!-- 用户名 -->
-                    <el-form-item>
+                    <el-form-item label="用户名">
                         <el-input placeholder="请输入用户名"
                         prefix-icon="el-icon-user-solid"
                         v-model="regForm.username"
@@ -26,7 +33,7 @@
                     </el-form-item>
 
                     <!-- 密码 -->
-                    <el-form-item>
+                    <el-form-item label="密码">
                         <el-input placeholder="请输入密码"
                         prefix-icon="el-icon-lock"
                         v-model="regForm.password" 
@@ -35,6 +42,7 @@
                     </el-form-item>
 
                     <!-- 邮箱 -->
+                    <el-form-item label="邮箱">
                         <el-input placeholder="请输入邮箱"
                         prefix-icon="el-icon-message"
                         v-model="regForm.mail" 
@@ -47,6 +55,10 @@
                     </el-form-item>
                     </el-form>
                 </div>
+            </div>
+
+            <div class="footer">
+                <img src="" alt="">
             </div>
         </div>
     </div>
@@ -70,6 +82,17 @@ export default {
         this.$router.push('/login')
     },
     onSubmit(){
+        this.$message({
+            showClose: true,
+            message: '注册成功！登录以开始',
+            center: true,
+            type: 'success'
+        });
+        this.$router.push('/login')
+        //?showClose: true,
+        //?   message: '错了哦，这是一条错误消息',
+        //?   type: 'error',
+        //?   center: true,
         //TODO axios.get().then(function({
        //TODO }))
     }
@@ -80,53 +103,75 @@ export default {
 
 <style lang="less" scoped>
 .container {
-    background-color: #333;
+    background-color: rgb(214, 214, 214);
     height: 100%;
 }
 .banner {
     height: 75px;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.6);
-    box-shadow:  0 0 30px ;
+    background-color:rgba(51, 51, 51, 0.815);
+    box-shadow:  0 0 20px ;
+    line-height: 75px;
+    background-image: url("../assets/pic/未标题-2.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 100px 10px;
 }
-.pageHeader {
-    padding: 25px;
+.back {
+    font-size: 25px;
+    display: block;
+    float: left;
+    margin-left: 15px;
 }
+.cut {
+    font-size: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: rgb(129, 129, 129);
+    display: block;
+    float: left;
+}
+.title1 {
+    font-size: 30px;
+    color: #fff;
+    display: block;
+    float: left;
+}
+
+// .pageHeader {
+    // padding: 25px;
+// }
 
 .regContainer {
     width: 700px;
-    height: 400px;
+    height: 420px;
     margin: auto;
     margin-top: 100px;
     // margin-bottom: 100px;
     background-color: #fff;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     border-radius: 30px;
-    border-top: 10px solid rgb(243, 209, 179);
+    border-top: 10px solid rgb(73, 73, 73);
+    // border-bottom: 10px solid #333;
     background-color: rgba(255, 255, 255, 0.95);
+    background-image: url("../assets/pic/koch.gif");
+    background-repeat: no-repeat;
+    background-position:40px 220px;
 }
 .regForm {
     width: 400px;
     height: 200px;
-    margin-right: 100px;
+    margin: auto;
     margin-top: 70px;
-    display: block;
-    float: right;
+    // display: block;
+    // float: left;
     // background-color: rgba(255, 255, 255, 0.6);
 }
 .btns {
-    margin-left: 110px;
+    margin-left: 75px;
     margin-top: 50px;
 }
-.title {
-    display: block;
-    float: left;
-    margin-top: 60px;
-    margin-left: 100px;
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-}
-.lt {
-    padding: 21px;
-}
+
+
 
 </style>

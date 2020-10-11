@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router'
 import './plugins/element.js'
 import './assets/CSS/global.css'
-
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 import axios from 'axios'
 Vue.prototype.$axios= axios
 // import VueAxios from 'vue-axios'

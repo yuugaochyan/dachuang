@@ -10,7 +10,7 @@
         <div class="login_box">
             <!-- 头像 -->
             <div class="avatar_box">
-                <img  src="../assets/logo.png" alt="头像">
+                <img  src="../assets/pic/dragon.gif" alt="头像">
             </div>
 
             <!-- 登录表单 -->
@@ -100,7 +100,7 @@ export default {
         background-position: center top;
         background-attachment: fixed;
         background-size: 120%, 100%;
-        background-color: #333;
+        background-color: rgb(51, 51, 51);
         height: 100%;
         width: 100%;
     }
@@ -118,7 +118,7 @@ export default {
     .avatar_box {
         height: 130px;
         width: 130px;
-        border: 1px solid skyblue;
+        border: 1px solid #333;
         border-radius: 100%;
         padding: 5px;
         box-shadow: 0 0 10px;
@@ -134,7 +134,7 @@ export default {
         // transform: translate(50%,50%);
         margin-top: 55px;
         // margin-left: 25px;
-        background-color: rgb(165, 207, 247);
+        background-color: rgb(141, 140, 140);
         float: left;
         display: block;
     }
@@ -177,5 +177,6 @@ export default {
         width: 100%;
         height: 100%;
     }
+
 
 </style>

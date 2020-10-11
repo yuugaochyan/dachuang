@@ -1,16 +1,21 @@
 <template>
     <div id="app" >
+
+    <el-container>
+    <el-header>
     <el-menu
-    :default-active="activeIndex2"
-    class="el-menu-demo"
+    :default-active="activeIndex"
+    class="el-menu-demo nav"
     mode="horizontal"
     @select="handleSelect"
     background-color="#333"
     text-color="#fff"
-    active-text-color="#ffd04b">
-        <el-menu-item index="1">处理中心</el-menu-item>
+    active-text-color="#ffd04b"
+    router>
+        <el-menu-item index="welcome">主页</el-menu-item>
+        <el-menu-item index="intro">工业互联网</el-menu-item>
         <el-submenu index="2">
-            <template slot="title">我的工作台</template>
+            <template slot="title">工厂数据</template>
             <el-menu-item index="2-1">选项1</el-menu-item>
             <el-menu-item index="2-2">选项2</el-menu-item>
             <el-menu-item index="2-3">选项3</el-menu-item>
@@ -22,38 +27,21 @@
             </el-submenu>
         </el-submenu>
         <el-menu-item index="3">消息中心</el-menu-item>
-        <el-menu-item index="4">订单管理</el-menu-item>
-        <el-button type="info" size="medium" icon="el-icon-user" class="bt" @click="turnToReg">注册</el-button>
-        <el-button type="warning" size="medium" icon="el-icon-user-solid" class="bt" @click="turnToLogin">登录</el-button>
+        <el-menu-item index="aboutus" >关于我们</el-menu-item>
+        <el-button type="info" size="medium" icon="el-icon-user" class="bt" @click="turnToReg" v-if="isShow">注册</el-button>
+        <el-button type="info" size="medium" icon="el-icon-user" class="bt" @click="turnToLogin" v-if="!isShow">退出</el-button>
+        <el-button type="warning" size="medium" icon="el-icon-user-solid" class="bt" @click="turnToLogin" v-if="isShow">登录</el-button>
         
     </el-menu>
+    </el-header>
 
-
-        <div class="fixedBg bgi0">
-            <span>带标题</span>
-        </div>
-        <div class="text">
-            <span>标题1</span>
-            </div>
-        <div class="fixedBg bgi1">
-            <span>??</span>
-        </div>
-        <div class="text">
-            <span>标题2</span>
-        </div>
-        <div class="fixedBg bgi2">
-            <span>??</span>
-        </div>
-        <div class="text">
-            <span>标题2</span>
-        </div>
-        <div class="fixedBg bgi3">
-            <span>..</span>
-        </div>
-        <div class="text">
-            <span>标题3</span>
-        </div>
+    <el-main class="main">
+        <router-view></router-view>
+    </el-main>
+    </el-container>       
         
+        
+
     </div>
 </template>
 
@@ -62,13 +50,14 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            activeIndex: '1',
-            activeIndex2: '1'
+            activeIndex: 'welcome',
+            isShow:true,
         };
     },
     methods: {
         handleSelect(key, keyPath) {
             console.log(key, keyPath);
+            console.log(key);
         },
         turnToLogin(){
             this.$router.push('/login')
@@ -83,40 +72,15 @@ export default {
 
 <style lang="less" scoped>
 
-.fixedBg { 
-    min-height: 380px; 
-    background-position: center center; 
-    background-repeat: no-repeat; 
-    background-attachment: fixed;
-    background-size: cover;
-    
-    text-align: center;
-}
-.bgi0 {
-    background-image: url("../assets/pic/cd-background-1.jpg");
-}
-.bgi1 {
-    background-image: url("../assets/pic/cdbg1.jpg");
-}
-.bgi2 {
-    background-image: url("../assets/pic/cd-background-2.jpg");
-}
-.bgi3 {
-    background-image: url("../assets/pic/cd-background-3.jpg");
-}
-.text {
-    background: #333;
+
+.nav {
+    position: fixed;
+    top: 0px;
     width: 100%;
-    height: 500px;
-    text-align: center;
-    
+    box-shadow: 0 0 20px;
 }
-span {
-    color: #fff;
-    font-size: 100px;
-    line-height: 500px;
-    
-}
+
+
 .bt {
     float: right;
     margin-right: 10px;
@@ -124,6 +88,10 @@ span {
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     border-radius: 30px;
 
+}
+
+.el-header, .el-main {
+    padding: 0px;
 }
 
 </style>
