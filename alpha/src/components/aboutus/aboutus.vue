@@ -1,0 +1,98 @@
+<template>
+    <div id="app">
+        <div class="banner">
+            <img class="im" src="../../assets/pic/sierpinski.gif" alt="">
+        </div>
+
+        <div class="card">
+        <!-- <el-row>     -->
+        <!-- <el-col :span="8" v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 2 : 0"> -->
+        <el-card :body-style="{ padding: '0px' }" shadow="hover" class="cardBox">
+            <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+            <div style="padding: 14px;">
+                <span>好吃的汉堡</span>
+                <div class="bottom clearfix">
+                    <time class="time">{{ currentDate }}</time>
+                    <el-button type="text" class="button">操作按钮</el-button>
+                </div>
+            </div>
+        </el-card>
+
+
+
+        </div>
+        <!-- </el-col> -->
+        <!-- </el-row> -->
+    </div>
+</template>
+
+<script>
+import axios from 'axios'
+export default {
+    data() {
+        return {
+            currentDate: new Date()
+        };
+    }
+
+}
+</script>
+
+<style lang="less" scoped>
+
+.banner {
+    // margin: auto;
+    // width: 1200px;
+    height: 300px;
+    // text-align: center;
+    background-color: #333;
+    margin: auto;
+    text-align: center;
+}
+.im {
+    height: 100%;
+    // width: 100%;
+}
+.card {
+    // width: 1200px;
+    // height: 300px;
+    // text-align: center;
+    background-color:rgba(255, 166, 0, 0.356);
+}
+.cardBox {
+    width: 380px;
+    height: 480px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+}
+.time {
+    font-size: 13px;
+    color: #999;
+}
+
+.bottom {
+    margin-top: 13px;
+    line-height: 12px;
+}
+
+.button {
+    // padding-top: 10px;
+    float: right;
+}
+
+.image {
+    width: 100%;
+    display: block;
+}
+
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+}
+
+.clearfix:after {
+    clear: both
+}
+</style>

@@ -9,18 +9,21 @@
             <!-- 主体 -->
             <el-container>
                 <!-- 侧边栏 -->
+                <!-- active-text-color="#ffd04b" -->
                 <el-aside width="200px">
                     <el-menu
-                    background-color="#545c64"
-                    text-color="#fff"
-                    active-text-color="#ffd04b">
+                    background-color="#2b394b"
+                    text-color="#cad8d8"
+                    active-text-color="#ffd04b"
+                    :unique-opened="true"
+                    router>
 
                     <el-submenu index="1">
                     <template slot="title">
                         <i class="el-icon-location"></i>
                         <span>导航1</span>
                     </template>
-                        <el-menu-item index="1-1">
+                        <el-menu-item index="fac1">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
                                 <span>选项1</span>
@@ -94,14 +97,17 @@
                 </el-aside>
                 <!-- 右侧主体 -->
                 <el-container>
-                    <el-main>Main</el-main>
-                    <el-footer>Footer</el-footer>
+                    <el-main>
+                        <router-view></router-view>
+                    </el-main>
+                    
                 </el-container>
             </el-container>
         </el-container>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     
 }
@@ -114,7 +120,7 @@ export default {
 
 
 .el-header {
-    background-color: #353535;
+    background-color: #2d313a;
     color: rgb(255, 255, 255);
     display: flex;
     justify-content: space-between;
@@ -129,22 +135,22 @@ export default {
     }
 }
 
-.el-footer {
-    background-color: #353535;
-    color: rgb(255, 255, 255);
-}
 
 .el-aside {
-    background-color: #212444;
+    background-color: #2e323b;
     color: rgb(255, 255, 255);
+    .el-menu {
+        border-right: 0;
+    }
     
 }
 
 .el-main {
     background-color: #83848542;
     color: rgb(0, 0, 0);
-    text-align: center;
-    line-height: 160px;
+    // text-align: center;
+    // line-height: 160px;
+    padding: 0;
 }
 /*
 body > .el-container {
