@@ -82,19 +82,37 @@ export default {
         this.$router.push('/login')
     },
     onSubmit(){
-        this.$message({
+        const result = axios.post('',"this.loginForm").then(function(resp){
+            console.log(result);
+        }),
+        if(result){
+            this.$message({
             showClose: true,
             message: '注册成功！登录以开始',
             center: true,
             type: 'success'
-        });
-        this.$router.push('/login')
+            });
+            this.$router.push('/login')
+        }
+        else{
+            this.$message({
+            showClose: true,
+            message: '注册失败',
+            center: true,
+            type: 'error'
+            });
+        }
+        // this.$message({
+            // showClose: true,
+            // message: '注册成功！登录以开始',
+            // center: true,
+            // type: 'success'
+        // });
+        // this.$router.push('/login')
         //?showClose: true,
         //?   message: '错了哦，这是一条错误消息',
         //?   type: 'error',
         //?   center: true,
-        //TODO axios.get().then(function({
-       //TODO }))
     }
     }
 

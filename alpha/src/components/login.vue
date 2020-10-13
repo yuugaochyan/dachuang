@@ -48,7 +48,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 // import img1 from "../assets/pic/loginbgp.jpg"
 // import img2 from "../assets/pic/cd-background-1.jpg"
 // import img3 from "../assets/pic/cd-background-2.jpg"

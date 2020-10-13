@@ -13,8 +13,16 @@ Vue.use(VueRouter)
 const routes = [
   {path:'/', redirect:'/homepage'},
   {path:'/login', component: login },
-  {path:'/home', component: home },
+
+  {path:'/home', 
+  component: home,
+  // redirect:'/welcome',
+  children:[
+    // {path:'/welcome', component: welcome},
+    {path:'/fac1', component: fac1},
+  ]},
   {path:'/register', component: register },
+
   {path:'/homepage', 
   component: homepage, 
   redirect:'/welcome',
@@ -23,7 +31,8 @@ const routes = [
     {path:'/intro', component: introduct},
     {path:'/aboutus', component: aboutus},
   ] },
-  {path:'/fac1', component: fac1 },
+
+  
 ]
 
 const router = new VueRouter({

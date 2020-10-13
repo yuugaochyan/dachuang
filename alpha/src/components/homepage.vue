@@ -14,8 +14,9 @@
     router>
         <el-menu-item index="welcome">主页</el-menu-item>
         <el-menu-item index="intro">工业互联网</el-menu-item>
+        <el-menu-item index="home">工厂数据</el-menu-item>
         <el-submenu index="2">
-            <template slot="title">工厂数据</template>
+            <template slot="title">待定</template>
             <el-menu-item index="2-1">选项1</el-menu-item>
             <el-menu-item index="2-2">选项2</el-menu-item>
             <el-menu-item index="2-3">选项3</el-menu-item>
@@ -26,7 +27,6 @@
                 <el-menu-item index="2-4-3">选项3</el-menu-item>
             </el-submenu>
         </el-submenu>
-        <el-menu-item index="3">消息中心</el-menu-item>
         <el-menu-item index="aboutus" >关于我们</el-menu-item>
         <el-button type="info" size="medium" icon="el-icon-user" class="bt" @click="turnToReg" v-if="isShow">注册</el-button>
         <el-button type="info" size="medium" icon="el-icon-user" class="bt" @click="turnToLogin" v-if="!isShow">退出</el-button>
