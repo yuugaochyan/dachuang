@@ -7,8 +7,8 @@
     <select id="queryUserList" resultType="User">
     select * from user
    </select>
-    <select id="queryUserById" resultType="User">
-        select * from user where id=#{id}
+    <select id="queryUserByName" resultType="User">
+        select * from user where username=#{username}
     </select>
     <insert id="addUser" parameterType="User">
         insert into user(username,userpassword) values(#{username},#{userpassword})

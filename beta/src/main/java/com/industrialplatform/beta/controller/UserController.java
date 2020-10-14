@@ -24,12 +24,12 @@ public class UserController {
     }
 
     //通过id查询用户
-    @GetMapping("/queryUserById/{id}")
-    public User queryUserById(@PathVariable("id") int id){
-        return userMapper.queryUserById(id);
+    @PostMapping("/queryUserByName")
+    public boolean queryUserByName(@RequestParam("username")String username,@RequestParam("password")String password){
+        return (password.equals(userMapper.queryUserByName(username).getUserpassword()));
     }
-
-    //增加新用户 @RequestParam("username")String username,@RequestParam("password")String password
+    
+    //增加新用户
     @PostMapping("/addUser")
     public boolean addUser(@RequestParam("username")String username,@RequestParam("password")String password){
         userMapper.addUser(new User(0,username,password));

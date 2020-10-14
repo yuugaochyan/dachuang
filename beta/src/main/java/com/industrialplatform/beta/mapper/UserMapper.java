@@ -12,13 +12,14 @@ public interface UserMapper {
 
     List<User> queryUserList();
 
-    User queryUserById(int id);
+    User queryUserByName(String username);
 
     int addUser(User user);
 
     int updateUser(User user);
 
     int deleteUser(int id);
+
 }
 
 
