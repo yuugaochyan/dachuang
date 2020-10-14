@@ -26,9 +26,10 @@ public class UserController {
     //通过id查询用户
     @PostMapping("/queryUserByName")
     public boolean queryUserByName(@RequestParam("username")String username,@RequestParam("password")String password){
+        System.out.println(password.equals(userMapper.queryUserByName(username).getUserpassword()));
         return (password.equals(userMapper.queryUserByName(username).getUserpassword()));
     }
-    
+
     //增加新用户
     @PostMapping("/addUser")
     public boolean addUser(@RequestParam("username")String username,@RequestParam("password")String password){

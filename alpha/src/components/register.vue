@@ -84,52 +84,36 @@ export default {
     },
     onSubmit() {
       let that=this;
-      const result = axios.post('http://localhost:8888/addUser', this.$qs.stringify({
+      const result = axios.post('http://localhost:8888/addUser',
+          this.$qs.stringify({
         username: that.regForm.username,
         password: that.regForm.password
       })).then(function (resp) {
-        console.log("...")
-      });
-      if (result) {
-        this.$message({
-          showClose: true,
-          message: '注册成功！登录以开始',
-          center: true,
-          type: 'success'
-        });
-\
-        this.$router.push('/login')
-    },
-    onSubmit(){
-        const result = true;
-        //* let that=this;
-        // const result = axios.post('http://localhost:8088/adduser',{that.loginForm.username,that.loginForm.password}).then(function(resp){
-            // console.log(result);
-        // });
-        let that=this;
-        const result = axios.post('http://localhost:8888/addUser', this.$qs.stringify({
-            username: that.regForm.username,
-            password: that.regForm.password
-        })).then(function (resp) {
-        console.log("...")
-        });
-        if(result){
-            this.$message({
+        console.log(resp.data)
+        if (resp.data) {
+          that.$message({
             showClose: true,
             message: '注册成功！登录以开始',
             center: true,
             type: 'success'
-            });
-            this.$router.push('/login')
-        }
+
+          })}
         else{
-            this.$message({
+          that.$message({
             showClose: true,
             message: '注册失败',
             center: true,
             type: 'error'
-            });
+          })
         }
+
+      })
+
+
+        this.$router.push('/login')
+    },
+
+
         // this.$message({
             // showClose: true,
             // message: '注册成功！登录以开始',
@@ -144,7 +128,7 @@ export default {
     }
 
 
-  }
+
 }
 </script>
 
