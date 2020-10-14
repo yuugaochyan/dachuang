@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 export default {
     name: 'app',
     data(){
@@ -82,9 +82,18 @@ export default {
         this.$router.push('/login')
     },
     onSubmit(){
-        const result = axios.post('',"this.loginForm").then(function(resp){
-            console.log(result);
-        }),
+        const result = true;
+        //* let that=this;
+        // const result = axios.post('http://localhost:8088/adduser',{that.loginForm.username,that.loginForm.password}).then(function(resp){
+            // console.log(result);
+        // });
+        let that=this;
+        const result = axios.post('http://localhost:8888/addUser', this.$qs.stringify({
+            username: that.regForm.username,
+            password: that.regForm.password
+        })).then(function (resp) {
+        console.log("...")
+        });
         if(result){
             this.$message({
             showClose: true,

@@ -10,9 +10,10 @@
             <el-container>
                 <!-- 侧边栏 -->
                 <!-- active-text-color="#ffd04b" -->
+                <!-- background-color="#2b394b" -->
                 <el-aside width="200px">
                     <el-menu
-                    background-color="#2b394b"
+                    background-color="#535263"
                     text-color="#cad8d8"
                     active-text-color="#ffd04b"
                     :unique-opened="true"
@@ -137,7 +138,7 @@ export default {
 
 
 .el-aside {
-    background-color: #2e323b;
+    background-color: #535263;
     color: rgb(255, 255, 255);
     .el-menu {
         border-right: 0;
