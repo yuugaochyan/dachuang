@@ -1,9 +1,8 @@
-package pojo;
+package com.industrialplatform.beta.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @NoArgsConstructor
@@ -11,6 +10,5 @@ import lombok.NoArgsConstructor;
 public class User {
     private int id;
     private String username;
-    private String userpassword;
-
+    private  String userpassword;
 }

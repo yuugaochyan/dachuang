@@ -1,8 +1,8 @@
-package com.example.beta.mapper;
+package com.industrialplatform.beta.mapper;
 
+import com.industrialplatform.beta.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import pojo.User;
 
 import java.util.List;
 
@@ -11,16 +11,14 @@ import java.util.List;
 public interface UserMapper {
 
     List<User> queryUserList();
+
+    User queryUserById(int id);
+
+    int addUser(User user);
+
+    int updateUser(User user);
+
+    int deleteUser(int id);
 }
 
- /*  User queryUserById(int id);
-
-    String addUser(User user);
-
-    String updateUser(User user);
-
-    String deleteUser(int id);
-}
-
-*/
 

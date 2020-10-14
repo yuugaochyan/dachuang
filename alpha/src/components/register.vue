@@ -65,71 +65,66 @@
 </template>
 
 <script>
-<<<<<<< HEAD
+
 
 import  axios from "axios";
 
-=======
-import axios from 'axios'
->>>>>>> main
 export default {
-    name: 'app',
-    data(){
-        return{
-            regForm: {
-                username: '',
-                password: '',
-                mail: '',
-            },
-        }
+  name: 'app',
+  data() {
+    return {
+      regForm: {
+        username: '',
+        password: '',
+        mail: '',
+      },
+    }
+  },
+  methods: {
+
+    goBack() {
+      this.$router.push('/login')
     },
-    methods:{
-<<<<<<< HEAD
-    registbtn(){
-        axios.get("http://localhost:8888/vue").then(function (resp){
-          console.log(resp.data)
-        })
-        }
-=======
-    goBack(){
+    onSubmit() {
+      let that=this;
+      const result = axios.post('http://localhost:8888/addUser', this.$qs.stringify({
+        username: that.regForm.username,
+        password: that.regForm.password
+      })).then(function (resp) {
+        console.log("...")
+      });
+      if (result) {
+        this.$message({
+          showClose: true,
+          message: '注册成功！登录以开始',
+          center: true,
+          type: 'success'
+        });
+\
         this.$router.push('/login')
-    },
-    onSubmit(){
-        const result = axios.post('',"this.loginForm").then(function(resp){
-            console.log(result);
-        }),
-        if(result){
-            this.$message({
-            showClose: true,
-            message: '注册成功！登录以开始',
-            center: true,
-            type: 'success'
-            });
-            this.$router.push('/login')
-        }
-        else{
-            this.$message({
-            showClose: true,
-            message: '注册失败',
-            center: true,
-            type: 'error'
-            });
-        }
-        // this.$message({
-            // showClose: true,
-            // message: '注册成功！登录以开始',
-            // center: true,
-            // type: 'success'
-        // });
-        // this.$router.push('/login')
-        //?showClose: true,
-        //?   message: '错了哦，这是一条错误消息',
-        //?   type: 'error',
-        //?   center: true,
->>>>>>> main
+      } else {
+        this.$message({
+          showClose: true,
+          message: '注册失败',
+          center: true,
+          type: 'error',
+        });
+      }
+      // this.$message({
+      // showClose: true,
+      // message: '注册成功！登录以开始',
+      // center: true,
+      // type: 'success'
+      // });
+      // this.$router.push('/login')
+      //?showClose: true,
+      //?   message: '错了哦，这是一条错误消息',
+      //?   type: 'error',
+      //?   center: true,
     }
 
 
+  }
 }
 </script>
 

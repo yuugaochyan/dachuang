@@ -1,11 +1,10 @@
-package com.example.beta.controller;
+package com.industrialplatform.beta.controller;
 
-import com.example.beta.mapper.UserMapper;
+import com.industrialplatform.beta.mapper.UserMapper;
+import com.industrialplatform.beta.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import pojo.User;
+import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -25,22 +24,23 @@ public class UserController {
     }
 
     //通过id查询用户
-  /*  @GetMapping("/queryUserById/{id}")
+    @GetMapping("/queryUserById/{id}")
     public User queryUserById(@PathVariable("id") int id){
         return userMapper.queryUserById(id);
     }
 
-    //增加新用户
-    @GetMapping("/addUser")
-    public String addUser(User user){
-        userMapper.addUser(new User(0,"Kiro","123456"));
-        return "保存成功！";
+    //增加新用户 @RequestParam("username")String username,@RequestParam("password")String password
+    @PostMapping("/addUser")
+    public boolean addUser(@RequestParam("username")String username,@RequestParam("password")String password){
+        userMapper.addUser(new User(0,username,password));
+        System.out.println(username+password);
+        return true;
     }
 
     //更改用户属性
     @GetMapping("/updateUser")
     public String updateUser(User user){
-        userMapper.updateUser(new User(0,"Kiro","000000"));
+        userMapper.updateUser(new User(20,"Kiro","000000"));
         return "修改成功！";
     }
 
@@ -50,6 +50,6 @@ public class UserController {
         userMapper.deleteUser(id);
         return "删除成功！";
     }
-*/
+
 
 }
