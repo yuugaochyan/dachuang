@@ -65,10 +65,7 @@
 </template>
 
 <script>
-
-
-import  axios from "axios";
-
+import axios from 'axios';
 export default {
   name: 'app',
   data() {
@@ -102,25 +99,48 @@ export default {
         });
 \
         this.$router.push('/login')
-      } else {
-        this.$message({
-          showClose: true,
-          message: '注册失败',
-          center: true,
-          type: 'error',
+    },
+    onSubmit(){
+        const result = true;
+        //* let that=this;
+        // const result = axios.post('http://localhost:8088/adduser',{that.loginForm.username,that.loginForm.password}).then(function(resp){
+            // console.log(result);
+        // });
+        let that=this;
+        const result = axios.post('http://localhost:8888/addUser', this.$qs.stringify({
+            username: that.regForm.username,
+            password: that.regForm.password
+        })).then(function (resp) {
+        console.log("...")
         });
-      }
-      // this.$message({
-      // showClose: true,
-      // message: '注册成功！登录以开始',
-      // center: true,
-      // type: 'success'
-      // });
-      // this.$router.push('/login')
-      //?showClose: true,
-      //?   message: '错了哦，这是一条错误消息',
-      //?   type: 'error',
-      //?   center: true,
+        if(result){
+            this.$message({
+            showClose: true,
+            message: '注册成功！登录以开始',
+            center: true,
+            type: 'success'
+            });
+            this.$router.push('/login')
+        }
+        else{
+            this.$message({
+            showClose: true,
+            message: '注册失败',
+            center: true,
+            type: 'error'
+            });
+        }
+        // this.$message({
+            // showClose: true,
+            // message: '注册成功！登录以开始',
+            // center: true,
+            // type: 'success'
+        // });
+        // this.$router.push('/login')
+        //?showClose: true,
+        //?   message: '错了哦，这是一条错误消息',
+        //?   type: 'error',
+        //?   center: true,
     }
 
 
