@@ -74,28 +74,37 @@ export default {
     },
     methods: {
         onSubmit(){
-            const result = true;
-            //* let that=this,
-           // const result = axios.post('http://localhost:8088/adduser',{that.loginForm.username,that.loginForm.password}).then(function(resp){
-            // console.log(result);
-           // });
-            if(result) {
-                this.$message({
-                showClose: true,
-                message: '登录成功！',
-                center: true,
-                type: 'success'
+
+             let that=this;
+            const result = axios.post('http://localhost:8888/queryUserByName',
+                this.$qs.stringify({
+                  username:that.loginForm.username,
+                  password:that.loginForm.password
+                })).then(function(resp){
+              console.log(resp.data)
+              if(resp.data) {
+                //console.log(that.loginForm.username)
+                that.$message({
+                  showClose: true,
+                  message: '登录成功！',
+                  center: true,
+                  type: 'success'
                 });
-                this.$router.push('/homepage')
-            }
-            else{
-                this.$message({
-                showClose: true,
-                message: '登录失败！密码错误或账号不存在',
-                center: true,
-                type: 'error'
+                that.$router.push('/homepage')
+              }
+              else{
+                that.$message({
+                  showClose: true,
+                  message: '登录失败！密码错误或账号不存在',
+                  center: true,
+                  type: 'error'
                 });
-            }
+              }
+             })
+          .catch(function (error){
+            console.log(error)
+          })
+
                 // this.$router.push('/homepage')
            // });
         },

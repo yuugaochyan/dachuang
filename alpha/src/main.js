@@ -8,6 +8,8 @@ import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 import axios from 'axios'
 Vue.prototype.$axios= axios
+import qs from 'qs';
+Vue.prototype.$qs = qs;
 // import VueAxios from 'vue-axios'
 // import {post,fetch,patch,put} from "../static/http.js";
 // Vue.prototype.$axios=axios;
