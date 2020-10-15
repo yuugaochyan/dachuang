@@ -8,6 +8,8 @@ import welcome from '@/components/welcome'
 import introduct from '@/components/inroduct/introduct'
 import aboutus from '@/components/aboutus/aboutus'
 import fac1 from '@/components/factory/fac1'
+import mainfac from '@/components/factory/mainfac'
+import allchart from '@/components/factory/mainchart/allchart'
 Vue.use(VueRouter)
 
 const routes = [
@@ -16,11 +18,15 @@ const routes = [
 
   {path:'/home', 
   component: home,
-  // redirect:'/welcome',
+  redirect:'/mainfac',
   children:[
     // {path:'/welcome', component: welcome},
     {path:'/fac1', component: fac1},
+    {path:'/mainfac', component: mainfac,},
   ]},
+  
+
+
   {path:'/register', component: register },
 
   {path:'/homepage', 

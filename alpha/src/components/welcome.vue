@@ -55,16 +55,16 @@ export default {
     text-align: center;
 }
 .bgi0 {
-    background-image: url("../assets/pic/cd-background-1.jpg");
+    background-image: url("../assets/pic/niu.gif");
 }
 .bgi1 {
-    background-image: url("../assets/pic/cdbg1.jpg");
+    background-image: url("../assets/pic/icon.jpg");
 }
 .bgi2 {
     background-image: url("../assets/pic/cd-background-2.jpg");
 }
 .bgi3 {
-    background-image: url("../assets/pic/cd-background-3.jpg");
+    background-image: url("../assets/pic/cd-background-1.jpg");
 }
 .text {
     // background: #333;

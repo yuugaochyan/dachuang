@@ -10,6 +10,8 @@ import axios from 'axios'
 Vue.prototype.$axios= axios
 import qs from 'qs';
 Vue.prototype.$qs = qs;
+import dataV from '@jiaminghi/data-view'
+Vue.use(dataV)
 // import VueAxios from 'vue-axios'
 // import {post,fetch,patch,put} from "../static/http.js";
 // Vue.prototype.$axios=axios;
