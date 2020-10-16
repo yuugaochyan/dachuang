@@ -11,10 +11,10 @@
         select * from user where username=#{username}
     </select>
     <insert id="addUser" parameterType="User">
-        insert into user(username,userpassword) values(#{username},#{userpassword})
+        insert into user(username,userpassword,useremail) values(#{username},#{userpassword},#{useremail})
     </insert>
     <update id="updateUser" parameterType="User">
-        update user set username=#{username},userpassword=#{userpassword} where id=#{id}
+        update user set username=#{username},userpassword=#{userpassword},useremail=#{useremail} where id=#{id}
     </update>
     <delete id="deleteUser" parameterType="int">
         delete from user where id=#{id}
