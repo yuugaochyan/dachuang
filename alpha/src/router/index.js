@@ -10,6 +10,8 @@ import aboutus from '@/components/aboutus/aboutus'
 import fac1 from '@/components/factory/fac1'
 import mainfac from '@/components/factory/mainfac'
 import allchart from '@/components/factory/mainchart/allchart'
+import linechart from '@/components/factory/mainchart/linechart'
+import barchart from '@/components/factory/mainchart/barchart'
 Vue.use(VueRouter)
 
 const routes = [
@@ -42,6 +44,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  // mode:'history',
   routes
 })
 

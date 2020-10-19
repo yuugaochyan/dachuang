@@ -9,7 +9,7 @@
             </div>
             <div class="panel line">
               <h3>折线图-？？？</h3>
-              <div class="chart"></div>
+              <div class="chart" id="linechart"></div>
               <div class="panel-footer"></div>
             </div>
             <div class="panel pie">

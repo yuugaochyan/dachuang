@@ -1,5 +1,7 @@
 <template>
-        <el-container>
+<div id="app">
+    <dv-full-screen-container>
+        <el-container class="maincon">
             
             <!-- 头部 -->
             <el-header>
@@ -16,7 +18,7 @@
                 <el-aside width="200px">
                     <el-menu
                     :default-active="activeIndex"
-                    background-color="#535263"
+                    background-color="#122427"
                     text-color="#cad8d8"
                     active-text-color="rgb(13, 231, 194)"
                     :unique-opened="true"
@@ -115,6 +117,8 @@
                 </el-container>
             </el-container>
         </el-container>
+    </dv-full-screen-container>
+</div>
 </template>
 
 <script>
@@ -135,8 +139,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
+
 .el-container {
     height: 100%;
+    
 }
 
 
@@ -162,7 +169,7 @@ export default {
 
 
 .el-aside {
-    background-color: #535263;
+    background-color: #122427;
     color: rgb(255, 255, 255);
     .el-menu {
         border-right: 0;

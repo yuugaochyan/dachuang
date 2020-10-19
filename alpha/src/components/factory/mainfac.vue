@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+        <!-- <dv-loading>Loading...</dv-loading> -->
         <div class="container">
             <dv-border-box-10 :color="['rgb(24, 30, 39)','rgb(13, 231, 194)']" >
                 <div class="mainbd">
@@ -37,6 +38,7 @@
                                     <div class="linetitle">
                                         <dv-decoration-1 style="width:200px;height:50px;" />
                                     </div>
+                                    <linechart class="lchart"></linechart>
                                     <div class="cut">
                                         <dv-decoration-2 :reverse="true" style="width:5px;height:250px;" dur:15 :color="['rgb(13, 231, 194)','rgb(24, 30, 39)']" />
                                     </div>
@@ -44,16 +46,20 @@
                             </div>
                             <div class="bar">
                                 <dv-border-box-4 :reverse="true" :color="['rgb(26, 39, 43)','rgb(24, 30, 39)']" >
+                                    <barchart class="bchart"></barchart>
                                     <div class="bartitle">
                                         <dv-decoration-1 style="width:200px;height:50px;" />
                                     </div>
+                                    
                                 </dv-border-box-4>
                             </div>
                             <div class="num">
-                                <dv-border-box-11 title="数字" :color="['rgb(26, 39, 43)','rgb(24, 30, 39)']">
+                                <!-- 'rgb(26, 39, 43)' -->
+                                <!-- rgb(24, 30, 39) -->
+                                <dv-border-box-11 title="数字" :color="['#0de7c2','#1c2b28']">
                                     <div class="numtext">
                                         <!-- 13, 231, 194 -->
-                                        <dv-decoration-9 style="width:150px;height:150px;" :color="['rgb(13, 231, 194)','rgb(24, 30, 39)']">
+                                        <dv-decoration-9 style="width:150px;height:150px;" :color="['rgb(24, 30, 39)','rgb(13, 231, 194)']">
                                             1212
                                         </dv-decoration-9>
                                     </div>
@@ -90,13 +96,21 @@
 </template>
 
 <script>
+import barchart from '@/components/factory/mainchart/barchart'
+import linechart from '@/components/factory/mainchart/linechart'
 import allchart from '@/components/factory/mainchart/allchart'
 import axios from 'axios'
 export default {
     name:"mainfac",
-    data(){},
+    data(){
+        return {
+            msg:''
+        }
+    },
     components: {
         allchart,
+        linechart,
+        barchart,
     },
 
 methods: {
@@ -161,6 +175,7 @@ methods: {
         // background-color: #333;
     }
 }
+
 .top {
     height: 5rem;
     // background-color: #fff;
@@ -182,6 +197,13 @@ methods: {
             position: absolute;
             right: 0%;
         }
+        .lchart {
+            position: absolute;
+            top: 17%;
+            left: 3%;
+            width: 100%;
+            height: 100%;
+        }
     }
     .bar {
         flex:2;
@@ -193,6 +215,13 @@ methods: {
             position: absolute;
             bottom: 3%;
             right: 3%;
+        }
+        .bchart {
+            position: absolute;
+            top: 5%;
+            left: -3%;
+            width: 100%;
+            height: 100%;
         }
     }
     .num {
