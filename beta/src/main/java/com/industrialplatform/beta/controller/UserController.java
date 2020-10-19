@@ -33,7 +33,7 @@ public class UserController {
         return (user.getUserpassword().equals(userMapper.queryUserByName(user.getUsername()).getUserpassword()));
     }
 
-    //增加新用户
+    //增加新用户   前端接口需改为User对应变量名
     @PostMapping("/addUser")
     public boolean addUser(@RequestBody User user){
         if (userMapper.queryUserByName(user.getUsername())==null)
