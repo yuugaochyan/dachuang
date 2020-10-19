@@ -79,7 +79,7 @@ export default {
             const result = axios.post('http://localhost:8888/queryUserByName',
                 this.$qs.stringify({
                     username:that.loginForm.username,
-                    password:that.loginForm.password
+                    userpassword:that.loginForm.password
                 })).then(function(resp){
                     console.log(resp.data)
                     if(resp.data) {
