@@ -1,9 +1,13 @@
 <template>
-        <el-container>
+<div id="app">
+    <dv-full-screen-container>
+        <el-container class="maincon">
+            
             <!-- 头部 -->
             <el-header>
                 <div>
                 <span>工业互联网</span>
+                <el-button class="back" type="primary" @click="goback">返回首页</el-button>
                 </div>
             </el-header>
             <!-- 主体 -->
@@ -13,12 +17,20 @@
                 <!-- background-color="#2b394b" -->
                 <el-aside width="200px">
                     <el-menu
-                    background-color="#535263"
+                    :default-active="activeIndex"
+                    background-color="#122427"
                     text-color="#cad8d8"
-                    active-text-color="#ffd04b"
+                    active-text-color="rgb(13, 231, 194)"
                     :unique-opened="true"
                     router>
 
+                    <el-menu-item index="mainfac">
+                            <template slot="title">
+                                <i class="el-icon-location"></i>
+                                <span>总览</span>
+                            </template>
+                        </el-menu-item>
+                    
                     <el-submenu index="1">
                     <template slot="title">
                         <i class="el-icon-location"></i>
@@ -105,24 +117,39 @@
                 </el-container>
             </el-container>
         </el-container>
+    </dv-full-screen-container>
+</div>
 </template>
 
 <script>
 import axios from 'axios';
 export default {
-    
+    data() {
+        return {
+            activeIndex: 'mainfac',
+            isShow:true,
+        };
+    },
+    methods: {
+        goback(){
+            this.$router.push('/homepage')
+        }
+    }
 }
 </script>
 
 <style lang="less" scoped>
+
+
 .el-container {
     height: 100%;
+    
 }
 
 
 .el-header {
     background-color: #2d313a;
-    color: rgb(255, 255, 255);
+    color: rgb(13, 231, 194);
     display: flex;
     justify-content: space-between;
     padding-left: 0;
@@ -134,11 +161,15 @@ export default {
             margin-left: 15px;
         }
     }
+    .back {
+        position: absolute;
+        right: 10px;
+    }
 }
 
 
 .el-aside {
-    background-color: #535263;
+    background-color: #122427;
     color: rgb(255, 255, 255);
     .el-menu {
         border-right: 0;

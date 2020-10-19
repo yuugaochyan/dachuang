@@ -87,7 +87,8 @@ export default {
       const result = axios.post('http://localhost:8888/addUser',
           this.$qs.stringify({
         username: that.regForm.username,
-        password: that.regForm.password
+        userpassword: that.regForm.password,
+        useremail: that.regForm.mail,
       })).then(function (resp) {
         console.log(resp.data)
         if (resp.data) {

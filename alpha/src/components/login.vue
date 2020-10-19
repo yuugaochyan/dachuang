@@ -75,35 +75,35 @@ export default {
     methods: {
         onSubmit(){
 
-             let that=this;
+            let that=this;
             const result = axios.post('http://localhost:8888/queryUserByName',
                 this.$qs.stringify({
-                  username:that.loginForm.username,
-                  password:that.loginForm.password
+                    username:that.loginForm.username,
+                    userpassword:that.loginForm.password
                 })).then(function(resp){
-              console.log(resp.data)
-              if(resp.data) {
+                    console.log(resp.data)
+                    if(resp.data) {
                 //console.log(that.loginForm.username)
-                that.$message({
-                  showClose: true,
-                  message: '登录成功！',
-                  center: true,
-                  type: 'success'
+                    that.$message({
+                    showClose: true,
+                    message: '登录成功！',
+                    center: true,
+                    type: 'success'
+                    });
+                    that.$router.push('/homepage')
+                }
+                else{
+                    that.$message({
+                    showClose: true,
+                    message: '登录失败！密码错误或账号不存在',
+                    center: true,
+                    type: 'error'
                 });
-                that.$router.push('/homepage')
-              }
-              else{
-                that.$message({
-                  showClose: true,
-                  message: '登录失败！密码错误或账号不存在',
-                  center: true,
-                  type: 'error'
-                });
-              }
-             })
-          .catch(function (error){
+                }
+                })
+            .catch(function (error){
             console.log(error)
-          })
+            })
 
                 // this.$router.push('/homepage')
            // });

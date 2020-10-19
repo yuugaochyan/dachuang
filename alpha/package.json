@@ -7,9 +7,12 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@jiaminghi/charts": "^0.2.17",
+    "@jiaminghi/data-view": "^2.10.0",
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
     "element-ui": "^2.4.5",
+    "mqtt": "^4.2.1",
     "postcss-px2rem": "^0.3.0",
     "qs": "^6.9.4",
     "vue": "^2.6.11",
