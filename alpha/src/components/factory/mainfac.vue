@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+    <!-- <dv-full-screen-container> -->
         <!-- <dv-loading>Loading...</dv-loading> -->
         <div class="container">
             <dv-border-box-10 :color="['rgb(24, 30, 39)','rgb(13, 231, 194)']" >
@@ -90,8 +91,8 @@
                 </div>
             </dv-border-box-10>
         </div>
-        <!-- <dv-loading>Loading...</dv-loading> -->
-        
+        <!-- </dv-full-screen-container> -->
+        <!-- <dv-loading>Loading...</dv-loading> -->       
     </div>
 </template>
 

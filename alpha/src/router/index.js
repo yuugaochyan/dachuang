@@ -20,11 +20,11 @@ const routes = [
 
   {path:'/home', 
   component: home,
-  redirect:'/mainfac',
+  redirect:'/fac1',
   children:[
     // {path:'/welcome', component: welcome},
     {path:'/fac1', component: fac1},
-    {path:'/mainfac', component: mainfac,},
+    // {path:'/mainfac', component: mainfac,},
   ]},
   
 
@@ -38,6 +38,7 @@ const routes = [
     {path:'/welcome', component: welcome},
     {path:'/intro', component: introduct},
     {path:'/aboutus', component: aboutus},
+    {path:'/mainfac', component: mainfac,},
   ] },
 
   
@@ -47,5 +48,15 @@ const router = new VueRouter({
   // mode:'history',
   routes
 })
-
+//挂载路由导航守卫
+router.beforeEach((to,from,next)=>{
+  if(to.path === '/login') return next();
+  if(to.path === '/welcome') return next();
+  if(to.path === '/mainfac') return next();
+  if(to.path === '/aboutus') return next();
+  const tokenstr=window.sessionStorage.getItem('token');
+  if(!tokenstr) return next('/login')
+  next()
+  
+})
 export default router

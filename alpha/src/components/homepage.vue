@@ -4,7 +4,8 @@
     <el-container>
     <el-header>
     <el-menu
-    :default-active="activeIndex"
+    :default-active='$route.path'
+    
     class="el-menu-demo nav"
     mode="horizontal"
     @select="handleSelect"
@@ -12,9 +13,9 @@
     text-color="#fff"
     active-text-color="#ffd04b"
     router>
-        <el-menu-item index="welcome">主页</el-menu-item>
-        <el-menu-item index="intro">工业互联网</el-menu-item>
-        <el-menu-item index="home">工厂数据</el-menu-item>
+        <el-menu-item index="/welcome">主页</el-menu-item>
+        <el-menu-item index="/mainfac">大屏数据</el-menu-item>
+        <el-menu-item index="/home" :disabled="isshow">工厂数据</el-menu-item>
         <el-submenu index="2">
             <template slot="title">待定</template>
             <el-menu-item index="2-1">选项1</el-menu-item>
@@ -27,10 +28,10 @@
                 <el-menu-item index="2-4-3">选项3</el-menu-item>
             </el-submenu>
         </el-submenu>
-        <el-menu-item index="aboutus" >关于我们</el-menu-item>
-        <el-button type="info" size="medium" icon="el-icon-user" class="bt" @click="turnToReg" v-if="isShow">注册</el-button>
-        <el-button type="info" size="medium" icon="el-icon-user" class="bt" @click="turnToLogin" v-if="!isShow">退出</el-button>
-        <el-button type="warning" size="medium" icon="el-icon-user-solid" class="bt" @click="turnToLogin" v-if="isShow">登录</el-button>
+        <el-menu-item index="/aboutus" >关于我们</el-menu-item>
+        <el-button type="info" size="medium" icon="el-icon-user" class="bt" @click="turnToReg" v-if="isshow">注册</el-button>
+        <el-button type="info" size="medium" icon="el-icon-user" class="bt" @click="logout" v-if="!isshow">退出</el-button>
+        <el-button type="warning" size="medium" icon="el-icon-user-solid" class="bt" @click="turnToLogin" v-if="isshow">登录</el-button>
         
     </el-menu>
     </el-header>
@@ -50,11 +51,26 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            activeIndex: 'welcome',
-            isShow:true,
+            // activeIndex: this.index,
+            isshow:true,
         };
     },
+    mounted() {
+        this.changeisshow();
+    },
     methods: {
+        changeisshow() {
+            const tokenstr=window.sessionStorage.getItem('token');
+            // const tokenstr="testtoken"
+            if(tokenstr){
+                this.isshow=false;
+                console.log(tokenstr);
+            }
+            else{
+                this.isshow=true;
+                console.log(tokenstr);
+            }
+        },
         handleSelect(key, keyPath) {
             console.log(key, keyPath);
             console.log(key);
@@ -64,6 +80,11 @@ export default {
         },
         turnToReg(){
             this.$router.push('/register')
+        },
+        logout(){
+            window.sessionStorage.clear();
+            this.changeisshow();
+            // this.$router.push('/homepage')
         }
     }
 

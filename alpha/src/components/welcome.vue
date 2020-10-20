@@ -3,28 +3,33 @@
 
 
         <div class="fixedBg bgi0">
-            <span>带标题</span>
+            <span class="title">工业互联网=？</span>
         </div>
         <div class="text t1">
-            <span>标题1</span>
-            </div>
+            <span class="txt1">
+            大屏展示+<br>
+            数据可视化+<br>
+            实时监控
+            <!-- <img src="../assets/pic/banner3.jpg" alt=""> -->
+            </span>
+        </div>
         <div class="fixedBg bgi1">
-            <span>??</span>
+            <span class="title">??</span>
         </div>
         <div class="text t2">
-            <span>标题2</span>
+            <span class="txt2">标题2</span>
         </div>
         <div class="fixedBg bgi2">
-            <span>??</span>
+            <span class="title">??</span>
         </div>
         <div class="text t3">
-            <span>标题2</span>
+            <span class="txt1">标题2</span>
         </div>
         <div class="fixedBg bgi3">
-            <span>..</span>
+            <span class="title">..</span>
         </div>
         <div class="text t4">
-            <span>标题3</span>
+            <span class="txt2">标题3</span>
         </div>
         
         
@@ -71,17 +76,43 @@ export default {
     width: 100%;
     height: 500px;
     text-align: center;
-    
+    // line-height: 500px;
+    position: relative;
 }
-span {
+
+.title {
     color: #fff;
     font-size: 100px;
     line-height: 500px;
     
 }
+.txt1 {
+    color: #fff;
+    font-size: 35px;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    // line-height: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    // vertical-align: middle;
+}
+.txt2 {
+    color: #333;
+    font-size: 35px;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    // line-height: 500px;
+    // vertical-align: middle;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
 .t1 {
     background-color: #333;
+    // background-image: url("../assets/pic/icon3.png");
+    // background-size: cover;
 }
 .t2 {
     background-color: rgba(216, 153, 37, 0.8);
