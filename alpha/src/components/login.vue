@@ -98,7 +98,7 @@ export default {
                     userpassword:that.loginForm.password
                 })).then(function(resp){
                     console.log(resp.data)
-                    if(resp.data) {
+                    if(resp.data.state) {
                 //console.log(that.loginForm.username)
                     that.$message({
                     showClose: true,
@@ -124,8 +124,8 @@ export default {
             })
             })
 
-                window.sessionStorage.setItem('token',"testtoken");
-                this.$router.push('/homepage')
+           //     window.sessionStorage.setItem('token',"testtoken");
+           //   this.$router.push('/homepage')
            // });
         },
 
