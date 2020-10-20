@@ -17,9 +17,10 @@
             <div class="loginform">
                 <el-form :model="loginForm" 
                 ref="loginFormRef"
-                label-width="0px">
+                label-width="0px"
+                :rules="rules">
                     <!-- 用户名 -->
-                    <el-form-item>
+                    <el-form-item prop="username">
                         <el-input placeholder="请输入用户名"
                         prefix-icon="el-icon-user-solid"
                         v-model="loginForm.username"
@@ -27,7 +28,7 @@
                     </el-form-item>
 
                     <!-- 密码 -->
-                    <el-form-item>
+                    <el-form-item prop="password">
                         <el-input placeholder="请输入密码"
                         prefix-icon="el-icon-lock"
                         v-model="loginForm.password" 
@@ -70,11 +71,26 @@ export default {
             require("../assets/pic/cd-background-3.jpg"),
             require("../assets/pic/cd-background-4.jpg"),
             require("../assets/pic/cdbg1.jpg")],
+            rules: {
+                username: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' },
+                    { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
+                ],
+            }
         }
     },
+    mounted(){
+        
+    },
     methods: {
+        
         onSubmit(){
-
+            this.$refs.loginFormRef.validate((valid)=>{
+            if(!valid) return;
             let that=this;
             const result = axios.post('http://localhost:8888/queryUserByName',
                 this.$qs.stringify({
@@ -90,6 +106,8 @@ export default {
                     center: true,
                     type: 'success'
                     });
+                    // window.sessionStorage.setItem('token',"testtoken");
+                    window.sessionStorage.setItem('token',resp.data.token);
                     that.$router.push('/homepage')
                 }
                 else{
@@ -104,8 +122,10 @@ export default {
             .catch(function (error){
             console.log(error)
             })
+            })
 
-                // this.$router.push('/homepage')
+                window.sessionStorage.setItem('token',"testtoken");
+                this.$router.push('/homepage')
            // });
         },
 

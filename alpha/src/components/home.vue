@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-    <dv-full-screen-container>
+    <!-- <dv-full-screen-container> -->
         <el-container class="maincon">
             
             <!-- 头部 -->
@@ -17,38 +17,38 @@
                 <!-- background-color="#2b394b" -->
                 <el-aside width="200px">
                     <el-menu
-                    :default-active="activeIndex"
+                    :default-active='$route.path'
                     background-color="#122427"
                     text-color="#cad8d8"
                     active-text-color="rgb(13, 231, 194)"
                     :unique-opened="true"
                     router>
 
-                    <el-menu-item index="mainfac">
+                    <!-- <el-menu-item index="mainfac">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
                                 <span>总览</span>
                             </template>
-                        </el-menu-item>
+                        </el-menu-item> -->
                     
                     <el-submenu index="1">
                     <template slot="title">
                         <i class="el-icon-location"></i>
                         <span>导航1</span>
                     </template>
-                        <el-menu-item index="fac1">
+                        <el-menu-item index="/fac1">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
                                 <span>选项1</span>
                             </template>
                         </el-menu-item>
-                        <el-menu-item index="1-2">
+                        <el-menu-item index="/1-2">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
                                 <span>选项2</span>
                             </template>
                         </el-menu-item>
-                        <el-menu-item index="1-3">
+                        <el-menu-item index="/1-3">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
                                 <span>选项3</span>
@@ -61,19 +61,19 @@
                         <i class="el-icon-location"></i>
                         <span>导航2</span>
                     </template>
-                        <el-menu-item index="2-1">
+                        <el-menu-item index="/2-1">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
                                 <span>选项1</span>
                             </template>
                         </el-menu-item>
-                        <el-menu-item index="2-2">
+                        <el-menu-item index="/2-2">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
                                 <span>选项2</span>
                             </template>
                         </el-menu-item>
-                        <el-menu-item index="2-3">
+                        <el-menu-item index="/2-3">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
                                 <span>选项3</span>
@@ -86,19 +86,19 @@
                         <i class="el-icon-location"></i>
                         <span>导航3</span>
                     </template>
-                        <el-menu-item index="3-1">
+                        <el-menu-item index="/3-1">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
                                 <span>选项1</span>
                             </template>
                         </el-menu-item>
-                        <el-menu-item index="3-2">
+                        <el-menu-item index="/3-2">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
                                 <span>选项2</span>
                             </template>
                         </el-menu-item>
-                        <el-menu-item index="3-3">
+                        <el-menu-item index="/3-3">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
                                 <span>选项3</span>
@@ -117,7 +117,7 @@
                 </el-container>
             </el-container>
         </el-container>
-    </dv-full-screen-container>
+    <!-- </dv-full-screen-container> -->
 </div>
 </template>
 

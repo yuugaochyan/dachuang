@@ -23,9 +23,10 @@
                 <div class="regForm">
                     <el-form :model="regForm" 
                     ref="regFormRef"
-                    label-width="80px">
+                    label-width="80px"
+                    :rules="rules">
                     <!-- 用户名 -->
-                    <el-form-item label="用户名">
+                    <el-form-item label="用户名" prop="username">
                         <el-input placeholder="请输入用户名"
                         prefix-icon="el-icon-user-solid"
                         v-model="regForm.username"
@@ -33,7 +34,7 @@
                     </el-form-item>
 
                     <!-- 密码 -->
-                    <el-form-item label="密码">
+                    <el-form-item label="密码" prop="password">
                         <el-input placeholder="请输入密码"
                         prefix-icon="el-icon-lock"
                         v-model="regForm.password" 
@@ -42,7 +43,7 @@
                     </el-form-item>
 
                     <!-- 邮箱 -->
-                    <el-form-item label="邮箱">
+                    <el-form-item label="邮箱" prop="mail">
                         <el-input placeholder="请输入邮箱"
                         prefix-icon="el-icon-message"
                         v-model="regForm.mail" 
@@ -75,6 +76,20 @@ export default {
         password: '',
         mail: '',
       },
+      rules: {
+        username: [
+            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
+          ],
+          mail: [
+            { required: true, message: '请输入邮箱', trigger: 'blur' },
+            { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
+          ]
+      }
     }
   },
   methods: {
@@ -83,6 +98,10 @@ export default {
       this.$router.push('/login')
     },
     onSubmit() {
+      this.$refs.regFormRef.validate((valid)=>{
+        if(!valid) return;
+        
+      
       let that=this;
       const result = axios.post('http://localhost:8888/addUser',
           this.$qs.stringify({
@@ -112,6 +131,7 @@ export default {
 
 
         this.$router.push('/login')
+        })
     },
 
 
