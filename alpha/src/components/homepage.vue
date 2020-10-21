@@ -15,7 +15,10 @@
     router>
         <el-menu-item index="/welcome">主页</el-menu-item>
         <el-menu-item index="/mainfac">大屏数据</el-menu-item>
-        <el-menu-item index="/home" :disabled="isshow">工厂数据</el-menu-item>
+        <el-menu-item index="/home" 
+        :disabled="isshow"
+        >工厂数据</el-menu-item>
+        <!-- @click.native="judgetoken" -->
         <el-submenu index="2">
             <template slot="title">待定</template>
             <el-menu-item index="2-1">选项1</el-menu-item>
@@ -59,6 +62,9 @@ export default {
         this.changeisshow();
     },
     methods: {
+        // judgetoken(){
+            // 
+        // },
         changeisshow() {
             const tokenstr=window.sessionStorage.getItem('token');
             // const tokenstr="testtoken"

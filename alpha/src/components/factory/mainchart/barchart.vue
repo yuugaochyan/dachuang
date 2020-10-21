@@ -51,35 +51,35 @@ export default {
     // mounted() {
         // this.drawbar();
     // },
-    methods: {
-        updateHandler () {
-        const { config } = this
-        this.config.data =  [
-            {
-                name: '南阳',
-                value: 167
-            },
-            {
-                name: '周口',
-                value: 123
-            },
-            {
-                name: '漯河',
-                value: 98
-            },
-            {
-                name: '郑州',
-                value: 75
-            },
-            {
-                name: '西峡',
-                value: 66
-            },
-            ]
+    // methods: {
+        // updateHandler () {
+        // const { config } = this
+        // this.config.data =  [
+            // {
+                // name: '南阳',
+                // value: 167
+            // },
+            // {
+                // name: '周口',
+                // value: 123
+            // },
+            // {
+                // name: '漯河',
+                // value: 98
+            // },
+            // {
+                // name: '郑州',
+                // value: 75
+            // },
+            // {
+                // name: '西峡',
+                // value: 66
+            // },
+            // ]
         // this.config.lineDash = [10, 4]
-        this.config = { ...this.config }
-    }
-    }
+        // this.config = { ...this.config }
+    // }
+    // }
         
 }
 </script>

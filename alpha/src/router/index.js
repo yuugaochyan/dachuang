@@ -38,8 +38,9 @@ const routes = [
     {path:'/welcome', component: welcome},
     {path:'/intro', component: introduct},
     {path:'/aboutus', component: aboutus},
-    {path:'/mainfac', component: mainfac,},
+    // {path:'/mainfac', component: mainfac,},
   ] },
+  {path:'/mainfac', component: mainfac,},
 
   
 ]
