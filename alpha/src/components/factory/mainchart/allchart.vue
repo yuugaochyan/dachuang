@@ -1,7 +1,7 @@
 
 <template>
     <div id="app">
-        <div id="allchart" :style="{height: '6rem',width: '100%'}"></div>
+        <div id="allchart" :style="{height: '100%',width: '100%'}"></div>
         <!-- <div>{{msg}}</div> -->
     </div>
 </template>

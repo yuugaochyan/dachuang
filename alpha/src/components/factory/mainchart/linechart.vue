@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         
-        <div id="linechart" :style="{height: '4rem',width: '100%',}"></div>
+        <div id="linechart" :style="{height: '4.5rem',width: '100%',}"></div>
     </div>
 </template>
 
