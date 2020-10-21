@@ -143,7 +143,7 @@ methods: {
     width: 100%;
     min-width: 1224px;
     max-width: 1920px;
-    background-image: url("../../assets/pic/bg5.png");
+    background-image: url("../../assets/pic/bg5.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     // opacity: 0.5;
