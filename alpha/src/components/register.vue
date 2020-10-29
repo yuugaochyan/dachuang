@@ -87,7 +87,7 @@ export default {
           ],
           mail: [
             { required: true, message: '请输入邮箱', trigger: 'blur' },
-            { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
+            { min: 3, max: 45, message: '长度在 3 到 45 个字符', trigger: 'blur' }
           ]
       }
     }
@@ -107,6 +107,7 @@ export default {
           this.$qs.stringify({
         username: that.regForm.username,
         userpassword: that.regForm.password,
+
         useremail: that.regForm.mail,
       })).then(function (resp) {
         console.log(resp.data)
