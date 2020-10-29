@@ -13,6 +13,7 @@ Vue.prototype.$qs = qs;
 import dataV from '@jiaminghi/data-view';
 Vue.config.productionTip = false;
 Vue.use(dataV);
+// import mqtt from 'mqtt';
 // import VueAxios from 'vue-axios'
 // import {post,fetch,patch,put} from "../static/http.js";
 // Vue.prototype.$axios=axios;
