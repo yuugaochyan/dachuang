@@ -61,10 +61,10 @@ export default {
     background-image: url("../assets/pic/niu.gif");
 }
 .bgi1 {
-    background-image: url("../assets/pic/icon.jpg");
+    background-image: url("../assets/pic/banner3.jpg");
 }
 .bgi2 {
-    background-image: url("../assets/pic/cd-background-2.jpg");
+    background-image: url("../assets/pic/cd-background-2.gif");
 }
 .bgi3 {
     background-image: url("../assets/pic/cd-background-1.jpg");
