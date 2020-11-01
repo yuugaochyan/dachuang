@@ -55,7 +55,6 @@ public class UserController {
         }
         return map;
     }
-    ///////
 
     //增加新用户   前端接口需改为User对应变量名
     @RequestMapping(value = "/addUser",method = RequestMethod.POST)
