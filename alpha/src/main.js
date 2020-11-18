@@ -13,6 +13,11 @@ Vue.prototype.$qs = qs;
 import dataV from '@jiaminghi/data-view';
 Vue.config.productionTip = false;
 Vue.use(dataV);
+import Router from 'vue-router'
+const routerPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+return routerPush.call(this, location).catch(error=> error)
+}
 // import mqtt from 'mqtt';
 // import VueAxios from 'vue-axios'
 // import {post,fetch,patch,put} from "../static/http.js";
