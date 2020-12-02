@@ -52,6 +52,7 @@
 <script>
 import axios from 'axios'
 export default {
+    inject:['reload'],
     data() {
         return {
             // activeIndex: this.index,
@@ -88,8 +89,11 @@ export default {
             this.$router.push('/register')
         },
         logout(){
-            window.sessionStorage.clear();
+            window.localStorage.clear();
+            // this.$store.commit('setuserInfo','');
+            this.$store.commit('setToken','');
             this.changeisshow();
+            // this.reload()
             // this.$router.push('/homepage')
         }
     }
