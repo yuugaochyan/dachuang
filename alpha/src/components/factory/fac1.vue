@@ -4,7 +4,9 @@
           <div class="column">
             <div class="panel">
               <h3>柱形图-？？？</h3>
-              <div id="myChart" :style="{height: '3rem',width: '100%'}"></div>
+              <div class="chart">
+                <mtqqtest></mtqqtest>
+              </div>
               <div class="panel-footer"></div>
             </div>
             <div class="panel line">
@@ -70,24 +72,28 @@
 
 <script>
 import axios from 'axios'
+import mtqqtest from '@/components/factory/mqttfac/mtqqtest'
 export default {
-data(){
-  return{
-    time1:"123456",
-    time2:"222222",
-    // base : new Date(1968, 9, 3),
-    // oneDay : 24 * 3600 * 1000,
-    // date : [],
-    // data : [Math.random() * 300],
-  }
-},
-mounted(){
-  
-},
-methods: {
-  
+  data(){
+    return{
+      time1:"123456",
+      time2:"222222",
+      // base : new Date(1968, 9, 3),
+      // oneDay : 24 * 3600 * 1000,
+      // date : [],
+      // data : [Math.random() * 300],
+    }
+  },
+  components: {
+    mtqqtest,
+  },
+  mounted(){
     
-}
+  },
+  methods: {
+    
+      
+  }
 }
 </script>
 

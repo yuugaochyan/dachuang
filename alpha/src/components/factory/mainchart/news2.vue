@@ -1,9 +1,9 @@
 <template>
     <!-- <div id="app"> -->
         
-        <div id="news2" :style="{height: '100%',width: '100%'}">
+        <div id="news2" :style="{height: '100%',width: '100%'}" v-if="reset">
             <!-- <dv-decoration-1 style="width:200px;height:50px;" /> -->
-            <dv-scroll-ranking-board :config="config" style="width:100%;height:100%" />
+            <dv-scroll-ranking-board  :config="config" style="width:100%;height:100%" />
         </div>
     <!-- </div> -->
 </template>
@@ -18,48 +18,60 @@ export default {
     name:'news2',
     data(){
         return {
+            reset:false,
             
             // msg:'',
             config: {
-                data: [
-                {
-                    name: '周口',
-                    value: 55123
-                },
-                {
-                    name: '南阳',
-                    value: 12022
-                },
-                {
-                    name: '西峡',
-                    value: 78932
-                },
-                {
-                    name: '驻马店',
-                    value: 63411
-                },
-                {
-                    name: '新乡',
-                    value: 44231
-                }
-                ],
-                unit: '单位',
-                valueFormatter ({ value }) {
-                    console.warn(arguments)
-                    const reverseNumber = (value + '').split('').reverse()
-                    let valueStr = ''
-
-                    while (reverseNumber.length) {
-                    const seg = reverseNumber.splice(0, 3).join('')
-                    valueStr += seg
-                    if (seg.length === 3) valueStr += ','
-                    }
-
-                    return valueStr.split('').reverse().join('')
-                }
+                //data: [],
+                //unit: '单位',
+                //valueFormatter ({ value }) {
+                //    console.warn(arguments)
+                //    const reverseNumber = (value + '').split('').reverse()
+                //    let valueStr = ''
+//
+                //    while (reverseNumber.length) {
+                //    const seg = reverseNumber.splice(0, 3).join('')
+                //    valueStr += seg
+                //    if (seg.length === 3) valueStr += ','
+                //    }
+//
+                //    return valueStr.split('').reverse().join('')
+                //}
             }
         }
     },
+    methods: {
+        news2Ajax() {
+            let that = this;
+            const result = axios.get('/getChart/news2',{
+                params:{
+                    userid:that.$store.state.token
+                }
+                }).then((resp)=>{
+                    that.config=resp.data;
+                    // console.log(resp.data);
+                    // console.log(that.reset);
+                }).catch((resp)=>{
+                    console.log(resp);
+                })
+        }
+    },
+    beforeMount(){
+        this.news2Ajax();
+    },
+    mounted() {
+        
+    },
+    
+    watch: {
+        config: function(){
+            this.$nextTick(function(){
+                this.reset = true;
+            })
+        }
+    }
+
+
 }
 </script>
 <style lang="less" scoped>

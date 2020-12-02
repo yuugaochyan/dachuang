@@ -52,10 +52,11 @@ const router = new VueRouter({
 //挂载路由导航守卫
 router.beforeEach((to,from,next)=>{
   if(to.path === '/login') return next();
+  if(to.path === '/register') return next();
   if(to.path === '/welcome') return next();
   if(to.path === '/mainfac') return next();
   if(to.path === '/aboutus') return next();
-  const tokenstr=window.sessionStorage.getItem('token');
+  const tokenstr=window.localStorage.getItem('token');
   if(!tokenstr) return next('/login')
   next()
   
