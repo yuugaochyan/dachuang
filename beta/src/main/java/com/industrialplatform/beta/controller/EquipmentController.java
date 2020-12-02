@@ -18,13 +18,35 @@ public class EquipmentController {
     @Autowired
     private EquipmentService equipmentService;
 
-    @GetMapping("/queryEquipmentList")
+    @GetMapping("/getChart/news2")
+    public Map<String,Object> orderEquipmentBreakTimes(){
+        Map<String,Object> map=new HashMap<>();
+        Map<String,Object> datamap=new HashMap<>();
+        List<Map<String,Object>> Data=new ArrayList<>();
+        List<Equipment> equipmentList=equipmentService.queryEquipmentList();
+        for(Equipment equipment: equipmentList) {
+           // datamap.put("name", equipment.getEqpname());
+           // datamap.put("value", equipment.getBreaktimes());
+            Data.add(new HashMap<>(){{
+                put("name",equipment.getEqpname());
+                put("value", equipment.getBreaktimes());
+            }});
+           // System.out.println(datamap);
+            System.out.println(Data);
+        }
+
+        map.put("unit","次");
+        map.put("data",Data);
+        return map;
+    }
+
+
+    @GetMapping("/getChart/news1")
     public Map<String,Object> queryEquipmentList(){
         Map<String,Object> map=new HashMap<>();
         List<String[]> Data = new ArrayList<>();
         List<Equipment> equipmentList=equipmentService.queryEquipmentList();
         for(Equipment equipment:equipmentList ) {
-            System.out.println(equipment);
             Data.add(new String[]{equipment.getEqpname(),String.valueOf(equipment.getBreaktimes())});
         }
         map.put("data",Data);
