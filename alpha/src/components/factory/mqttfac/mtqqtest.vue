@@ -2,11 +2,12 @@
     <!-- <div id="app"> -->
         
         <div id="mtqqtest" :style="{height: '100%',width: '100%'}">
-            test
+            
             <!-- <dv-decoration-1 style="width:200px;height:50px;" /> -->
             <!-- <dv-active-ring-chart :config="config" style="width:100%;height:100%" /> -->
-            {{msg1}}
-            {{msg2}}
+            n:{{msg3}}
+            V:{{msg1}}
+            t:{{msg2}}
         </div>
     <!-- </div> -->
 </template>
@@ -34,6 +35,7 @@ export default {
             
             msg1:'',
             msg2:'',
+            msg3:'',
         }
     },
     mounted() {
@@ -44,7 +46,7 @@ export default {
         mqttMsg() {
             client.on('connect', (e) => {
                 console.log("连接成功！！！")
-                client.subscribe('/#', { qos: 0 }, (error) => {
+                client.subscribe('/plc2/prosys/#', { qos: 0 }, (error) => {
                     if (!error) {
                         console.log('订阅成功')
                     } else {
@@ -59,6 +61,7 @@ export default {
                 let msg = JSON.parse(message.toString())
                 this.msg1 = msg.v
                 this.msg2 = msg.t
+                this.msg3 = msg.n
             })
         }
     }

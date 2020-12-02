@@ -92,7 +92,7 @@ export default {
             this.$refs.loginFormRef.validate((valid)=>{
             if(!valid) return;
             let that=this;
-            const result = axios.post('http://localhost:8888/queryUserByName',
+            const result = axios.post('/queryUserByName',
                 this.$qs.stringify({
                     username:that.loginForm.username,
                     userpassword:that.loginForm.password
@@ -107,7 +107,8 @@ export default {
                     type: 'success'
                     });
                     // window.sessionStorage.setItem('token',"testtoken");
-                    window.sessionStorage.setItem('token',resp.data.token);
+                    // window.sessionStorage.setItem('token',resp.data.token);
+                    that.$store.commit("setToken",resp.data.token);
                     that.$router.push('/homepage')
                 }
                 else{

@@ -1,7 +1,7 @@
 <template>
-    <div id="app">
+    <div id="app" >
         
-        <div id="linechart" :style="{height: '4.5rem',width: '100%',}"></div>
+        <div  id="linechart" :style="{height: '4.5rem',width: '100%',}"></div>
     </div>
 </template>
 
@@ -11,14 +11,14 @@ export default {
     name:'linechart',
     data(){
         return {
-            msg:'',
+            linelist:[],
+            legend:[],
+            reset:false,
         }
     },
-    mounted() {
-        this.drawline();
-    },
+    
     methods: {
-        drawline(){
+        drawline(linelist,legend){
             let linechart = this.$echarts.init(document.getElementById('linechart'))
             linechart.setOption({
                 // title: {
@@ -39,7 +39,7 @@ export default {
                         // fontSize: 18,//字体大小
                         color: '#ffffff'
                     },
-                    data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎'],
+                    data: legend,
                     
                 },
                 toolbox: {
@@ -75,52 +75,36 @@ export default {
                         },
                     }
                 ],
-                series: [
-                    {
-                        name: '邮件营销',
-                        type: 'line',
-                        stack: '总量',
-                        areaStyle: {},
-                        data: [120, 132, 101, 134, 90, 230, 210]
-                    },
-                    {
-                        name: '联盟广告',
-                        type: 'line',
-                        stack: '总量',
-                        areaStyle: {},
-                        data: [220, 182, 191, 234, 290, 330, 310]
-                    },
-                    {
-                        name: '视频广告',
-                        type: 'line',
-                        stack: '总量',
-                        areaStyle: {},
-                        data: [150, 232, 201, 154, 190, 330, 410]
-                    },
-                    {
-                        name: '直接访问',
-                        type: 'line',
-                        stack: '总量',
-                        areaStyle: {},
-                        data: [320, 332, 301, 334, 390, 330, 320]
-                    },
-                    {
-                        name: '搜索引擎',
-                        type: 'line',
-                        stack: '总量',
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'top'
-                            }
-                        },
-                        areaStyle: {},
-                        data: [820, 932, 901, 934, 1290, 1330, 1320]
-                    }
-                ]
-            })
+                series: linelist
+                
+            });
+            
         },
+        lineAjax(){
+            let that=this
+            this.$axios.get("/getChart/line")
+            .then((resp)=>{
+                that.linelist=resp.data.linelist;
+                that.legend=resp.data.legend;
+                // console.log(resp.data.linelist);
+                this.drawline(this.linelist,this.legend);
+            })
+        }
+    },
+    beforeMount(){
+        this.lineAjax();
+    },
+    mounted() {
+        // this.drawline();
+    },
+    watch: {
+        linelist: function(){
+            this.$nextTick(function(){
+                this.reset = true;
+            })
+        }
     }
+
 }
 </script>
 

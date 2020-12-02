@@ -66,7 +66,7 @@ export default {
             // 
         // },
         changeisshow() {
-            const tokenstr=window.sessionStorage.getItem('token');
+            const tokenstr=this.$store.state.token;
             // const tokenstr="testtoken"
             if(tokenstr){
                 this.isshow=false;

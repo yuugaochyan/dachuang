@@ -14,10 +14,14 @@ import dataV from '@jiaminghi/data-view';
 Vue.config.productionTip = false;
 Vue.use(dataV);
 import Router from 'vue-router'
+import store from './store'
 const routerPush = Router.prototype.push
 Router.prototype.push = function push(location) {
 return routerPush.call(this, location).catch(error=> error)
 }
+import Axios from 'axios'
+Axios.defaults.baseURL='https://www.fastmock.site/mock/e1b01fe982409bb8cc3445eaa2161f40/Dachuang'
+//^ Axios.defaults.baseURL='https://localhost:8888'
 // import mqtt from 'mqtt';
 // import VueAxios from 'vue-axios'
 // import {post,fetch,patch,put} from "../static/http.js";
@@ -35,5 +39,6 @@ return routerPush.call(this, location).catch(error=> error)
 // Vue.use(VueAxios,axios)
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

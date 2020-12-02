@@ -103,7 +103,7 @@ export default {
         
       
       let that=this;
-      const result = axios.post('http://localhost:8888/addUser',
+      const result = axios.post('/addUser',
           this.$qs.stringify({
         username: that.regForm.username,
         userpassword: that.regForm.password,
@@ -111,7 +111,7 @@ export default {
         useremail: that.regForm.mail,
       })).then(function (resp) {
         console.log(resp.data)
-        if (resp.data) {
+        if (resp.data.success) {
           that.$message({
             showClose: true,
             message: '注册成功！登录以开始',
