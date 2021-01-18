@@ -84,6 +84,7 @@ public class UserController {
             return false;
         }
     }
+
     //token信息检测test
     @PostMapping("/tokentest")
     public Map<String,Object>tokentest(HttpServletRequest request){
@@ -96,8 +97,6 @@ public class UserController {
         map.put("msg","请求成功！");
         return map;
     }
-
-
 
 
     //更改用户属性

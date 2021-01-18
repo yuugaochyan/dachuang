@@ -42,7 +42,7 @@ export default {
         mqttMsg(){
             client.on('connect', (e) => {
                 console.log("连接成功！！！")
-                client.subscribe('/plc2/prosys/#', { qos: 0 }, (error) => {
+                client.subscribe('/modbus/40002', { qos: 0 }, (error) => {
                 if (!error) {
                     // console.log('订阅成功')
                 } else {
@@ -58,8 +58,10 @@ export default {
                 // console.log(msg.v);
                 if(msg.v<10000 && msg.v>5){
                     this.tmplist.push(msg.v);
-                
-                    this.timelist.push(msg.t);
+                    var time = new Date(msg.t)
+                    var formatTime = time.toTimeString().substr(0,8)
+                    this.timelist.push(formatTime);
+
                     this.linename=msg.n;
                 }
                 // console.log(this.datalist);
