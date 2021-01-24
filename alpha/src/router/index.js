@@ -1,31 +1,24 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '@/components/login'
-import home from '@/components/home'
 import register from '@/components/register'
 import homepage from '@/components/homepage'
 import welcome from '@/components/welcome'
 import introduct from '@/components/inroduct/introduct'
 import aboutus from '@/components/aboutus/aboutus'
-import fac1 from '@/components/factory/fac1'
 import mainfac from '@/components/factory/mainfac'
-import allchart from '@/components/factory/mainchart/allchart'
-import linechart from '@/components/factory/mainchart/linechart'
-import barchart from '@/components/factory/mainchart/barchart'
+import coshome from '@/components/costom/coshome'
+import dashboard from '@/components/costom/dashboard'
+import griddemo from '@/components/costom/griddemo'
+import createdb from '@/components/costom/createdb'
+import createtb from '@/components/costom/createtb'
 Vue.use(VueRouter)
 
 const routes = [
   {path:'/', redirect:'/homepage'},
   {path:'/login', component: login },
 
-  {path:'/home', 
-  component: home,
-  redirect:'/fac1',
-  children:[
-    // {path:'/welcome', component: welcome},
-    {path:'/fac1', component: fac1},
-    // {path:'/mainfac', component: mainfac,},
-  ]},
+  
   
 
 
@@ -38,6 +31,15 @@ const routes = [
     {path:'/welcome', component: welcome},
     {path:'/intro', component: introduct},
     {path:'/aboutus', component: aboutus},
+    {path:'/coshome', 
+    component: coshome,
+    name:"coshome",
+    children:[
+      {path:'/createdb', component: createdb,name:"createdb"},
+      {path:'/createtb', component: createtb,name:"createtb"},
+      {path:'/griddemo', component: griddemo,name:"griddemo"},
+      {path:'/dashboard/:dbID', component: dashboard,name:"dashboard"},
+    ]},
     // {path:'/mainfac', component: mainfac,},
   ] },
   {path:'/mainfac', component: mainfac,},

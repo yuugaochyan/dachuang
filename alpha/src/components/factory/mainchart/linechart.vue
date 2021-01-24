@@ -1,8 +1,8 @@
 <template>
-    <div id="app" >
+    
         
-        <div  id="linechart" :style="{height: '4.5rem',width: '100%',}"></div>
-    </div>
+        <div  id="linechart" :style="{height: '100%',width: '100%',}"></div>
+    
 </template>
 
 <script>
@@ -14,13 +14,14 @@ export default {
             linelist:[],
             legend:[],
             reset:false,
+            linechart:'',
         }
     },
     
     methods: {
         drawline(linelist,legend){
-            let linechart = this.$echarts.init(document.getElementById('linechart'))
-            linechart.setOption({
+            this.linechart = this.$echarts.init(document.getElementById('linechart'))
+            this.linechart.setOption({
                 // title: {
                     // text: '堆叠区域图',
                     // left: 'center'
@@ -78,7 +79,7 @@ export default {
                 series: linelist
                 
             });
-            
+            window.onresize=this.linechart.resize;
         },
         lineAjax(){
             let that=this
@@ -89,13 +90,14 @@ export default {
                 // console.log(resp.data.linelist);
                 this.drawline(this.linelist,this.legend);
             })
-        }
+        },
+        
     },
     beforeMount(){
         this.lineAjax();
     },
     mounted() {
-        // this.drawline();
+    
     },
     watch: {
         linelist: function(){

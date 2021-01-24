@@ -13,27 +13,18 @@
     text-color="#fff"
     active-text-color="#ffd04b"
     router>
-        <el-menu-item index="/welcome">主页</el-menu-item>
-        <el-menu-item index="/mainfac">大屏数据</el-menu-item>
-        <el-menu-item index="/home" 
-        :disabled="isshow"
-        >工厂数据</el-menu-item>
+        <el-menu-item class="iconfont icon-zhuye" index="/welcome">主页</el-menu-item>
+        <el-menu-item class="iconfont icon-keshihua" index="/mainfac">大屏数据</el-menu-item>
+        <!-- <el-menu-item index="/coshome"  -->
+        <!-- :disabled="isshow" -->
+        <!-- >自定义大屏</el-menu-item> -->
         <!-- @click.native="judgetoken" -->
-        <el-submenu index="2">
-            <template slot="title">待定</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
-            <el-menu-item index="2-3">选项3</el-menu-item>
-            <el-submenu index="2-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="2-4-1">选项1</el-menu-item>
-                <el-menu-item index="2-4-2">选项2</el-menu-item>
-                <el-menu-item index="2-4-3">选项3</el-menu-item>
-            </el-submenu>
-        </el-submenu>
-        <el-menu-item index="/aboutus" >关于我们</el-menu-item>
+        <el-menu-item index="/coshome" class="iconfont icon-zidingyi">
+            自定义大屏
+        </el-menu-item>
+        <el-menu-item index="/aboutus" class="iconfont icon-guanyuwomen">关于我们</el-menu-item>
         <el-button type="info" size="medium" icon="el-icon-user" class="bt" @click="turnToReg" v-if="isshow">注册</el-button>
-        <el-button type="info" size="medium" icon="el-icon-user" class="bt" @click="logout" v-if="!isshow">退出</el-button>
+        <el-button type="info" size="medium" icon="iconfont icon-tuichu" class="bt" @click="logout" v-if="!isshow">退出</el-button>
         <el-button type="warning" size="medium" icon="el-icon-user-solid" class="bt" @click="turnToLogin" v-if="isshow">登录</el-button>
         
     </el-menu>
@@ -102,10 +93,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+.iconfont {
+    font-size: 15px;
+}
 
 .nav {
-    position: fixed;
+    // position: fixed;
     top: 0px;
     width: 100%;
     box-shadow: 0 0 20px;

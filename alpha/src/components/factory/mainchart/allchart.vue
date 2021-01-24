@@ -42,7 +42,7 @@ export default {
         mqttMsg(){
             client.on('connect', (e) => {
                 console.log("连接成功！！！")
-                client.subscribe('/modbus/40002', { qos: 0 }, (error) => {
+                client.subscribe('/#', { qos: 0 }, (error) => {
                 if (!error) {
                     // console.log('订阅成功')
                 } else {
@@ -63,6 +63,11 @@ export default {
                     this.timelist.push(formatTime);
 
                     this.linename=msg.n;
+                    console.log(this.tmplist.length);
+                    if(this.tmplist.length>15) {
+                        this.tmplist.shift();
+                        this.timelist.shift();
+                    }
                 }
                 // console.log(this.datalist);
                 this.drawBar(this.tmplist,this.timelist,this.linename);
