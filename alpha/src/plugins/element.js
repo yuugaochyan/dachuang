@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Form, FormItem, Input, Message, Container, Header, Aside,Main, Footer,Menu ,MenuItem,MenuItemGroup,Submenu,Carousel,CarouselItem,PageHeader,link,Backtop,Row,Col,Card} from 'element-ui'
+import { Button, Form, FormItem, Input, Message, Container, Header, Aside,Main, Footer,Menu ,MenuItem,MenuItemGroup,Submenu,Carousel,CarouselItem,PageHeader,link,Backtop,Row,Col,Card,MessageBox,Tabs,TabPane,RadioButton,RadioGroup,} from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Form)
@@ -22,4 +22,10 @@ Vue.use(Backtop)
 Vue.use(Col)
 Vue.use(Row)
 Vue.use(Card)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(RadioButton)
+Vue.use(RadioGroup)
+
 Vue.prototype.$message = Message
+Vue.prototype.$messagebox = MessageBox

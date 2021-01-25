@@ -48,7 +48,7 @@ export default {
                 console.log("连接成功！！！")
                 client.subscribe('/plc2/prosys/#', { qos: 0 }, (error) => {
                     if (!error) {
-                        console.log('订阅成功')
+                        // console.log('订阅成功')
                     } else {
                     console.log('订阅失败')
                     }
