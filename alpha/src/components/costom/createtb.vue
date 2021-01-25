@@ -12,22 +12,36 @@
             <div class="col">
                 
                 <div class="but">
-                    <transition name="el-zoom-in-top" appear="true">
+                    <transition name="el-zoom-in-top" :appear=true>
                     <div class="sta con" v-if="stmo" @click="staf">
                         <h1>静态数据</h1>
                         <i class="iconfont icon-jurassic_data"></i>
                     </div>
                     </transition>
 
-                    <transition name="el-zoom-in-top" appear="true">
-                    <div class="cht con" v-if="chtb" @click="chtf">
+                    <transition name="el-zoom-in-top" :appear=true>
+                    <div class="cht con" v-if="chtb" @click="chartvisible=true">
                         <h1>chart图表</h1>
                         <i class="iconfont icon-jurassic_chart"></i>
                     </div>
                     </transition>
+                    
+    <el-dialog title="收货地址" :visible.sync="chartvisible">
+        <el-form :model="chartform">
+            <el-form-item label="活动名称" :label-width="formLabelWidth">
+                <el-input v-model="chartform.name" autocomplete="off"></el-input>
+            </el-form-item>
+            
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="chartvisible = false">取 消</el-button>
+            <el-button type="primary" @click="chartvisible = false">确 定</el-button>
+        </div>
+    </el-dialog>
 
-                    <transition name="el-zoom-in-top" appear="true">
-                    <div class="mql con" v-if="mqln" @click="mqlf">
+
+                    <transition name="el-zoom-in-top" :appear=true>
+                    <div class="mql con" v-if="mqln" @click="mqttlinevisible=true">
                         <h1>时间轴图表</h1>
                         <i class="iconfont icon-zhexiantu"></i>
                     </div>
@@ -37,22 +51,22 @@
             </div>
             <div class="col">
                 <div class="but">
-                    <transition name="el-zoom-in-top" appear="true">
+                    <transition name="el-zoom-in-top" :appear=true>
                     <div class="mov con" v-if="stmo" @click="movf">
                         <h1>动态数据</h1>
                         <i class="iconfont icon-yun1"></i>
                     </div>
                     </transition>
 
-                    <transition name="el-zoom-in-top" appear="true">
-                    <div class="tb con" v-if="chtb" @click="tbf">
+                    <transition name="el-zoom-in-top" :appear=true>
+                    <div class="tb con" v-if="chtb" @click="tablevisible=true">
                         <h1>table表格</h1>
                         <i class="iconfont icon-biaoge"></i>
                     </div>
                     </transition>
 
-                    <transition name="el-zoom-in-top" appear="true">
-                    <div class="mtn con" v-if="mqln" @click="mtnf">
+                    <transition name="el-zoom-in-top" :appear=true>
+                    <div class="mtn con" v-if="mqln" @click="mqttnumvisible=true">
                         <h1>数字翻牌器</h1>
                         <i class="iconfont icon-shuzi"></i>
                     </div>
@@ -74,6 +88,14 @@ export default {
             stmo:true,
             chtb:false,
             mqln:false,
+            chartvisible:false,
+            tablevisible:false,
+            mqttlinevisible:false,
+            mqttnumvisible:false,
+            chartform:{
+                name:'',
+            },
+            formLabelWidth: '120px'
         }
     },
     methods: {
@@ -81,21 +103,9 @@ export default {
             this.stmo=false,
             this.chtb=true
         },
-        chtf() {
-            console.log("echart");
-        },
-        mqlf() {
-            console.log("mqttline");
-        },
         movf() {
             this.stmo=false,
             this.mqln=true
-        },
-        tbf() {
-            console.log("table");
-        },
-        mtnf() {
-            console.log("mqttnum");
         },
         goback() {
             this.stmo=true;
