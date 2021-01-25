@@ -120,8 +120,9 @@ export default {
 .main {
     width: 100%;
     height: 1500px;
-    background-color: #ca9c57;
+    background-color: #333;
     display: flex;
+
 }
 .col {
     display: flex;
@@ -133,27 +134,28 @@ export default {
 .but {
     height: 450px;
     width: 80%;
-    background-color: #ebb563;
+    background-color: #ddbb80;
     position: absolute;
     left:10%;
     right:10%;
     top:10%;
     border-radius: 25%;
-    box-shadow: 15px -15px 15px #333;
+    box-shadow: 15px -15px 15px #1a1a1a;
     // border: 1px solid #000;
     text-align: center;
 }
 .but:hover {
-    box-shadow: 15px 15px 15px #333;
+    background-color: #e5a13c;
+    box-shadow: 15px 15px 15px #1a1a1a;
     cursor:pointer
 }
 
 .as {
     display: flex;
     flex: 1;
-    background-color: #333;
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
+    background-color: #1a1a1a;
+    //border-left: 1px solid #000;
+    //border-right: 1px solid #000;
 }
 .con {
     width: 100%;
@@ -163,12 +165,13 @@ export default {
 
 h1 {
     font-size: 60px;
-    color: #222;
+    color: #343434;
     margin-top: 75px;
 }
 
 .iconfont {
     font-size: 150px;
+    color: #343434;
 }
 .bt {
     // padding: 70px;
