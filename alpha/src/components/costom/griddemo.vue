@@ -124,18 +124,19 @@ export default {
 
 <style lang="less" scoped>
 .vue-grid-item {
-  background: pink;
+  background: #5b5b5f;
   
 }
 .tb {
     height: 85%;
     width: 97%;
-    background-color: rgb(21, 0, 48);
+    background-color: #5b5b5f;
     margin: 0 auto;
 }
 .title {
     margin: 0 auto;
     text-align: center;
+    color: white;
     height: 10%;
     font-size: 150%;
 }
