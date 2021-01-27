@@ -557,10 +557,11 @@ export default {
                 dataSource:that.chartform.dataSource
             })
             console.log(that.chartform.dataSource);
-            this.$axios.post("/getChartData",postDta)
+            this.$axios.post("/getTableData",postDta)
             .then((resp)=>{
-                that.colList=resp.data.colList,
-                that.tableData=resp.data.tableData
+                console.log(resp)
+                that.colList=resp.data.data.colList,
+                that.tableData=resp.data.data.tableData
             })
         },
 
@@ -591,7 +592,7 @@ export default {
                     
                     //^封装数据bar
                     if(this.chartform.graphType=='bar'){
-                        postData=this.$qs.stringify({
+                        postData={
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -604,11 +605,11 @@ export default {
                                     dataCol:this.Chart.yArraySource
                                 }]
                             }
-                        })
+                        }
                     }
                     //^封装数据scatter
                     if(this.chartform.graphType=='scatter'){
-                        postData=this.$qs.stringify({
+                        postData={
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -616,12 +617,12 @@ export default {
                                 xArraySource:this.Chart.xArraySource,
                                 yArraySource:this.Chart.yArraySource
                             }
-                        })
+                        }
                     }
                     //^封装数据line
                     if(this.chartform.graphType=='line'){
                         if(this.Chart.yNum==1){
-                        postData=this.$qs.stringify({
+                        postData={
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -634,10 +635,10 @@ export default {
                                     dataCol:this.Chart.yArraySource
                                 }]
                             }
-                        })
+                        }
                         }
                         else if(this.Chart.yNum==2) {
-                            postData=this.$qs.stringify({
+                            postData={
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -653,10 +654,10 @@ export default {
                                     dataCol:this.Chart.yArraySource2
                                 }]
                             }
-                            })
+                            }
                         }
                         else if(this.Chart.yNum==3) {
-                            postData=this.$qs.stringify({
+                            postData={
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -675,12 +676,12 @@ export default {
                                     dataCol:this.Chart.yArraySource3
                                 }]
                             }
-                            })
+                            }
                         }
                     }
                     //^封装数据
                     if(this.chartform.graphType=='pie'){
-                        postData=this.$qs.stringify({
+                        postData={
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -688,7 +689,7 @@ export default {
                                 pieSource:this.Chart.xArraySource,
                                 valueSource:this.Chart.yArraySource
                             }
-                        })
+                        }
                     }
 
                     console.log(postData);
@@ -696,10 +697,13 @@ export default {
                     //^发送数据
                     const result = axios({
                         method: 'post',
-                        url:'/saveChart',
-                        data:postData
+                        url:'/addScatterGraph',
+                        data:postData,
+                        header:{
+                          'Content-Type': 'application/json'
+                        },
                         }).then(function(resp){
-                            if(resp.data.success) {
+                            if(resp.data.status==200) {
                             that.active++;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'

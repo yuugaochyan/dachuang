@@ -1,10 +1,9 @@
 package com.industrialplatform.beta.controller;
 
+import com.industrialplatform.beta.pojo.*;
 import com.industrialplatform.beta.service.DashBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpHeaders;
 import java.util.HashMap;
@@ -24,10 +23,60 @@ public class DashBoardController {
     }
 
 //    存储柱状图
-    @RequestMapping(value = "/addChartGraph",method = RequestMethod.POST)
-    public Map<String,Object> addChartGraph(){
+    @RequestMapping(value = "/addBarGraph",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> addBarGraph(@RequestBody Graph<BarChart> barGraph){
+        System.out.println(barGraph);
+//        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
-        map.put("data",dashBoardService.getItemByID(1002));
+        if(dashBoardService.addBarGraph(32,barGraph)){
+            map.put("status",200);
+            map.put("msg","柱状图添加成功!");
+        };
+        return map;
+    }
+
+    //    存储折线图
+    @RequestMapping(value = "/addLineGraph",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> addLineGraph(@RequestBody Graph<LineChart> lineGraph){
+        System.out.println(lineGraph);
+//        System.out.println(userID);
+        Map<String,Object> map=new HashMap<>();
+        if(dashBoardService.addLineGraph(32,lineGraph)){
+            map.put("status",200);
+            map.put("msg","柱状图添加成功!");
+        };
+        return map;
+    }
+
+    //    存储饼图
+    @RequestMapping(value = "/addPieGraph",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> addPieGraph(@RequestBody Graph<PieChart> pieGraph){
+        System.out.println(pieGraph);
+//        System.out.println(userID);
+        Map<String,Object> map=new HashMap<>();
+        if(dashBoardService.addPieGraph(32,pieGraph)){
+            map.put("status",200);
+            map.put("msg","饼图添加成功!");
+        };
+        return map;
+    }
+
+    //    存储散点图
+    @RequestMapping(value = "/addScatterGraph",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> addScatterGraph(@RequestBody Graph<ScatterChart> scatterGraph){
+        scatterGraph.getChart().setXType("value");
+        scatterGraph.getChart().setYType("value");
+        System.out.println(scatterGraph);
+//        System.out.println(userID);
+        Map<String,Object> map=new HashMap<>();
+        if(dashBoardService.addScatterGraph(32,scatterGraph)){
+            map.put("status",200);
+            map.put("msg","饼图添加成功!");
+        };
         return map;
     }
 

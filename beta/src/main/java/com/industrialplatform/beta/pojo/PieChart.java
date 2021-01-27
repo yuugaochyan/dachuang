@@ -1,6 +1,7 @@
 package com.industrialplatform.beta.pojo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
