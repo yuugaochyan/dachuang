@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" v-if="reset">
         <div class="vueGridLayout">
           <dv-border-box-7> 
     <div class="board" style="width: 100%">
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import layoutData from '../../assets/virtualData/layoutData.json'
+// import layoutData from '../../assets/virtualData/layoutData.json'
 import VueGridLayout from 'vue-grid-layout'
 import chart from '@/components/costom/chart'
 import mqttline from '@/components/costom/mqttline'
@@ -77,7 +77,8 @@ export default {
       minW:2,
       minH:2,
       maxW:6,
-      maxH:3
+      maxH:3,
+      reset:false
     };
   },
   components: {
@@ -91,7 +92,18 @@ export default {
 
     methods: {
     init() {
-      this.layoutData = layoutData.mainData;
+      
+      let that=this
+      let postDta=this.$qs.stringify({
+          graphID:'10003'
+      })
+      this.$axios.post("/getChart",postDta)
+      .then((resp)=>{
+          console.log(resp.data);
+          that.layoutData = resp.data.mainData;
+      })
+      
+      
     },
     resizedEvent: function(i, newH, newW, newHPx, newWPx){
         // console.log("RESIZED i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);
@@ -117,7 +129,13 @@ export default {
   created() {
     this.init();
   },
-  
+  watch: {
+        layoutData: function(){
+            this.$nextTick(function(){
+                this.reset = true;
+            })
+        }
+    }
   
 };
 </script>

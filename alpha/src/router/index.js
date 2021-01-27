@@ -12,6 +12,7 @@ import dashboard from '@/components/costom/dashboard'
 import griddemo from '@/components/costom/griddemo'
 import createdb from '@/components/costom/createdb'
 import createtb from '@/components/costom/createtb'
+import createchart from '@/components/costom/formcreate/createchart'
 Vue.use(VueRouter)
 
 const routes = [
@@ -39,10 +40,13 @@ const routes = [
       {path:'/createtb', component: createtb,name:"createtb"},
       {path:'/griddemo', component: griddemo,name:"griddemo"},
       {path:'/dashboard/:dbID', component: dashboard,name:"dashboard"},
+      {path:'/createchart', component: createchart,name:"createchart"},
     ]},
+    
     // {path:'/mainfac', component: mainfac,},
   ] },
   {path:'/mainfac', component: mainfac,},
+  
 
   
 ]

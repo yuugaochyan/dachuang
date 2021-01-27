@@ -115,5 +115,8 @@ export default {
     width: calc(100% - 151px);
     vertical-align:top;
 }
+.iconfont {
+    margin-right: 10px;
+}
 
 </style>

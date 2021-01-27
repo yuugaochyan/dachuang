@@ -98,7 +98,7 @@ export default {
 }
 
 .nav {
-    // position: fixed;
+    position: fixed;
     top: 0px;
     width: 100%;
     box-shadow: 0 0 20px;
