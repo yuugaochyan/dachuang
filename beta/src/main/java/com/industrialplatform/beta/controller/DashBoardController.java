@@ -22,4 +22,13 @@ public class DashBoardController {
         map.put("data",dashBoardService.getItemByID(1002));
         return map;
     }
+
+//    存储柱状图
+    @RequestMapping(value = "/addChartGraph",method = RequestMethod.POST)
+    public Map<String,Object> addChartGraph(){
+        Map<String,Object> map=new HashMap<>();
+        map.put("data",dashBoardService.getItemByID(1002));
+        return map;
+    }
+
 }

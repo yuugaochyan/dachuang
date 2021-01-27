@@ -43,12 +43,42 @@
         <result property="name" column="d_name"/>
     </resultMap>
 
+ <!--  散点图map  -->
+    <resultMap id="ScatterChartMap" type="ScatterChart"  >
+        <result property="xType" column="c_xType"/>
+        <result property="yType" column="c_yType"/>
+    </resultMap>
+
 
 <!--  获取图表的类型  -->
     <select id="getChartTypeById" parameterType="int" resultType="String">
         select b.graphType
         from dbitem a,graph b,dbitembind e
         where a.itemID=#{id} and a.itemID=e.itemID and b.graphID=e.graphID
+    </select>
+
+<!--  获取图表ID  -->
+    <select id="getGraphIdByItemId" parameterType="int" resultType="int">
+        select b.graphID
+        from dbitem a,graph b,dbitembind e
+        where a.itemID=#{id} and a.itemID=e.itemID and b.graphID=e.graphID
+    </select>
+<!--  获取当前最大的图表ID  -->
+    <select id="getCurrentGrpahID" resultType="int">
+        select max(graphID)
+        from graph
+    </select>
+<!--  获取当前柱状图最大的lengendID  -->
+    <select id="getCurrentBarLengendID" resultType="int">
+        select count(*)
+        from bardetail
+        where graphID=#{graphID}
+    </select>
+<!--  获取当前折线图最大的lengendID  -->
+    <select id="getCurrentLineLengendID" resultType="int">
+        select count(*)
+        from linedetail
+        where graphID=#{graphID}
     </select>
 
 <!--  获取item基本信息  -->
@@ -71,6 +101,11 @@
         from dbitem a,graph b,dbitembind e
         where a.itemID=#{id} and a.itemID=e.itemID and b.graphID=e.graphID
     </select>
+<!--  添加Graph  -->
+    <insert id="addGraph" >
+        insert into graph(graphID,userID,graphName,graphType,dataSource)
+        values(#{graph.graphID},#{userID},#{graph.graphName},#{graph.graphType},#{graph.dataSource})
+    </insert>
 
 <!--  获取柱状图基本信息  -->
     <select id="getBarChartByGraphID" parameterType="int" resultMap="BarChartMap">
@@ -81,6 +116,16 @@
         from barchart c,bardetail d
         where c.graphID=#{graphid} and d.graphID=c.graphID
     </select>
+<!--  添加柱状图  -->
+    <insert id="addBarChart" >
+        insert into barchart(graphID,xType,yType,xArraySource)
+        values(#{graphID},#{barChart.xType},#{barChart.yType},#{barChart.xArraySource})
+    </insert>
+<!--  添加柱状图Detail  -->
+    <insert id="addBarDetail" >
+        insert into bardetail(graphID,legendID,name,dataCol)
+        values(#{graphID},#{barDetail.legendID},#{barDetail.name},#{barDetail.dataCol})
+    </insert>
 
 <!--  获取折线图基本信息  -->
     <select id="getLineChartByGraphID" parameterType="int" resultMap="LineChartMap">
@@ -91,6 +136,36 @@
         from linechart c,linedetail d
         where c.graphID=#{graphid} and d.graphID=c.graphID
     </select>
+<!--  添加折线图  -->
+    <insert id="addLineChart" >
+        insert into linechart(graphID,xType,yType,xArraySource)
+        values(#{graphID},#{lineChart.xType},#{lineChart.yType},#{lineChart.xArraySource})
+    </insert>
+<!--  添加折线图Detail  -->
+    <insert id="addLineDetail" >
+        insert into linedetail(graphID,legendID,name,dataCol)
+        values(#{graphID},#{lineDetail.legendID},#{lineDetail.name},#{lineDetail.dataCol})
+    </insert>
+
+<!--  添加饼图  -->
+    <insert id="addPieChart" >
+        insert into piechart(graphID,pieSource,valueSource)
+        values(#{graphID},#{pieChart.pieSource},#{pieChart.valueSource})
+    </insert>
+
+<!--  获取散点图基本信息  -->
+    <select id="getScatterChartByGraphID" parameterType="int" resultMap="ScatterChartMap">
+        select c.xType as c_xType,
+               c.yType as c_yType
+        from scatterchart c
+        where c.graphID=#{graphid}
+    </select>
+<!--  添加散点图  -->
+    <insert id="addScatterChart" >
+        insert into scatterchart(graphID,xArraySource,yArraySource,xType,yType)
+        values(#{graphID},#{scatterChart.xArraySource},#{scatterChart.yArraySource},#{scatterChart.xType},#{scatterChart.yType})
+    </insert>
+
 
 <!--  获取Barx轴信息  -->
     <select id="getBarChartXArrayData" resultType="String" parameterType="int" statementType="CALLABLE">
@@ -109,5 +184,24 @@
     <select id="getLineData" resultType="int" parameterType="int" statementType="CALLABLE">
         call getLineData(#{graphID},#{legendID})
     </select>
+
+<!--  获取PieColumn信息  -->
+    <select id="getPieColumn" resultType="String" parameterType="int" statementType="CALLABLE">
+        call getPieColumn(#{graphID})
+    </select>
+<!--  获取PieValue数据  -->
+    <select id="getPieValue" resultType="int" parameterType="int" statementType="CALLABLE">
+        call getPieValue(#{graphID})
+    </select>
+
+<!--  获取Scatterx轴坐标列  -->
+    <select id="getScatterXData" resultType="float" parameterType="int" statementType="CALLABLE">
+        call getScatterXData(#{graphID})
+    </select>
+<!--  获取Scattery轴坐标列  -->
+    <select id="getScatterYData" resultType="float" parameterType="int" statementType="CALLABLE">
+        call getScatterYData(#{graphID})
+    </select>
+
 
 </mapper>
