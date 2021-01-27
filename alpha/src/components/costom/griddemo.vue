@@ -99,7 +99,6 @@ export default {
       })
       this.$axios.post("/getChart",postDta)
       .then((resp)=>{
-          console.log(resp.data);
           that.layoutData = resp.data.mainData;
       })
       

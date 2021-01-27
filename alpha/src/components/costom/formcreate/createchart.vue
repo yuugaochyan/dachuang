@@ -358,6 +358,7 @@ export default {
             let that=this
             var series=[];
             var legend=[];
+            var location=[];
 
             if(Type=='bar'||Type=='line') {
                 this.xType='category'
@@ -376,6 +377,7 @@ export default {
                     that.yData=this.tableData[key]
                 }
             }
+            if(Type=='bar'||Type=='line') {
                 let obj={
                     name:this.Chart.name,
                     type:Type,
@@ -412,6 +414,20 @@ export default {
                 series.push(obj3)
                 legend.push(this.Chart.name3)
             }
+            }
+            else if(Type=='scatter') {
+                for(let x in this.xData) {
+                    let loca=[this.xData[x],this.yData[x]];
+                    location.push(loca)
+                }
+                let obj={
+                    name:this.Chart.name,
+                    type:Type,
+                    data:location
+                }
+                series.push(obj)
+                legend.push(this.Chart.name)
+            }
 
             let chart = this.$echarts.init(document.getElementById('chart'))
             chart.setOption({
@@ -424,7 +440,8 @@ export default {
                             backgroundColor: '#6a7985'
                         }
                     },
-                    show: true
+                    show: true,
+                    formatter: '({c})'
                 },
                 legend: { //图例
                     textStyle:{
@@ -589,10 +606,11 @@ export default {
                 else if(this.active==1) {
                     this.$refs.chartformref2.validate((valid)=>{
                     if(!valid) return;
-                    
+                    const userID=this.$store.state.userID
                     //^封装数据bar
                     if(this.chartform.graphType=='bar'){
                         postData={
+                            userID:userID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -606,10 +624,32 @@ export default {
                                 }]
                             }
                         }
+                        const result = axios({
+                        method: 'post',
+                        url:'/addBarGraph',
+                        data:postData
+                        }).then(function(resp){
+                            if(resp.data.success) {
+                            that.active++;
+                            that.steplabel2='放入仪表盘',
+                            that.steplabel1='算了'
+                            that.$message({
+                                showClose: true,
+                                message: '保存成功',
+                                center: true,
+                                type: 'success'
+                            });
+                            that.step2=false;
+                            setTimeout(function() {
+                                that.step3=true;
+                            },500);
+                        }
+                        })
                     }
                     //^封装数据scatter
-                    if(this.chartform.graphType=='scatter'){
+                    else if(this.chartform.graphType=='scatter'){
                         postData={
+                            userID:userID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -618,11 +658,33 @@ export default {
                                 yArraySource:this.Chart.yArraySource
                             }
                         }
+                        const result = axios({
+                        method: 'post',
+                        url:'/addScatterGraph',
+                        data:postData
+                        }).then(function(resp){
+                            if(resp.data.success) {
+                            that.active++;
+                            that.steplabel2='放入仪表盘',
+                            that.steplabel1='算了'
+                            that.$message({
+                                showClose: true,
+                                message: '保存成功',
+                                center: true,
+                                type: 'success'
+                            });
+                            that.step2=false;
+                            setTimeout(function() {
+                                that.step3=true;
+                            },500);
+                        }
+                        })
                     }
                     //^封装数据line
-                    if(this.chartform.graphType=='line'){
+                    else if(this.chartform.graphType=='line'){
                         if(this.Chart.yNum==1){
                         postData={
+                            userID:userID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -639,6 +701,7 @@ export default {
                         }
                         else if(this.Chart.yNum==2) {
                             postData={
+                            userID:userID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -658,6 +721,7 @@ export default {
                         }
                         else if(this.Chart.yNum==3) {
                             postData={
+                            userID:userID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -678,10 +742,32 @@ export default {
                             }
                             }
                         }
+                        const result = axios({
+                        method: 'post',
+                        url:'/addLineGraph',
+                        data:postData
+                        }).then(function(resp){
+                            if(resp.data.success) {
+                            that.active++;
+                            that.steplabel2='放入仪表盘',
+                            that.steplabel1='算了'
+                            that.$message({
+                                showClose: true,
+                                message: '保存成功',
+                                center: true,
+                                type: 'success'
+                            });
+                            that.step2=false;
+                            setTimeout(function() {
+                                that.step3=true;
+                            },500);
+                        }
+                        })
                     }
-                    //^封装数据
-                    if(this.chartform.graphType=='pie'){
+                    //^封装数据pie
+                    else if(this.chartform.graphType=='pie'){
                         postData={
+                            userID:userID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -690,18 +776,10 @@ export default {
                                 valueSource:this.Chart.yArraySource
                             }
                         }
-                    }
-
-                    console.log(postData);
-
-                    //^发送数据
-                    const result = axios({
+                        const result = axios({
                         method: 'post',
-                        url:'/addScatterGraph',
-                        data:postData,
-                        header:{
-                          'Content-Type': 'application/json'
-                        },
+                        url:'/addPieGraph',
+                        data:postData
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
@@ -719,6 +797,13 @@ export default {
                             },500);
                         }
                         })
+                    }
+
+                    
+
+                    
+                    console.log(postData);
+                    
                     })
                     
                 }

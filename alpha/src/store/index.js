@@ -5,12 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    userInfo:JSON.parse(localStorage.getItem("userInfo")),
+    userID:JSON.parse(localStorage.getItem("userID")),
     token:JSON.parse(localStorage.getItem("token"))
   },
   mutations: {
-    setuserInfo(state,v) {
-      localStorage.setItem('userInfo',JSON.stringify(v));
+    setuserID(state,v) {
+      localStorage.setItem('userID',JSON.stringify(v));
       state.userInfo = v;
     },
     setToken(state,v) {
