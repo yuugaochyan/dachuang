@@ -27,9 +27,8 @@ public class DashBoardController {
     @ResponseBody
     public Map<String,Object> addBarGraph(@RequestBody Graph<BarChart> barGraph){
         System.out.println(barGraph);
-//        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
-        if(dashBoardService.addBarGraph(32,barGraph)){
+        if(dashBoardService.addBarGraph(barGraph.getUserID(),barGraph)){
             map.put("status",200);
             map.put("msg","柱状图添加成功!");
         };
@@ -43,7 +42,7 @@ public class DashBoardController {
         System.out.println(lineGraph);
 //        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
-        if(dashBoardService.addLineGraph(32,lineGraph)){
+        if(dashBoardService.addLineGraph(lineGraph.getUserID(), lineGraph)){
             map.put("status",200);
             map.put("msg","柱状图添加成功!");
         };
@@ -57,7 +56,7 @@ public class DashBoardController {
         System.out.println(pieGraph);
 //        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
-        if(dashBoardService.addPieGraph(32,pieGraph)){
+        if(dashBoardService.addPieGraph(pieGraph.getUserID(),pieGraph)){
             map.put("status",200);
             map.put("msg","饼图添加成功!");
         };
@@ -73,7 +72,7 @@ public class DashBoardController {
         System.out.println(scatterGraph);
 //        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
-        if(dashBoardService.addScatterGraph(32,scatterGraph)){
+        if(dashBoardService.addScatterGraph(scatterGraph.getUserID(),scatterGraph)){
             map.put("status",200);
             map.put("msg","饼图添加成功!");
         };

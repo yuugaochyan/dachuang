@@ -24,6 +24,7 @@ import java.util.List;
 //        @JsonSubTypes.Type(value = ScatterChart.class, name = "scatter"),
 //})
 public class Graph<T> {
+    private int userID;
     private int graphID;
     private String graphName;
     private String graphType;

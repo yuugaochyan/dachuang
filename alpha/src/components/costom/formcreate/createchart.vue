@@ -629,7 +629,7 @@ export default {
                         url:'/addBarGraph',
                         data:postData
                         }).then(function(resp){
-                            if(resp.data.success) {
+                            if(resp.data.status==200) {
                             that.active++;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
@@ -663,7 +663,7 @@ export default {
                         url:'/addScatterGraph',
                         data:postData
                         }).then(function(resp){
-                            if(resp.data.success) {
+                            if(resp.data.status==200) {
                             that.active++;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
@@ -747,7 +747,7 @@ export default {
                         url:'/addLineGraph',
                         data:postData
                         }).then(function(resp){
-                            if(resp.data.success) {
+                            if(resp.data.status==200) {
                             that.active++;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
