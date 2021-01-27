@@ -605,7 +605,8 @@ export default {
                 else if(this.active==1) {
                     this.$refs.chartformref2.validate((valid)=>{
                     if(!valid) return;
-                    const userID=this.$store.state.userID
+                    const userID=localStorage.getItem("userID")
+                    // console.log(userID);
                     //^封装数据bar
                     if(this.chartform.graphType=='bar'){
                         postData={
