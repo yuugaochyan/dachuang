@@ -358,6 +358,7 @@ export default {
             let that=this
             var series=[];
             var legend=[];
+            var location=[];
 
             if(Type=='bar'||Type=='line') {
                 this.xType='category'
@@ -376,6 +377,7 @@ export default {
                     that.yData=this.tableData[key]
                 }
             }
+            if(Type=='bar'||Type=='line') {
                 let obj={
                     name:this.Chart.name,
                     type:Type,
@@ -412,6 +414,20 @@ export default {
                 series.push(obj3)
                 legend.push(this.Chart.name3)
             }
+            }
+            else if(Type=='scatter') {
+                for(let x in this.xData) {
+                    let loca=[this.xData[x],this.yData[x]];
+                    location.push(loca)
+                }
+                let obj={
+                    name:this.Chart.name,
+                    type:Type,
+                    data:location
+                }
+                series.push(obj)
+                legend.push(this.Chart.name)
+            }
 
             let chart = this.$echarts.init(document.getElementById('chart'))
             chart.setOption({
@@ -424,7 +440,8 @@ export default {
                             backgroundColor: '#6a7985'
                         }
                     },
-                    show: true
+                    show: true,
+                    formatter: '({c})'
                 },
                 legend: { //图例
                     textStyle:{
@@ -557,7 +574,7 @@ export default {
                 dataSource:that.chartform.dataSource
             })
             console.log(that.chartform.dataSource);
-            this.$axios.post("/getChartData",postDta)
+            this.$axios.post("/getTableData",postDta)
             .then((resp)=>{
                 that.colList=resp.data.colList,
                 that.tableData=resp.data.tableData
@@ -588,10 +605,11 @@ export default {
                 else if(this.active==1) {
                     this.$refs.chartformref2.validate((valid)=>{
                     if(!valid) return;
-                    
+                    const userID=this.$store.state.userID
                     //^封装数据bar
                     if(this.chartform.graphType=='bar'){
-                        postData=this.$qs.stringify({
+                        postData={
+                            userID:userID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -604,99 +622,10 @@ export default {
                                     dataCol:this.Chart.yArraySource
                                 }]
                             }
-                        })
-                    }
-                    //^封装数据scatter
-                    if(this.chartform.graphType=='scatter'){
-                        postData=this.$qs.stringify({
-                            graphName:this.chartform.graphName,
-                            graphType:this.chartform.graphType,
-                            dataSource:this.chartform.dataSource,
-                            Chart:{
-                                xArraySource:this.Chart.xArraySource,
-                                yArraySource:this.Chart.yArraySource
-                            }
-                        })
-                    }
-                    //^封装数据line
-                    if(this.chartform.graphType=='line'){
-                        if(this.Chart.yNum==1){
-                        postData=this.$qs.stringify({
-                            graphName:this.chartform.graphName,
-                            graphType:this.chartform.graphType,
-                            dataSource:this.chartform.dataSource,
-                            Chart:{
-                                xType:"category",
-                                yType:"value",
-                                xArraySource:this.Chart.xArraySource,
-                                series:[{
-                                    name:this.Chart.name,
-                                    dataCol:this.Chart.yArraySource
-                                }]
-                            }
-                        })
                         }
-                        else if(this.Chart.yNum==2) {
-                            postData=this.$qs.stringify({
-                            graphName:this.chartform.graphName,
-                            graphType:this.chartform.graphType,
-                            dataSource:this.chartform.dataSource,
-                            Chart:{
-                                xType:"category",
-                                yType:"value",
-                                xArraySource:this.Chart.xArraySource,
-                                series:[{
-                                    name:this.Chart.name,
-                                    dataCol:this.Chart.yArraySource
-                                },{
-                                    name:this.Chart.name2,
-                                    dataCol:this.Chart.yArraySource2
-                                }]
-                            }
-                            })
-                        }
-                        else if(this.Chart.yNum==3) {
-                            postData=this.$qs.stringify({
-                            graphName:this.chartform.graphName,
-                            graphType:this.chartform.graphType,
-                            dataSource:this.chartform.dataSource,
-                            Chart:{
-                                xType:"category",
-                                yType:"value",
-                                xArraySource:this.Chart.xArraySource,
-                                series:[{
-                                    name:this.Chart.name,
-                                    dataCol:this.Chart.yArraySource
-                                },{
-                                    name:this.Chart.name2,
-                                    dataCol:this.Chart.yArraySource2
-                                },{
-                                    name:this.Chart.name3,
-                                    dataCol:this.Chart.yArraySource3
-                                }]
-                            }
-                            })
-                        }
-                    }
-                    //^封装数据
-                    if(this.chartform.graphType=='pie'){
-                        postData=this.$qs.stringify({
-                            graphName:this.chartform.graphName,
-                            graphType:this.chartform.graphType,
-                            dataSource:this.chartform.dataSource,
-                            Chart:{
-                                pieSource:this.Chart.xArraySource,
-                                valueSource:this.Chart.yArraySource
-                            }
-                        })
-                    }
-
-                    console.log(postData);
-
-                    //^发送数据
-                    const result = axios({
+                        const result = axios({
                         method: 'post',
-                        url:'/saveChart',
+                        url:'/addBarGraph',
                         data:postData
                         }).then(function(resp){
                             if(resp.data.success) {
@@ -715,6 +644,165 @@ export default {
                             },500);
                         }
                         })
+                    }
+                    //^封装数据scatter
+                    else if(this.chartform.graphType=='scatter'){
+                        postData={
+                            userID:userID,
+                            graphName:this.chartform.graphName,
+                            graphType:this.chartform.graphType,
+                            dataSource:this.chartform.dataSource,
+                            Chart:{
+                                xArraySource:this.Chart.xArraySource,
+                                yArraySource:this.Chart.yArraySource
+                            }
+                        }
+                        const result = axios({
+                        method: 'post',
+                        url:'/addScatterGraph',
+                        data:postData
+                        }).then(function(resp){
+                            if(resp.data.success) {
+                            that.active++;
+                            that.steplabel2='放入仪表盘',
+                            that.steplabel1='算了'
+                            that.$message({
+                                showClose: true,
+                                message: '保存成功',
+                                center: true,
+                                type: 'success'
+                            });
+                            that.step2=false;
+                            setTimeout(function() {
+                                that.step3=true;
+                            },500);
+                        }
+                        })
+                    }
+                    //^封装数据line
+                    else if(this.chartform.graphType=='line'){
+                        if(this.Chart.yNum==1){
+                        postData={
+                            userID:userID,
+                            graphName:this.chartform.graphName,
+                            graphType:this.chartform.graphType,
+                            dataSource:this.chartform.dataSource,
+                            Chart:{
+                                xType:"category",
+                                yType:"value",
+                                xArraySource:this.Chart.xArraySource,
+                                series:[{
+                                    name:this.Chart.name,
+                                    dataCol:this.Chart.yArraySource
+                                }]
+                            }
+                        }
+                        }
+                        else if(this.Chart.yNum==2) {
+                            postData={
+                            userID:userID,
+                            graphName:this.chartform.graphName,
+                            graphType:this.chartform.graphType,
+                            dataSource:this.chartform.dataSource,
+                            Chart:{
+                                xType:"category",
+                                yType:"value",
+                                xArraySource:this.Chart.xArraySource,
+                                series:[{
+                                    name:this.Chart.name,
+                                    dataCol:this.Chart.yArraySource
+                                },{
+                                    name:this.Chart.name2,
+                                    dataCol:this.Chart.yArraySource2
+                                }]
+                            }
+                            }
+                        }
+                        else if(this.Chart.yNum==3) {
+                            postData={
+                            userID:userID,
+                            graphName:this.chartform.graphName,
+                            graphType:this.chartform.graphType,
+                            dataSource:this.chartform.dataSource,
+                            Chart:{
+                                xType:"category",
+                                yType:"value",
+                                xArraySource:this.Chart.xArraySource,
+                                series:[{
+                                    name:this.Chart.name,
+                                    dataCol:this.Chart.yArraySource
+                                },{
+                                    name:this.Chart.name2,
+                                    dataCol:this.Chart.yArraySource2
+                                },{
+                                    name:this.Chart.name3,
+                                    dataCol:this.Chart.yArraySource3
+                                }]
+                            }
+                            }
+                        }
+                        const result = axios({
+                        method: 'post',
+                        url:'/addLineGraph',
+                        data:postData
+                        }).then(function(resp){
+                            if(resp.data.success) {
+                            that.active++;
+                            that.steplabel2='放入仪表盘',
+                            that.steplabel1='算了'
+                            that.$message({
+                                showClose: true,
+                                message: '保存成功',
+                                center: true,
+                                type: 'success'
+                            });
+                            that.step2=false;
+                            setTimeout(function() {
+                                that.step3=true;
+                            },500);
+                        }
+                        })
+                    }
+                    //^封装数据pie
+                    else if(this.chartform.graphType=='pie'){
+                        postData={
+                            userID:userID,
+                            graphName:this.chartform.graphName,
+                            graphType:this.chartform.graphType,
+                            dataSource:this.chartform.dataSource,
+                            Chart:{
+                                pieSource:this.Chart.xArraySource,
+                                valueSource:this.Chart.yArraySource
+                            }
+                        }
+                        const result = axios({
+                        method: 'post',
+                        url:'/addPieGraph',
+                        data:postData
+                        }).then(function(resp){
+                            if(resp.data.success) {
+                            that.active++;
+                            that.steplabel2='放入仪表盘',
+                            that.steplabel1='算了'
+                            that.$message({
+                                showClose: true,
+                                message: '保存成功',
+                                center: true,
+                                type: 'success'
+                            });
+                            that.step2=false;
+                            setTimeout(function() {
+                                that.step3=true;
+                            },500);
+                        }
+                        })
+                    }
+
+                    
+
+                    
+                    console.log(postData);
+                    
                     })
                     
                 }

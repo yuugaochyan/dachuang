@@ -31,7 +31,8 @@ export default {
             vlist:[],
             tlist:[],
             config:{
-                number:[0],
+                number:[0.0],
+                toFixed: 1,
                 content:this.obdata.tagName+': {nt}',
                 style: {
                     fontSize:this.obdata.fontSize,
@@ -56,10 +57,10 @@ export default {
 
             //*mqtt订阅 need:tag\max\min
             client.on('connect', (e) => {
-                // console.log("连接成功！！！")
+                console.log("连接成功！！！")
                 client.subscribe(tag, { qos: 0 }, (error) => {
                 if (!error) {
-                    // console.log('订阅成功')
+                    console.log('订阅成功')
                 } else {
                     console.log('订阅失败')
                 }
@@ -70,7 +71,7 @@ export default {
                 let msg = JSON.parse(message.toString())
                 // this.datalist.name=msg.n;
                 // this.datalist.value=msg.v;
-                // console.log(msg.v);
+                console.log(msg.v);
                 that.config.number[0]=parseInt(msg.v)
                 // console.log(that.config.number[0]);
                 if(msg.v>max){
