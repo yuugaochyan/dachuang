@@ -17,6 +17,7 @@ public class UserService {
     @Transactional(propagation = Propagation.SUPPORTS)
     public User login(User user){
         if(user.getUserpassword().equals(userMapper.queryUserByName(user.getUsername()).getUserpassword())){
+            user.setId(userMapper.queryUserByName(user.getUsername()).getId());
             return user;
         }
         throw  new RuntimeException("登陆失败");
