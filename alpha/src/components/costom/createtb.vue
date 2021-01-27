@@ -20,28 +20,18 @@
                     </transition>
 
                     <transition name="el-zoom-in-top" :appear=true>
-                    <div class="cht con" v-if="chtb" @click="chartvisible=true">
+                    <div class="cht con" v-if="chtb" @click="chartcreate">
                         <h1>chart图表</h1>
                         <i class="iconfont icon-jurassic_chart"></i>
                     </div>
                     </transition>
                     
-    <el-dialog title="收货地址" :visible.sync="chartvisible">
-        <el-form :model="chartform">
-            <el-form-item label="活动名称" :label-width="formLabelWidth">
-                <el-input v-model="chartform.name" autocomplete="off"></el-input>
-            </el-form-item>
-            
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="chartvisible = false">取 消</el-button>
-            <el-button type="primary" @click="chartvisible = false">确 定</el-button>
-        </div>
-    </el-dialog>
+    
+
 
 
                     <transition name="el-zoom-in-top" :appear=true>
-                    <div class="mql con" v-if="mqln" @click="mqttlinevisible=true">
+                    <div class="mql con" v-if="mqln" @click="mqttlinecreate">
                         <h1>时间轴图表</h1>
                         <i class="iconfont icon-zhexiantu"></i>
                     </div>
@@ -59,14 +49,14 @@
                     </transition>
 
                     <transition name="el-zoom-in-top" :appear=true>
-                    <div class="tb con" v-if="chtb" @click="tablevisible=true">
+                    <div class="tb con" v-if="chtb" @click="tablecreate">
                         <h1>table表格</h1>
                         <i class="iconfont icon-biaoge"></i>
                     </div>
                     </transition>
 
                     <transition name="el-zoom-in-top" :appear=true>
-                    <div class="mtn con" v-if="mqln" @click="mqttnumvisible=true">
+                    <div class="mtn con" v-if="mqln" @click="mqttnumcreate">
                         <h1>数字翻牌器</h1>
                         <i class="iconfont icon-shuzi"></i>
                     </div>
@@ -81,21 +71,17 @@
 <script>
 import axios from 'axios'
 import mtqqtest from '@/components/factory/mqttfac/mtqqtest'
-export default {
+import createchart from './formcreate/createchart.vue'
+export default{
+    components: { createchart }, 
     name:"createtb",
     data() {
         return {
             stmo:true,
             chtb:false,
             mqln:false,
-            chartvisible:false,
-            tablevisible:false,
-            mqttlinevisible:false,
-            mqttnumvisible:false,
-            chartform:{
-                name:'',
-            },
-            formLabelWidth: '120px'
+
+
         }
     },
     methods: {
@@ -111,6 +97,18 @@ export default {
             this.stmo=true;
             this.chtb=false;
             this.mqln=false;
+        },
+        chartcreate() {
+            this.$router.push('/createchart')
+        },
+        tablecreate() {
+            
+        },
+        mqttlinecreate() {
+            
+        },
+        mqttnumcreate() {
+            
         }
     }
 }
@@ -119,7 +117,7 @@ export default {
 <style lang="less" scoped>
 .main {
     width: 100%;
-    height: 1500px;
+    height: calc(93.6vh);
     background-color: #333;
     display: flex;
 
@@ -177,7 +175,7 @@ h1 {
     // padding: 70px;
     margin: 0 auto;
     // height: 70px;
-    margin-top: 200px;
+    margin-top: 2.5rem;
     font-size: 20px;
 }
 // .sta {

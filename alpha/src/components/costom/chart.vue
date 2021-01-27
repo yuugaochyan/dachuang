@@ -37,7 +37,8 @@ export default {
                             backgroundColor: '#6a7985'
                         }
                     },
-                    show: true
+                    show: true,
+                    formatter: '({c})'
                 },
                 legend: { //图例
                     textStyle:{
