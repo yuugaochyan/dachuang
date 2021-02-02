@@ -102,13 +102,13 @@ export default{
             this.$router.push('/createchart')
         },
         tablecreate() {
-            
+            this.$router.push('/createtable')
         },
         mqttlinecreate() {
-            
+            this.$router.push('/createmqttline')
         },
         mqttnumcreate() {
-            
+            this.$router.push('/createmqttnum')
         }
     }
 }

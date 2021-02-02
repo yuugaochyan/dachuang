@@ -10,7 +10,7 @@
                     </el-form-item>
                     <br>
                     <el-form-item label="数据来源"  prop="dataSource">
-                    <el-select v-model="chartform.dataSource" placeholder="请选择数据源" @change="getData">
+                    <el-select v-model="chartform.dataSource" placeholder="请选择数据源" >
                         <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -19,11 +19,30 @@
                         </el-option>
                     </el-select>
                     </el-form-item>
+                    
                 </el-form>
                 </transition>
 
                 <transition name="el-fade-in" >
-                <el-form :model="dbform" v-show="step2" :rules="rules2" ref="chartformref2">
+                    <el-form :model="chartform" 
+                    v-show="step2" 
+                    :rules="rules2" ref="chartformref2" :inline="true">
+                    
+
+                    <el-form-item label="警告值下限" prop="name">
+                        <el-input v-model="chartform.min" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="警告值上限" prop="name">
+                        <el-input v-model="chartform.max" ></el-input>
+                    </el-form-item>
+                    <!-- <el-form-item label="预览生成图表"> -->
+                        <!-- <el-button @click="drawline('bar')"></el-button> -->
+                    <!-- </el-form-item> -->
+                    </el-form>
+                </transition>
+
+                <transition name="el-fade-in" >
+                <el-form :model="dbform" v-show="step3" :rules="rules3" ref="chartformref3">
                     <el-form-item label="你的仪表盘"  prop="db">
                     <el-select v-model="dbform.db" placeholder="请选择仪表盘">
                         <el-option
@@ -44,12 +63,13 @@
 
 
             <el-steps :active="active" finish-status="success" class="bt-step" align-center>
-                <el-step title="第一步" description="命名这个问题并选择数据源"></el-step>
-                <el-step title="第二步" description="放进仪表盘看看吧？"></el-step>
+                <el-step title="第一步" description="命名这个问题并选择图表类型和数据源"></el-step>
+                <el-step title="第二步" description="配置x-y轴和数据，将问题存入你的库里"></el-step>
+                <el-step title="第三步" description="放进仪表盘看看吧？"></el-step>
             </el-steps>
             </div>
             <div class="right">
-                <dv-scroll-board :config="tableData" style="width:100%;height:100%" />
+                <dv-digital-flop :config="config" style="width:100%;height:100%;" />
             </div>
             
             
@@ -59,8 +79,18 @@
 
 <script>
 import axios from 'axios'
+import mqtt from 'mqtt'
+var client
+const options= {
+    connectTimeout: 40000,
+    clientId: 'mqtitId-Home',
+    username: 'hyiot',
+    password: '1234abcd',
+    clean: true
+}
+client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
 export default {
-    name:'createtable',
+    name:'createmqttnum',
     data(){
         return {
             rules: {
@@ -73,6 +103,15 @@ export default {
                 ],
             },
             rules2: {
+                
+                max: [
+                    { required: true, message: '请输入最大值', trigger: 'blur' },
+                ],
+                min: [
+                    { required: true, message: '请输入最小值', trigger: 'blur' },
+                ],
+            },
+            rules3: {
                 db: [
                     { required: true, message: '请选择数据来源！', trigger: 'blur' },
                 ],
@@ -85,39 +124,83 @@ export default {
                 label: 'eqpseasonstatistic'
             }],
             active:0,
-            steplabel1:"算了",
-            steplabel2:"保存图表",
+            steplabel1:"放弃编辑",
+            steplabel2:"下一步",
             tableData:{},
             step1:true,
             step2:false,
+            step3:false,
             chartform:{
                 graphName:'',
                 dataSource:'',
+                name:'',
+                max:10000,
+                min:0,
             },
             dbform:{
                 db:''
             },
-            config:{},
+            config:{
+                number:[0.0],
+                toFixed: 1,
+                content:'{nt}',
+                style: {
+                    fontSize:120,
+                    fill:'#dfdfdf'
+                }
+            }
         }
     },
     
     methods: {
-        getData () {
+        drawline(){
 
+            
+            var tag='';
             let that=this
+            
             let postDta=this.$qs.stringify({
                 dataSource:that.chartform.dataSource
             })
-            // console.log(that.chartform.dataSource);
-            this.$axios.post("/getTable",postDta)
+            this.$axios.post("/getmqttTable",postDta)
             .then((resp)=>{
-                console.log(resp)
-                that.tableData=resp.data.tableData
-            }),
-            this.config=this.tableData
-            this.config = { ...this.config }
-
+                tag=resp.data.tag;
+            })
+            client.on('connect', (e) => {
+                console.log("连接成功！！！")
+                client.subscribe(tag, { qos: 0 }, (error) => {
+                if (!error) {
+                    console.log('订阅成功')
+                } else {
+                    console.log('订阅失败')
+                }
+                })
+            })
+        // 接收消息处理
+            client.on('message', (topic, message) => {
+                let msg = JSON.parse(message.toString())
+                // this.datalist.name=msg.n;
+                // this.datalist.value=msg.v;
+                console.log(msg.v);
+                that.config.number[0]=parseInt(msg.v)
+                var max=that.chartform.max;
+                var min=that.chartform.min;
+                // console.log(that.config.number[0]);
+                if(msg.v>max){
+                    that.config.style.fill='red'
+                }
+                else if(msg.v<min){
+                    that.config.style.fill='white'
+                }
+                else {
+                    that.config.style.fill='#3de7c9'
+                }
+                that.config.content=that.chartform.graphName+': {nt}'
+                this.config = { ...this.config }
+                
+            })
         },
+        
 
         nextstep() {
             let that=this;
@@ -126,11 +209,25 @@ export default {
                 if(!valid) return;
                 
                 if(this.active==0) {
+                    this.active++;
+                    this.steplabel2='保存图表'
+                    this.step1=false;
+                    setTimeout(function() {
+                        that.step2=true;
+                    },500);
+                    this.drawline()
+                }
+                else if(this.active==1) {
+                    this.$refs.chartformref2.validate((valid)=>{
+                    if(!valid) return;
                     const userID=localStorage.getItem("userID")
-                    postData={
+
+                        postData={
                             userID:userID,
-                            tableName:this.chartform.dataSource,
-                            graphName:this.chartform.graphName,
+                            tag:this.chartform.dataSource,
+                            tagName:this.chartform.graphName,
+                            max:this.chartform.max,
+                            min:this.chartform.min,
                         }
                         const result = axios({
                         method: 'post',
@@ -147,16 +244,26 @@ export default {
                                 center: true,
                                 type: 'success'
                             });
-                            that.step1=false;
+                            that.step2=false;
                             setTimeout(function() {
-                                that.step2=true;
+                                that.step3=true;
                             },500);
                         }
                         })
+                    
+
+                    
+
+                    
+                    console.log(postData);
+                    
+                    })
+                    
                 }
-                else if(this.active==1) {
-                    this.$refs.chartformref2.validate((valid)=>{
+                else if(this.active==2) {
+                    this.$refs.chartformref3.validate((valid)=>{
                     if(!valid) return;
+                    this.active++;
                     this.$message({
                         showClose: true,
                         message: '已经放入仪表盘！前往仪表盘管理看看吧？',
@@ -166,30 +273,30 @@ export default {
                     setTimeout(function() {
                         that.$router.push('/createtb')
                     },200)
-                    
                     })
                 }
             })
         },
         laststep() {
             let that = this;
-            
             this.$router.push('/createtb')
-            
         },
+    },
+    beforeDestroy() {
+        client.end()
     },
     
     // mounted () {
         // this.getData();
     // },
-    watch: {
-        tableData: {
-            handler() {
-                this.getData()
-            }
-        },
-        deep:true //深度监听
-    }
+    // watch: {
+        // tableData: {
+            // handler() {
+                // this.getData()
+            // }
+        // },
+        // deep:true //深度监听
+    // }
 
 }
 </script>
@@ -211,7 +318,7 @@ export default {
 }
 .right {
     flex:3;
-    padding: 100px;
+    padding: 25px;
 }
 .bt-step {
     position: absolute;

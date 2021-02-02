@@ -33,8 +33,6 @@ export default {
         
         drawline({
             legend=[],
-            xType='',
-            yType='',
             tag='',
             max='',
             min='',
@@ -78,11 +76,11 @@ export default {
                 // console.log(this.tmplist);
                 // console.log(this.barlist);
                 // this.config.data=this.barlist;
-                this.draw(this.tlist,this.vlist,legend,xType,yType,tagName,type)
+                this.draw(this.tlist,this.vlist,legend,tagName,type)
             })
         },
 
-        draw(t,v,l,x,y,n,type) {
+        draw(t,v,l,n,type) {
             let that=this
             this.chart = this.$echarts.init(document.getElementById(this.id))
             this.chart.setOption({
@@ -117,7 +115,7 @@ export default {
                 // },
                 xAxis: [
                     {
-                        type: x,
+                        type: 'category',
                         // boundaryGap: false,
                         data: t,
                         axisLabel: {
@@ -129,7 +127,7 @@ export default {
                 ],
                 yAxis: [
                     {
-                        type: y,
+                        type: 'value',
                         axisLabel: {
                             textStyle: {
                                 color: '#ffffff'
@@ -159,6 +157,10 @@ export default {
     },
     mounted () {
         this.drawline(this.obdata);
+    },
+    beforeDestroy() {
+        
+        client.end()
     },
     watch: {
         obdata: {

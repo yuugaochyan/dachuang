@@ -13,6 +13,9 @@ import griddemo from '@/components/costom/griddemo'
 import createdb from '@/components/costom/createdb'
 import createtb from '@/components/costom/createtb'
 import createchart from '@/components/costom/formcreate/createchart'
+import createtable from '@/components/costom/formcreate/createtable'
+import createmqttline from '@/components/costom/formcreate/createmqttline'
+import createmqttnum from '@/components/costom/formcreate/createmqttnum'
 Vue.use(VueRouter)
 
 const routes = [
@@ -41,6 +44,9 @@ const routes = [
       {path:'/griddemo', component: griddemo,name:"griddemo"},
       {path:'/dashboard/:dbID', component: dashboard,name:"dashboard"},
       {path:'/createchart', component: createchart,name:"createchart"},
+      {path:'/createtable', component: createtable,name:"createtable"},
+      {path:'/createmqttline', component: createmqttline,name:"createmqttline"},
+      {path:'/createmqttnum', component: createmqttnum,name:"createmqttnum"},
     ]},
     
     // {path:'/mainfac', component: mainfac,},
