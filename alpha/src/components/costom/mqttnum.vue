@@ -100,6 +100,10 @@ export default {
     mounted () {
         this.drawline(this.obdata);
     },
+    beforeDestroy() {
+        
+        client.end()
+    },
     watch: {
         obdata: {
             handler(value) {
