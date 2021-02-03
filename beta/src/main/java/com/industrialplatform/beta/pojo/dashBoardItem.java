@@ -12,5 +12,6 @@ public class dashBoardItem {
     private int w;
     private int h;
     private String title;
-    private Graph ObjectData;
+    private String type;
+    private Object ObjectData;
 }

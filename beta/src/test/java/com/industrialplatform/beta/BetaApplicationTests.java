@@ -1,5 +1,7 @@
 package com.industrialplatform.beta;
 
+import com.industrialplatform.beta.mapper.dataBaseMapper;
+import com.industrialplatform.beta.mapper.dbItemMapper;
 import com.industrialplatform.beta.pojo.*;
 import com.industrialplatform.beta.service.DashBoardService;
 import com.industrialplatform.beta.service.DataBaseService;
@@ -18,40 +20,28 @@ class BetaApplicationTests {
     @Autowired
     DataBaseService dataBaseService;
 
+    @Autowired
+    dataBaseMapper  dataBaseMapper;
+
+    @Autowired
+    dbItemMapper  dbItemMapper;
+
     @Test
     void contextLoads() {
+//        System.out.println(dataBaseMapper.getRowData("equipmentrepair"));
 //        调取数据测试
-        dataBaseService.getTableData("equipmentrepair");
+//        dataBaseService.getTableData("equipmentrepair");
+//        dashBoardService.getdbItemByItemID(1007);
+        mqttGraph mqttGraph=new mqttGraph();
+        mqttGraph.setMax(1000);
+        mqttGraph.setMin(5);
+        mqttGraph.setTag("/#");
+        mqttGraph.setTagName("测试");
+        mqttGraph.setUserID(32);
+        dashBoardService.addMQTTGraph(mqttGraph);
 
 
-//        添加柱状图测试
-//        Graph<BarChart> graph=new Graph<>();
-//        graph.setGraphName("test");
-//        graph.setDataSource("equipmentrepair");
-//        graph.setGraphType("bar");
-//        graph.setChart(new BarChart());
-//        graph.getChart().setXType("category");
-//        graph.getChart().setYType("value");
-//        graph.getChart().setXArraySource("eqpname");
-//        BarDetail barDetail=new BarDetail();
-//        barDetail.setDataCol("price");
-//        barDetail.setName("价格");
-//        graph.getChart().setSeries(new ArrayList<>());
-//        graph.getChart().getSeries().add(barDetail);
-//        System.out.println(graph);
-//        dashBoardService.addBarGraph(32,graph);
 
-//        Graph<ScatterChart> graph=new Graph<>();
-//        graph.setGraphName("test");
-//        graph.setDataSource("equipmentrepair");
-//        graph.setGraphType("scatter");
-//        graph.setChart(new ScatterChart());
-//        graph.getChart().setXArraySource("price");
-//        graph.getChart().setYArraySource("breaktimes");
-//        graph.getChart().setXType("value");
-//        graph.getChart().setYType("value");
-//        System.out.println(graph);
-//        dashBoardService.addScatterGraph(32,graph);
 
 
     }

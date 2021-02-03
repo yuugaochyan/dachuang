@@ -10,6 +10,7 @@
         <result property="y" column="a_y"/>
         <result property="w" column="a_w"/>
         <result property="h" column="a_h"/>
+        <result property="type" column="a_type"/>
         <result property="title" column="a_title"/>
     </resultMap>
 <!--  图表/item内部件map  -->
@@ -63,19 +64,60 @@
         from dbitem a,graph b,dbitembind e
         where a.itemID=#{id} and a.itemID=e.itemID and b.graphID=e.graphID
     </select>
+
 <!--  获取当前最大的图表ID  -->
     <select id="getCurrentGrpahID" resultType="int">
         select max(graphID)
         from graph
     </select>
-<!--  获取当前柱状图最大的lengendID  -->
-    <select id="getCurrentBarLengendID" resultType="int">
+<!--  当前图表数  -->
+    <select id="getCurrentGraphNum" resultType="int">
+        select count(graphID)
+        from graph
+    </select>
+
+<!--  获取当前最大的MQTTID  -->
+    <select id="getCurrentMQTTID" resultType="int">
+        select max(mqttID)
+        from mqttgraph
+    </select>
+<!--  获取当前MQTT图表数  -->
+    <select id="getCurrentMQTTNum" resultType="int">
+        select count(mqttID)
+        from mqttgraph
+    </select>
+
+<!--  获取当前最大的TableID  -->
+    <select id="getCurrentTableID" resultType="int">
+        select max(tableID)
+        from tableitem
+    </select>
+<!--  获取当前的Table数量  -->
+    <select id="getCurrentTableNum" resultType="int">
+        select count(tableID)
+        from tableitem
+    </select>
+
+<!--  获取当前柱状图最大的legendID  -->
+    <select id="getCurrentBarLegendID" resultType="int">
+        select max(*)
+        from bardetail
+        where graphID=#{graphID}
+    </select>
+<!--  获取当前柱状图的legend数量  -->
+    <select id="getCurrentBarLegendNum" resultType="int">
         select count(*)
         from bardetail
         where graphID=#{graphID}
     </select>
-<!--  获取当前折线图最大的lengendID  -->
-    <select id="getCurrentLineLengendID" resultType="int">
+<!--  获取当前折线图最大的legendID  -->
+    <select id="getCurrentLineLegendID" resultType="int">
+        select max(*)
+        from linedetail
+        where graphID=#{graphID}
+    </select>
+<!--  获取当前折线图最大的legendID  -->
+    <select id="getCurrentLineLegendNum" resultType="int">
         select count(*)
         from linedetail
         where graphID=#{graphID}
@@ -88,6 +130,7 @@
                a.y as y,
                a.w as w,
                a.h as h,
+               a.type as type,
                a.title as title
         from dbitem a
         where a.itemID=#{id}
@@ -203,5 +246,35 @@
         call getScatterYData(#{graphID})
     </select>
 
+<!-- 获取mqtt图表数据  -->
+    <select id="getMQTTGraphDataByItemID" resultType="mqttGraph" parameterType="int">
+        select mqttID,
+               tag,
+               max,
+               min,
+               tagName,
+               type
+        from mqttgraph
+        where itemID=#{itemID}
+    </select>
+<!--  添加MQTTGraph  -->
+    <insert id="addMQTTGraph" >
+        insert into mqttgraph(userID,mqttID,tag,max,min,tagName,type)
+        values(#{userID},#{mqttID},#{tag},#{max},#{min},#{tagName},#{type})
+    </insert>
+
+
+<!-- 获取table信息  -->
+    <select id="getTableInfoByItemID" resultType="Table" parameterType="int">
+        select tableID,
+               tableName
+        from tableitem
+        where itemID=#{itemID}
+    </select>
+<!--  添加Table  -->
+    <insert id="addTable" >
+        insert into tableitem(userID,tableID,tableName)
+        values(#{userID},#{tableID},#{tableName})
+    </insert>
 
 </mapper>

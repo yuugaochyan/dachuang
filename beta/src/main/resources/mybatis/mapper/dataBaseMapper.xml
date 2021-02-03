@@ -10,8 +10,14 @@
         where table_name = #{tableName}
     </select>
 
+<!--  获取列数据  -->
     <select id="getColData" parameterType="String" resultType="String" statementType="CALLABLE">
         CALL getColData(#{tableName},#{colName})
+    </select>
+<!--  获取行数据  -->
+    <select id="getRowData" resultType="Map">
+        select *
+        from equipmentrepair
     </select>
 
 

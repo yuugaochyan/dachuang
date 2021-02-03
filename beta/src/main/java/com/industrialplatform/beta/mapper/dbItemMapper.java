@@ -14,11 +14,20 @@ public interface dbItemMapper {
     String getChartTypeById(int id);
     int getGraphIdByItemId(int id);
     int getCurrentGrpahID();
-    int getCurrentBarLengendID(int graphID);
-    int getCurrentLineLengendID(int graphID);
+    int getCurrentGraphNum();
+    int getCurrentMQTTID();
+    int getCurrentMQTTNum();
+    int getCurrentTableID();
+    int getCurrentTableNum();
+    int getCurrentBarLegendID(int graphID);
+    int getCurrentBarLegendNum(int graphID);
+    int getCurrentLineLegendID(int graphID);
+    int getCurrentLineLegendNum(int graphID);
 
     dashBoardItem getItemInfoByItemID(int id);
     Graph getGraphByItemID(int id);
+    mqttGraph getMQTTGraphDataByItemID(int itemID);
+    Table getTableInfoByItemID(int itemID);
 
     BarChart getBarChartByGraphID(int graphid);
     LineChart getLineChartByGraphID(int graphid);
@@ -37,6 +46,8 @@ public interface dbItemMapper {
     float[] getScatterYData(int graphID);
 
     int addGraph(Graph graph,@Param("userID") int userID);
+    int addMQTTGraph(mqttGraph mqttGraph);
+    int addTable(Table table);
 
     int addBarChart(BarChart barChart,@Param("graphID")int graphID);
     int addBarDetail(BarDetail barDetail,@Param("graphID")int graphID);

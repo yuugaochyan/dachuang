@@ -18,7 +18,7 @@ public class DashBoardController {
     @RequestMapping(value = "/getDBItemInfo",method = RequestMethod.GET)
     public Map<String,Object> getDBItemInfo(){
         Map<String,Object> map=new HashMap<>();
-        map.put("data",dashBoardService.getItemByID(1002));
+        map.put("data",dashBoardService.getdbItemByItemID(1002));
         return map;
     }
 
@@ -28,10 +28,16 @@ public class DashBoardController {
     public Map<String,Object> addBarGraph(@RequestBody Graph<BarChart> barGraph){
         System.out.println(barGraph);
         Map<String,Object> map=new HashMap<>();
-        if(dashBoardService.addBarGraph(barGraph.getUserID(),barGraph)){
+        int ID=dashBoardService.addBarGraph(barGraph.getUserID(),barGraph);
+        if(ID!=-1){
             map.put("status",200);
             map.put("msg","柱状图添加成功!");
-        };
+            map.put("ID",ID);
+        }
+        else{
+            map.put("status",404);
+            map.put("msg","柱状图添加失败!");
+        }
         return map;
     }
 
@@ -42,10 +48,16 @@ public class DashBoardController {
         System.out.println(lineGraph);
 //        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
-        if(dashBoardService.addLineGraph(lineGraph.getUserID(), lineGraph)){
+        int ID=dashBoardService.addLineGraph(lineGraph.getUserID(), lineGraph);
+        if(ID!=-1){
             map.put("status",200);
             map.put("msg","柱状图添加成功!");
-        };
+            map.put("ID",ID);
+        }
+        else{
+            map.put("status",404);
+            map.put("msg","折线图添加失败!");
+        }
         return map;
     }
 
@@ -56,10 +68,16 @@ public class DashBoardController {
         System.out.println(pieGraph);
 //        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
-        if(dashBoardService.addPieGraph(pieGraph.getUserID(),pieGraph)){
+        int ID=dashBoardService.addPieGraph(pieGraph.getUserID(),pieGraph);
+        if(ID!=-1){
             map.put("status",200);
             map.put("msg","饼图添加成功!");
-        };
+            map.put("ID",ID);
+        }
+        else{
+            map.put("status",404);
+            map.put("msg","饼图添加失败!");
+        }
         return map;
     }
 
@@ -72,10 +90,16 @@ public class DashBoardController {
         System.out.println(scatterGraph);
 //        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
-        if(dashBoardService.addScatterGraph(scatterGraph.getUserID(),scatterGraph)){
+        int ID=dashBoardService.addScatterGraph(scatterGraph.getUserID(),scatterGraph);
+        if(ID!=-1){
             map.put("status",200);
-            map.put("msg","饼图添加成功!");
-        };
+            map.put("msg","散点图添加成功!");
+            map.put("ID",ID);
+        }
+        else{
+            map.put("status",404);
+            map.put("msg","散点图添加失败!");
+        }
         return map;
     }
 
