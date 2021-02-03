@@ -4,6 +4,7 @@ import com.industrialplatform.beta.mapper.dataBaseMapper;
 import com.industrialplatform.beta.mapper.dbItemMapper;
 import com.industrialplatform.beta.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.embedded.undertow.UndertowWebServer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -163,6 +164,28 @@ public class DashBoardService {
         table.setData(data);
         table.setAlign("center");
         table.setIndex(true);
+        return table;
+    }
+
+//    根据表名输出table形式数据
+    public Table getTableByTableName(String tableName){
+        Table table= new Table();
+        table.setTableName(tableName);
+        table.setHeader(dataBaseMapper.getTableColNameByTableName(tableName));
+        List<Map<String,Object>> result=dataBaseMapper.getRowData(tableName);
+        List<String> cols=table.getHeader();
+        List<List<Object>> data=new ArrayList<>();
+        for (Map<String,Object> map:result){
+            List<Object> row=new ArrayList<>();
+            for(String col:cols){
+                row.add(map.get(col));
+            }
+            data.add(row);
+        }
+        table.setData(data);
+        table.setAlign("center");
+        table.setIndex(true);
+        System.out.println(table);
         return table;
     }
 

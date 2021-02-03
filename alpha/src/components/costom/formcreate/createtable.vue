@@ -112,7 +112,7 @@ export default {
             this.$axios.post("/getTable",postDta)
             .then((resp)=>{
                 console.log(resp)
-                that.tableData=resp.data.tableData
+                that.tableData=resp.data.data
             }),
             this.config=this.tableData
             this.config = { ...this.config }
@@ -134,7 +134,7 @@ export default {
                         }
                         const result = axios({
                         method: 'post',
-                        url:'/addBarGraph',
+                        url:'/addTable',
                         data:postData
                         }).then(function(resp){
                             if(resp.data.status==200) {

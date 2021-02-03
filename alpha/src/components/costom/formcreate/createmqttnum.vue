@@ -231,7 +231,7 @@ export default {
                         }
                         const result = axios({
                         method: 'post',
-                        url:'/addBarGraph',
+                        url:'/addMQTT',
                         data:postData
                         }).then(function(resp){
                             if(resp.data.status==200) {

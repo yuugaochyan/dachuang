@@ -103,4 +103,66 @@ public class DashBoardController {
         return map;
     }
 
+//    存储table
+    @RequestMapping(value = "/addTable",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> addTable(@RequestBody Table table){
+        System.out.println(table);
+//        System.out.println(userID);
+        Map<String,Object> map=new HashMap<>();
+        int ID=dashBoardService.addTable(table);
+        if(ID!=-1){
+            map.put("status",200);
+            map.put("msg","table添加成功!");
+            map.put("ID",ID);
+        }
+        else{
+            map.put("status",404);
+            map.put("msg","table添加失败!");
+        }
+        return map;
+    }
+
+//    存储mqtt
+    @RequestMapping(value = "/addMQTT",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> addMQTT(@RequestBody mqttGraph mqttGraph){
+        System.out.println(mqttGraph);
+        Map<String,Object> map=new HashMap<>();
+        int ID=dashBoardService.addMQTTGraph(mqttGraph);
+        if(ID!=-1){
+            map.put("status",200);
+            map.put("msg","mqtt添加成功!");
+            map.put("ID",ID);
+        }
+        else{
+            map.put("status",404);
+            map.put("msg","mqtt添加失败!");
+        }
+        return map;
+    }
+
+
+//    根据表名将数据调取为table格式
+    @RequestMapping(value = "/getTable",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> getTable(String dataSource){
+        System.out.println(dataSource);
+        Map<String,Object> map=new HashMap<>();
+        Table table=dashBoardService.getTableByTableName(dataSource);
+        if(table!=null){
+            map.put("status",200);
+            map.put("msg","table数据获取成功");
+            map.put("data",table);
+        }
+        else{
+            map.put("status",404);
+            map.put("msg","table数据获取失败");
+        }
+        return map;
+    }
+
+
+
+
 }

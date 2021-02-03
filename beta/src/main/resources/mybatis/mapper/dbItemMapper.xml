@@ -267,14 +267,15 @@
 <!-- 获取table信息  -->
     <select id="getTableInfoByItemID" resultType="Table" parameterType="int">
         select tableID,
-               tableName
+               tableName,
+               graphName
         from tableitem
         where itemID=#{itemID}
     </select>
 <!--  添加Table  -->
     <insert id="addTable" >
-        insert into tableitem(userID,tableID,tableName)
-        values(#{userID},#{tableID},#{tableName})
+        insert into tableitem(userID,tableID,tableName,graphName)
+        values(#{userID},#{tableID},#{tableName},#{graphName})
     </insert>
 
 </mapper>

@@ -9,6 +9,7 @@ public class Table {
     private int userID;
     private int tableID;
     private String tableName;
+    private String graphName;
     private List<String> header;
     private Object data;
     private boolean index;
