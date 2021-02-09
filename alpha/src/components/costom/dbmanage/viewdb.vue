@@ -61,7 +61,7 @@ export default {
             })
             const result = axios({
                 method: 'post',
-                url:'/getDBList',
+                url:'/getDBItemInfo',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {

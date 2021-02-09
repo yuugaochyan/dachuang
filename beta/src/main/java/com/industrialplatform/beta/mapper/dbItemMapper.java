@@ -48,7 +48,7 @@ public interface dbItemMapper {
     float[] getScatterYData(int graphID);
 
     int registGraph(@Param("ID")int ID,@Param("userID")int userID,@Param("type")String type);
-    int addNewItemToDB(int itemID,int dbID,String type);
+    int addNewItemToDB(int itemID,int dbID,String type,int x,int y);
     int bindGraphToItem(int graphID,int itemID);
 
 

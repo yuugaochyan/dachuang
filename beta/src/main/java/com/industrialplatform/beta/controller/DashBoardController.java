@@ -15,15 +15,9 @@ public class DashBoardController {
     @Autowired
     private DashBoardService dashBoardService;
 
-    @RequestMapping(value = "/getDBItemInfo",method = RequestMethod.GET)
-    public Map<String,Object> getDBItemInfo(){
-        Map<String,Object> map=new HashMap<>();
-        map.put("data",dashBoardService.getdbItemByItemID(1002));
-        return map;
-    }
 
 //    调取仪表盘所有item信息
-    @RequestMapping(value = "/getDBitemInfo",method = RequestMethod.POST)
+    @RequestMapping(value = "/getDBItemInfo",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> getDBitemInfo(int dbID){
         Map<String,Object> map=new HashMap<>();

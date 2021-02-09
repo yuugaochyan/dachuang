@@ -87,7 +87,18 @@ public class DashBoardService {
             x=0;
             y=0;
             while(flag==0){
-
+                if(dbLoc[x][y]==0){
+                    if (dbLoc[x][y+1]==0){
+                        if(dbLoc[x+1][y]==0) {
+                            if (dbLoc[x + 1][y + 1] == 0) {
+                                addOneGraphToDashBoard(graphID,dbID,x,y);
+                                dbLoc[x][y]=1;dbLoc[x][y+1]=1;dbLoc[x+1][y]=1;dbLoc[x+1][y+1]=1;
+                            }
+                        }
+                    }
+                }
+                if(y<=11)y++;
+                else {x++;y=0;}
 
             }
 
@@ -103,12 +114,12 @@ public class DashBoardService {
 
 //    将一个图表放到仪表盘中
     @Transactional(propagation = Propagation.SUPPORTS)
-    public boolean addOneGraphToDashBoard(int graphID,int dbID){
+    public boolean addOneGraphToDashBoard(int graphID,int dbID,int x,int y){
         String type=dbItemMapper.getGraphTypeByGraphID(graphID);
         int itemID=0;
         if (dbItemMapper.getCurrentItemNum()==0)itemID=1000;
         else itemID=dbItemMapper.getCurrentItemID();
-        dbItemMapper.addNewItemToDB(itemID,dbID,type);
+        dbItemMapper.addNewItemToDB(itemID,dbID,type,x,y);
         dbItemMapper.bindGraphToItem(graphID,itemID);
         return true;
     }

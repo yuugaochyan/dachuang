@@ -145,8 +145,8 @@
 
 <!--  注册新Item  -->
     <insert id="addNewItemToDB">
-        insert into dbitem(itemID,dbID,type)
-        values(#{itemID},#{dbID},#{type})
+        insert into dbitem(itemID,dbID,type,x,y)
+        values(#{itemID},#{dbID},#{type},#{x},#{y})
     </insert>
 <!--  图表item绑定  -->
     <insert id="bindGraphToItem">
