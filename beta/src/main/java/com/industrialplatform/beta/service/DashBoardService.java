@@ -82,16 +82,17 @@ public class DashBoardService {
                 }
             }
         }
+        x=0;
+        y=0;
         for(int graphID:graphIDs){
             flag=0;
-            x=0;
-            y=0;
             while(flag==0){
                 if(dbLoc[x][y]==0){
                     if (dbLoc[x][y+1]==0){
                         if(dbLoc[x+1][y]==0) {
                             if (dbLoc[x + 1][y + 1] == 0) {
                                 addOneGraphToDashBoard(graphID,dbID,x,y);
+                                flag=1;
                                 dbLoc[x][y]=1;dbLoc[x][y+1]=1;dbLoc[x+1][y]=1;dbLoc[x+1][y+1]=1;
                             }
                         }
