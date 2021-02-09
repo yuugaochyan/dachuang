@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 public class dashBoardItem {
-    private int itemID;
+    private int i;
     private int x;
     private int y;
     private int w;

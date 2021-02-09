@@ -32,13 +32,8 @@ class BetaApplicationTests {
 //        调取数据测试
 //        dataBaseService.getTableData("equipmentrepair");
 //        dashBoardService.getdbItemByItemID(1007);
-        mqttGraph mqttGraph=new mqttGraph();
-        mqttGraph.setMax(1000);
-        mqttGraph.setMin(5);
-        mqttGraph.setTag("/#");
-        mqttGraph.setTagName("测试");
-        mqttGraph.setUserID(32);
-        dashBoardService.addMQTTGraph(mqttGraph);
+        dashBoardService.getdbItemBydbID(1);
+
 
 
 

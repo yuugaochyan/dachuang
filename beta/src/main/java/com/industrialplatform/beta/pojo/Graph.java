@@ -32,4 +32,9 @@ public class Graph<T> {
     private List<String> legend;
     @JsonProperty("Chart")
     private T Chart;
+
+    private Object series;
+    private Object xarray;
+    private Object xType;
+    private Object yType;
 }

@@ -22,6 +22,17 @@ public class DashBoardController {
         return map;
     }
 
+//    调取仪表盘所有item信息
+    @RequestMapping(value = "/getDBitemInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> getDBitemInfo(int dbID){
+        Map<String,Object> map=new HashMap<>();
+        map.put("status",200);
+        map.put("data",dashBoardService.getdbItemBydbID(dbID));
+        map.put("msg","获取仪表盘组件信息成功！");
+        return map;
+    }
+
 //    存储柱状图
     @RequestMapping(value = "/addBarGraph",method = RequestMethod.POST)
     @ResponseBody
@@ -46,7 +57,6 @@ public class DashBoardController {
     @ResponseBody
     public Map<String,Object> addLineGraph(@RequestBody Graph<LineChart> lineGraph){
         System.out.println(lineGraph);
-//        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
         int ID=dashBoardService.addLineGraph(lineGraph.getUserID(), lineGraph);
         if(ID!=-1){
@@ -66,7 +76,6 @@ public class DashBoardController {
     @ResponseBody
     public Map<String,Object> addPieGraph(@RequestBody Graph<PieChart> pieGraph){
         System.out.println(pieGraph);
-//        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
         int ID=dashBoardService.addPieGraph(pieGraph.getUserID(),pieGraph);
         if(ID!=-1){
@@ -147,7 +156,7 @@ public class DashBoardController {
     @RequestMapping(value = "/getTable",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> getTable(String dataSource){
-        System.out.println(dataSource);
+//        System.out.println(dataSource);
         Map<String,Object> map=new HashMap<>();
         Table table=dashBoardService.getTableByTableName(dataSource);
         if(table!=null){

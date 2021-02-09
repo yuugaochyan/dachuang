@@ -182,14 +182,14 @@ export default {
     // mounted () {
         // this.getData();
     // },
-    watch: {
-        tableData: {
-            handler() {
-                this.getData()
-            }
-        },
-        deep:true //深度监听
-    }
+    // watch: {
+    //     tableData: {
+    //         handler() {
+    //             this.getData()
+    //         }
+    //     },
+    //     deep:true //深度监听
+    // }
 
 }
 </script>

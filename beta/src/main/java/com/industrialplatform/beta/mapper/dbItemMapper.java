@@ -11,19 +11,21 @@ import java.util.Map;
 @Mapper
 @Repository
 public interface dbItemMapper {
+    int[] getdbItemIDList(int dbID);
+
     String getChartTypeById(int id);
+    String getGraphTypeByGraphID(int graphID);
     int getGraphIdByItemId(int id);
+    int getCurrentItemID();
+    int getCurrentItemNum();
     int getCurrentGrpahID();
     int getCurrentGraphNum();
-    int getCurrentMQTTID();
-    int getCurrentMQTTNum();
-    int getCurrentTableID();
-    int getCurrentTableNum();
     int getCurrentBarLegendID(int graphID);
     int getCurrentBarLegendNum(int graphID);
     int getCurrentLineLegendID(int graphID);
     int getCurrentLineLegendNum(int graphID);
 
+    List<dashBoardItem> getItemLocationListBydbID(int dbID);
     dashBoardItem getItemInfoByItemID(int id);
     Graph getGraphByItemID(int id);
     mqttGraph getMQTTGraphDataByItemID(int itemID);
@@ -45,7 +47,12 @@ public interface dbItemMapper {
     float[] getScatterXData(int graphID);
     float[] getScatterYData(int graphID);
 
-    int addGraph(Graph graph,@Param("userID") int userID);
+    int registGraph(@Param("ID")int ID,@Param("userID")int userID,@Param("type")String type);
+    int addNewItemToDB(int itemID,int dbID,String type);
+    int bindGraphToItem(int graphID,int itemID);
+
+
+    int addGraph(Graph graph);
     int addMQTTGraph(mqttGraph mqttGraph);
     int addTable(Table table);
 

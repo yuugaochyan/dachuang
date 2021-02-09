@@ -17,11 +17,26 @@ import java.util.Map;
 @Service
 @Transactional
 public class DashBoardService {
+    private int DB_MAX_SIZE=10000;
 
     @Autowired
     dbItemMapper dbItemMapper;
     @Autowired
     dataBaseMapper dataBaseMapper;
+
+//    获取根据dashboardID调取所有信息
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public List<dashBoardItem> getdbItemBydbID(int dbID){
+        List<dashBoardItem> items=new ArrayList<>();
+        int[] itemIDs=dbItemMapper.getdbItemIDList(dbID);
+        for(int itemID:itemIDs){
+//            System.out.println(itemID);
+            items.add(getdbItemByItemID(itemID));
+        }
+//        System.out.println(items);
+        return items;
+    }
+
 
 //    获取item信息
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -40,6 +55,7 @@ public class DashBoardService {
                 break;
             case 2:
                 dashBoardItem.setObjectData(getMQTTGraph(ItemID));
+                break;
             case 3:
                 dashBoardItem.setObjectData(getTable(ItemID));
                 break;
@@ -47,6 +63,54 @@ public class DashBoardService {
         }
         System.out.println(dashBoardItem);
         return dashBoardItem;
+    }
+
+
+//    添加图表至仪表盘中
+    public boolean addGraphsToDashBoard(int[] graphIDs,int dbID){
+        List<dashBoardItem> itemsLoc=dbItemMapper.getItemLocationListBydbID(dbID);
+        int[][] dbLoc=new int[DB_MAX_SIZE][DB_MAX_SIZE];
+        int x,y,w,h,flag;
+        for(dashBoardItem Loc:itemsLoc){
+            x=Loc.getX();
+            y=Loc.getY();
+            w=Loc.getW();
+            h=Loc.getH();
+            for(int j=0;j<h;j++) {
+                for (int i = 0; i < w; i++) {
+                    dbLoc[x+j][y+i]=1;
+                }
+            }
+        }
+        for(int graphID:graphIDs){
+            flag=0;
+            x=0;
+            y=0;
+            while(flag==0){
+
+
+            }
+
+        }
+
+
+
+
+
+        return true;
+    }
+
+
+//    将一个图表放到仪表盘中
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public boolean addOneGraphToDashBoard(int graphID,int dbID){
+        String type=dbItemMapper.getGraphTypeByGraphID(graphID);
+        int itemID=0;
+        if (dbItemMapper.getCurrentItemNum()==0)itemID=1000;
+        else itemID=dbItemMapper.getCurrentItemID();
+        dbItemMapper.addNewItemToDB(itemID,dbID,type);
+        dbItemMapper.bindGraphToItem(graphID,itemID);
+        return true;
     }
 
 
@@ -72,8 +136,14 @@ public class DashBoardService {
                 barGraph.getChart().setXArray(dbItemMapper.getBarChartXArrayData(graphid));
                 for(BarDetail serie:barGraph.getChart().getSeries()){
                     serie.setData(dbItemMapper.getBarData(graphid,serie.getLegendID()));
+                    serie.setType("bar");
                     barGraph.getLegend().add(serie.getName());
                 }
+                barGraph.setSeries(barChart.getSeries());
+                barGraph.setXType(barChart.getXType());
+                barGraph.setYType(barChart.getYType());
+                barGraph.setXarray(barChart.getXArray());
+                barGraph.setChart(null);
 //                dashBoardItem.setObjectData(barGraph);
                 return barGraph;
             case 2:
@@ -85,8 +155,14 @@ public class DashBoardService {
                 lineGraph.getChart().setXArray(dbItemMapper.getLineChartXArrayData(graphid));
                 for(LineDetail serie:lineGraph.getChart().getSeries()){
                     serie.setData(dbItemMapper.getLineData(graphid,serie.getLegendID()));
+                    serie.setType("line");
                     lineGraph.getLegend().add(serie.getName());
                 }
+                lineGraph.setXType(lineChart.getXType());
+                lineGraph.setYType(lineChart.getYType());
+                lineGraph.setXarray(lineChart.getXArray());
+                lineGraph.setSeries(lineChart.getSeries());
+                lineGraph.setChart(null);
 //                dashBoardItem.setObjectData(lineGraph);
                 return lineGraph;
             case 3:
@@ -109,7 +185,10 @@ public class DashBoardService {
                     i++;
                     pieGraph.getLegend().add(piecol);
                 }
+                pieDetail.setType("pie");
                 pieGraph.getChart().getSeries().add(pieDetail);
+                pieGraph.setSeries(pieGraph.getChart().getSeries());
+                pieGraph.setChart(null);
 //                dashBoardItem.setObjectData(pieGraph);
                 return pieGraph;
             case 4:
@@ -128,8 +207,11 @@ public class DashBoardService {
                     scatterDetail.getData()[finalI][1]=yData[finalI];
                     i++;
                 }
+                scatterDetail.setType("scatter");
                 scatterChart.getSeries().add(scatterDetail);
-                scatterGraph.setChart(scatterChart);
+                scatterGraph.setSeries(scatterChart.getSeries());
+                scatterGraph.setXType(scatterChart.getXType());
+                scatterGraph.setYType(scatterChart.getYType());
                 return scatterGraph;
 //                dashBoardItem.setObjectData(scatterGraph);
             default:
@@ -142,7 +224,12 @@ public class DashBoardService {
     @Transactional(propagation = Propagation.SUPPORTS)
     public mqttGraph getMQTTGraph(int itemID){
         mqttGraph mqttGraph=dbItemMapper.getMQTTGraphDataByItemID(itemID);
-        System.out.println(mqttGraph);
+        if(mqttGraph.getType()!=null)
+        {
+            mqttGraph.setLegend(new ArrayList<>());
+            mqttGraph.getLegend().add(mqttGraph.getTagName());
+        }
+//        System.out.println(mqttGraph);
         return mqttGraph;
     }
 
@@ -185,7 +272,7 @@ public class DashBoardService {
         table.setData(data);
         table.setAlign("center");
         table.setIndex(true);
-        System.out.println(table);
+//        System.out.println(table);
         return table;
     }
 
@@ -195,8 +282,9 @@ public class DashBoardService {
         int graphID=0;
         if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
         else graphID= dbItemMapper.getCurrentGrpahID()+1;
+        dbItemMapper.registGraph(graphID,userID,"chart");
         barGraph.setGraphID(graphID);
-        dbItemMapper.addGraph(barGraph,userID);
+        dbItemMapper.addGraph(barGraph);
         BarChart barChart=barGraph.getChart();
         dbItemMapper.addBarChart(barChart,graphID);
         int legendID=0;
@@ -217,8 +305,9 @@ public class DashBoardService {
         int graphID=0;
         if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
         else graphID= dbItemMapper.getCurrentGrpahID()+1;
+        dbItemMapper.registGraph(graphID,userID,"chart");
         lineGraph.setGraphID(graphID);
-        dbItemMapper.addGraph(lineGraph,userID);
+        dbItemMapper.addGraph(lineGraph);
         LineChart lineChart=lineGraph.getChart();
         dbItemMapper.addLineChart(lineChart,graphID);
         int legendID=0;
@@ -239,8 +328,9 @@ public class DashBoardService {
         int graphID=0;
         if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
         else graphID= dbItemMapper.getCurrentGrpahID()+1;
+        dbItemMapper.registGraph(graphID,userID,"chart");
         pieGraph.setGraphID(graphID);
-        dbItemMapper.addGraph(pieGraph,userID);
+        dbItemMapper.addGraph(pieGraph);
         PieChart pieChart=pieGraph.getChart();
         dbItemMapper.addPieChart(pieChart,graphID);
         if (graphID!=0)return graphID;
@@ -253,8 +343,9 @@ public class DashBoardService {
         int graphID=0;
         if(dbItemMapper.getCurrentGraphNum()==0) graphID=10001;
         else graphID=dbItemMapper.getCurrentGrpahID()+1;
+        dbItemMapper.registGraph(graphID,userID,"chart");
         scatterGraph.setGraphID(graphID);
-        dbItemMapper.addGraph(scatterGraph,userID);
+        dbItemMapper.addGraph(scatterGraph);
         ScatterChart scatterChart=scatterGraph.getChart();
         dbItemMapper.addScatterChart(scatterChart,graphID);
         if (graphID!=0) return graphID;
@@ -265,8 +356,12 @@ public class DashBoardService {
     @Transactional(propagation = Propagation.SUPPORTS)
     public int addMQTTGraph(mqttGraph mqttGraph){
         int mqttID=0;
-        if (dbItemMapper.getCurrentTableNum()==0) mqttID = 10001;
-        else mqttID=dbItemMapper.getCurrentMQTTID()+1;
+        if(dbItemMapper.getCurrentGraphNum()==0) mqttID=10001;
+        else mqttID=dbItemMapper.getCurrentGrpahID()+1;
+        if(mqttGraph.getType()!=null)
+            dbItemMapper.registGraph(mqttID,mqttGraph.getUserID(),"mqttline");
+        else
+            dbItemMapper.registGraph(mqttID,mqttGraph.getUserID(),"mqttnum");
         mqttGraph.setMqttID(mqttID);
         dbItemMapper.addMQTTGraph(mqttGraph);
         if (mqttID!=0) return mqttID;
@@ -277,8 +372,9 @@ public class DashBoardService {
     @Transactional(propagation = Propagation.SUPPORTS)
     public int addTable(Table table){
         int tableID=0;
-        if (dbItemMapper.getCurrentTableNum()==0) tableID = 10001;
-        else tableID=dbItemMapper.getCurrentTableID()+1;
+        if(dbItemMapper.getCurrentGraphNum()==0) tableID=10001;
+        else tableID=dbItemMapper.getCurrentGrpahID()+1;
+        dbItemMapper.registGraph(tableID,table.getUserID(),"table");
         table.setTableID(tableID);
         dbItemMapper.addTable(table);
         if(tableID!=0) return tableID;

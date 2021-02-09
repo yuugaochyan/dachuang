@@ -6,6 +6,7 @@ import lombok.Data;
 public class LineDetail {
     private int legendID;
     private String name;
+    private String type;
     private String dataCol;
     private int[] data;
 }
