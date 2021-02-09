@@ -56,20 +56,6 @@ export default {
             this.dbID = this.$route.params.dbID
             this.dbName = this.$route.params.dbName
             this.dbInfo = this.$route.params.dbInfo
-<<<<<<< HEAD
-            let postData=this.$qs.stringify({
-                dbID:1,
-            })
-            const result = axios({
-                method: 'post',
-                url:'/getDBItemInfo',
-                data:postData
-            }).then(function(resp){
-                if(resp.data.status==200) {
-                that.dbData=resp.data.data
-                }
-            })
-=======
             // let postData=this.$qs.stringify({
                 // dbID:that.dbID,
             // })
@@ -82,7 +68,6 @@ export default {
                 // that.dbData=resp.data.data
                 // }
             // })
->>>>>>> main
             this.$message({
                     showClose: true,
                     message: '双击屏幕可打开工具箱,如遇数据显示不全请尝试刷新',
