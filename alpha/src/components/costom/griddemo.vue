@@ -130,13 +130,19 @@ export default {
       
       let that=this
       let postDta=this.$qs.stringify({
-          dbID:this.db
+          dbID:this.dbID
       })
-      this.$axios.post("/getDBitemInfo",postDta)
-      .then((resp)=>{
-          that.layoutData = resp.data.data;
-          localStorage.setItem('pandectDisplace', JSON.stringify(that.layoutData));
+      const result = axios({
+          method: 'post',
+          url:'/getDBitemInfo',
+          data:postDta
+      }).then(function(resp){
+          if(resp.data.status==200) {
+              that.layoutData = resp.data.data;
+              localStorage.setItem('pandectDisplace', JSON.stringify(that.layoutData));
+          }
       })
+      
     },
     resizedEvent: function(i, newH, newW, newHPx, newWPx){
         // console.log("RESIZED i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);

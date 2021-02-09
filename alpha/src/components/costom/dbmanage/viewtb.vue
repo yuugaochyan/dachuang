@@ -1,12 +1,18 @@
 <template>
     <div id="app" v-if="reset">
-        <div  class="con">
+        <div  class="container">
             <div class="left">
                 
+                <transition name="el-zoom-in-top" >
+                    <div class="msg" v-if=showinfo>
+                        <h1>你的可视化：{{tbData.title}}</h1>
+                        <h3>可视化类型：{{tbData.type}}</h3>
+                    </div>
+                </transition>
                 
 
             <div class="bt-next">
-                <el-button type="warning"  @click="saveTB">保存修改</el-button>
+                <el-button type="warning"  @click="goback">返回列表</el-button>
             </div>
 
 
@@ -37,7 +43,8 @@ export default {
         return {
             tbData:{},
             tbID:'',
-            reset:false
+            reset:false,
+            showinfo:false
         }
     },
     components: {
@@ -63,9 +70,12 @@ export default {
                 console.log(that.tbData);
                 }
             })
+            setTimeout(()=>{
+                this.showinfo=true
+            },500)
         },
-        saveTB() {
-            console.log("sa");
+        goback() {
+            this.$router.push('/createdb')
         }
     
     },
@@ -83,7 +93,7 @@ export default {
 </script>
 
 <style lang="less" scope>
-.con {
+.container {
     display: flex;
     height: calc(93.6vh);
     width: 100%;
@@ -113,4 +123,5 @@ export default {
     bottom: 25%;
     right: 10%;
 }
+
 </style>

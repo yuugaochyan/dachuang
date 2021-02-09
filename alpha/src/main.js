@@ -21,8 +21,8 @@ return routerPush.call(this, location).catch(error=> error)
 }
 import Axios from 'axios'
 import './assets/icon/iconfont.css'
-// Axios.defaults.baseURL='https://www.fastmock.site/mock/e1b01fe982409bb8cc3445eaa2161f40/Dachuang'
-Axios.defaults.baseURL='http://localhost:8888'
+Axios.defaults.baseURL='https://www.fastmock.site/mock/e1b01fe982409bb8cc3445eaa2161f40/Dachuang'
+// Axios.defaults.baseURL='http://localhost:8888'
 // import mqtt from 'mqtt';
 // import VueAxios from 'vue-axios'
 // import {post,fetch,patch,put} from "../static/http.js";

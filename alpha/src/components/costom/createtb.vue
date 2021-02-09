@@ -12,15 +12,19 @@
             <div class="col">
                 
                 <div class="but">
-                    <transition name="el-zoom-in-top" :appear=true>
-                    <div class="sta con" v-if="stmo" @click="staf">
+                    <transition name="el-zoom-in-top" :appear="true">
+                    <div class="con" v-if="stmo" @click="staf">
+                        
                         <h1>静态数据</h1>
-                        <i class="iconfont icon-jurassic_data"></i>
+                        <div>
+                            <i class="iconfont icon-jurassic_data"></i>
+                        </div>
+                        
                     </div>
                     </transition>
 
-                    <transition name="el-zoom-in-top" :appear=true>
-                    <div class="cht con" v-if="chtb" @click="chartcreate">
+                    <transition name="el-zoom-in-top" :appear="true">
+                    <div class="con" v-if="chtb" @click="chartcreate">
                         <h1>chart图表</h1>
                         <i class="iconfont icon-jurassic_chart"></i>
                     </div>
@@ -30,8 +34,8 @@
 
 
 
-                    <transition name="el-zoom-in-top" :appear=true>
-                    <div class="mql con" v-if="mqln" @click="mqttlinecreate">
+                    <transition name="el-zoom-in-top" :appear="true">
+                    <div class="con" v-if="mqln" @click="mqttlinecreate">
                         <h1>时间轴图表</h1>
                         <i class="iconfont icon-zhexiantu"></i>
                     </div>
@@ -41,22 +45,22 @@
             </div>
             <div class="col">
                 <div class="but">
-                    <transition name="el-zoom-in-top" :appear=true>
-                    <div class="mov con" v-if="stmo" @click="movf">
+                    <transition name="el-zoom-in-top" :appear="true">
+                    <div class="con" v-if="stmo" @click="movf">
                         <h1>动态数据</h1>
                         <i class="iconfont icon-yun1"></i>
                     </div>
                     </transition>
 
-                    <transition name="el-zoom-in-top" :appear=true>
-                    <div class="tb con" v-if="chtb" @click="tablecreate">
+                    <transition name="el-zoom-in-top" :appear="true">
+                    <div class="con" v-if="chtb" @click="tablecreate">
                         <h1>table表格</h1>
                         <i class="iconfont icon-biaoge"></i>
                     </div>
                     </transition>
 
-                    <transition name="el-zoom-in-top" :appear=true>
-                    <div class="mtn con" v-if="mqln" @click="mqttnumcreate">
+                    <transition name="el-zoom-in-top" :appear="true">
+                    <div class="con" v-if="mqln" @click="mqttnumcreate">
                         <h1>数字翻牌器</h1>
                         <i class="iconfont icon-shuzi"></i>
                     </div>
@@ -123,7 +127,7 @@ export default{
 
 }
 .col {
-    display: flex;
+    // display: flex;
     flex:2;
     // background-color: #666;
     position: relative;
@@ -159,12 +163,16 @@ export default{
     width: 100%;
     height: 415px;
     border-radius: 25%;
+    // text-align: center;
+    // padding: 25px;
 }
 
 h1 {
     font-size: 60px;
     color: #343434;
-    margin-top: 75px;
+    padding-top: 75px;
+    margin: 0 auto;
+    // display: block;
 }
 
 .iconfont {
@@ -178,50 +186,5 @@ h1 {
     margin-top: 2.5rem;
     font-size: 20px;
 }
-// .sta {
-    // background-image: url("../../assets/pic/db.jpg");
-    // background-repeat: no-repeat;
-    // background-position: 0 70px;
-    // border-radius: 50%;
-    // background-size: contain;
-// }
-// .mov {
-    // background-image: url("../../assets/pic/mqtt.jpg");
-    // background-repeat: no-repeat;
-    // background-position: 0 70px;
-    // background-size: contain;
-    // border-radius: 27%;
-// }
-// 
-// .cht {
-    // background-image: url("../../assets/pic/cht.jpg");
-    // background-repeat: no-repeat;
-    // background-position: 0 60px;
-    // background-size: contain;
-    // border-radius: 25%;
-// }
-// 
-// .tb {
-    // background-image: url("../../assets/pic/table.jpg");
-    // background-repeat: no-repeat;
-    // background-position: -20px 100px;
-    // background-size: fill;
-    // border-radius: 25%;
-// }
-// 
-// .mql {
-    // background-image: url("../../assets/pic/mqttline.jpg");
-    // background-repeat: no-repeat;
-    // background-position: -20px 100px;
-    // background-size: fill;
-    // border-radius: 25%;
-// }
-// 
-// .mtn {
-    // background-image: url("../../assets/pic/mqttnum.png");
-    // background-repeat: no-repeat;
-    // background-position: 0 100px;
-    // background-size: contain;
-    // border-radius: 25%;
-// }
+
 </style>
