@@ -19,11 +19,11 @@ export default {
     
     methods: {
         drawline({
-            xArray=[], //^x轴
+            xarray=[], //^x轴
             series=[], //^数据
             legend=[],
-            xType='',
-            yType=''
+            xtype='',
+            ytype=''
         }={}){
             let that=this
             this.chart = this.$echarts.init(document.getElementById(this.id))
@@ -61,9 +61,9 @@ export default {
                 // },
                 xAxis: [
                     {
-                        type: xType,
+                        type: xtype,
                         // boundaryGap: false,
-                        data: xArray,
+                        data: xarray,
                         axisLabel: {
                             textStyle: {
                                 color: '#ffffff'
@@ -73,7 +73,7 @@ export default {
                 ],
                 yAxis: [
                     {
-                        type: yType,
+                        type: ytype,
                         axisLabel: {
                             textStyle: {
                                 color: '#ffffff'

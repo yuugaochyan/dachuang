@@ -129,8 +129,8 @@ export default {
                     const userID=localStorage.getItem("userID")
                     postData={
                             userID:userID,
-                            tableName:this.chartform.dataSource,
                             graphName:this.chartform.graphName,
+                            tableName:this.chartform.dataSource,
                         }
                         const result = axios({
                         method: 'post',
