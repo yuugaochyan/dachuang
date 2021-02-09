@@ -26,8 +26,7 @@
             :key="item.i"
             @resized="resizedEvent"
             @moved="movedEvent"
-            @resize="resizeEvent"
-            @move="moveEvent"
+            
           >
             
             
@@ -132,6 +131,7 @@ export default {
       let postDta=this.$qs.stringify({
           dbID:this.dbID
       })
+      // console.log(this.dbID);
       const result = axios({
           method: 'post',
           url:'/getDBitemInfo',
@@ -154,13 +154,13 @@ export default {
         this.asideResize();
         
     },
-    resizeEvent: function(i, newH, newW, newHPx, newWPx){
+    // resizeEvent: function(i, newH, newW, newHPx, newWPx){
         // console.log("RESIZED i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);
-        this.asideResize();
-    },
-    moveEvent: function(i, newX, newY,e){
-        this.asideResize();
-    },
+        // this.asideResize();
+    // },
+    // moveEvent: function(i, newX, newY,e){
+        // this.asideResize();
+    // },
     
   },
   created() {

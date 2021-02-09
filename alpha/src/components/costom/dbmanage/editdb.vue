@@ -1,5 +1,5 @@
 <template>
-    <div id="app" v-if="reset">
+    <div id="app" >
         <div class="maincontain" @dblclick="drawer = true">
             
 
@@ -103,7 +103,7 @@ export default {
             },
             dbData:[],
             dbID:'',
-            reset:false,
+            // reset:false,
             drawer:false,
             direction: 'rtl',
             editTable:false,
@@ -128,18 +128,18 @@ export default {
             this.form.name = this.$route.params.dbName
             this.form.info = this.$route.params.dbInfo
             // console.log(this.form.name);
-            let postData=this.$qs.stringify({
-                dbID:that.dbID,
-            })
-            const result = axios({
-                method: 'post',
-                url:'/getDBList',
-                data:postData
-            }).then(function(resp){
-                if(resp.data.status==200) {
-                    that.dbData=resp.data.data
-                }
-            })
+            // let postData=this.$qs.stringify({
+                // dbID:that.dbID,
+            // })
+            // const result = axios({
+                // method: 'post',
+                // url:'/getDBList',
+                // data:postData
+            // }).then(function(resp){
+                // if(resp.data.status==200) {
+                    // that.dbData=resp.data.data
+                // }
+            // })
             this.$message({
                     showClose: true,
                     message: '双击屏幕可打开工具箱,仪表盘将会每隔30秒进行自动保存,如遇数据显示不全请尝试刷新',
@@ -297,13 +297,13 @@ export default {
         clearInterval(this.interval);
     },
 
-    watch: {
-        dbData: function(){
-            this.$nextTick(function(){
-                this.reset = true;
-            })
-        }
-    }
+    // watch: {
+        // dbData: function(){
+            // this.$nextTick(function(){
+                // this.reset = true;
+            // })
+        // }
+    // }
 }
 </script>
 

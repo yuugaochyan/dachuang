@@ -1,5 +1,5 @@
 <template>
-    <div id="app" v-if="reset">
+    <div id="app">
         <div class="maincontain" @dblclick="drawer = true">
             
 
@@ -45,7 +45,7 @@ export default {
             dbID:'',
             dbName:'',
             dbInfo:'',
-            reset:false,
+            // reset:false,
             drawer:false,
             direction: 'rtl',
         }
@@ -56,18 +56,18 @@ export default {
             this.dbID = this.$route.params.dbID
             this.dbName = this.$route.params.dbName
             this.dbInfo = this.$route.params.dbInfo
-            let postData=this.$qs.stringify({
-                dbID:that.dbID,
-            })
-            const result = axios({
-                method: 'post',
-                url:'/getDBList',
-                data:postData
-            }).then(function(resp){
-                if(resp.data.status==200) {
-                that.dbData=resp.data.data
-                }
-            })
+            // let postData=this.$qs.stringify({
+                // dbID:that.dbID,
+            // })
+            // const result = axios({
+                // method: 'post',
+                // url:'/getDBList',
+                // data:postData
+            // }).then(function(resp){
+                // if(resp.data.status==200) {
+                // that.dbData=resp.data.data
+                // }
+            // })
             this.$message({
                     showClose: true,
                     message: '双击屏幕可打开工具箱,如遇数据显示不全请尝试刷新',
@@ -97,13 +97,13 @@ export default {
         this.getDbData();
     },
 
-    watch: {
-        dbData: function(){
-            this.$nextTick(function(){
-                this.reset = true;
-            })
-        }
-    }
+    // watch: {
+        // dbData: function(){
+            // this.$nextTick(function(){
+                // this.reset = true;
+            // })
+        // }
+    // }
 }
 </script>
 
