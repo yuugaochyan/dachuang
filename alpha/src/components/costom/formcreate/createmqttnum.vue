@@ -148,7 +148,8 @@ export default {
                     fontSize:120,
                     fill:'#dfdfdf'
                 }
-            }
+            },
+            tag:''
         }
     },
     
@@ -165,6 +166,7 @@ export default {
             this.$axios.post("/getmqttTable",postDta)
             .then((resp)=>{
                 tag=resp.data.tag;
+                that.tag=resp.data.tag;
             })
             client.on('connect', (e) => {
                 console.log("连接成功！！！")
@@ -224,8 +226,9 @@ export default {
 
                         postData={
                             userID:userID,
-                            tag:this.chartform.dataSource,
-                            tagName:this.chartform.graphName,
+                            graphName:this.chartform.graphName,
+                            tag:this.tag,
+                            tagName:this.chartform.dataSource,
                             max:this.chartform.max,
                             min:this.chartform.min,
                         }

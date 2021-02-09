@@ -16,6 +16,10 @@ import createchart from '@/components/costom/formcreate/createchart'
 import createtable from '@/components/costom/formcreate/createtable'
 import createmqttline from '@/components/costom/formcreate/createmqttline'
 import createmqttnum from '@/components/costom/formcreate/createmqttnum'
+import viewdb from '@/components/costom/dbmanage/viewdb'
+import editdb from '@/components/costom/dbmanage/editdb'
+import viewtb from '@/components/costom/dbmanage/viewtb'
+import edittb from '@/components/costom/dbmanage/edittb'
 Vue.use(VueRouter)
 
 const routes = [
@@ -38,6 +42,7 @@ const routes = [
     {path:'/coshome', 
     component: coshome,
     name:"coshome",
+    redirect:'/createdb',
     children:[
       {path:'/createdb', component: createdb,name:"createdb"},
       {path:'/createtb', component: createtb,name:"createtb"},
@@ -47,6 +52,10 @@ const routes = [
       {path:'/createtable', component: createtable,name:"createtable"},
       {path:'/createmqttline', component: createmqttline,name:"createmqttline"},
       {path:'/createmqttnum', component: createmqttnum,name:"createmqttnum"},
+      {path:'/viewdb/:dbID', component: viewdb,name:"viewdb"},
+      {path:'/editdb/:dbID', component: editdb,name:"editdb"},
+      {path:'/viewtb/:tbID', component: viewtb,name:"viewtb"},
+      {path:'/edittb/:tbID', component: edittb,name:"edittb"},
     ]},
     
     // {path:'/mainfac', component: mainfac,},
