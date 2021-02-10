@@ -103,6 +103,7 @@ export default {
         obdata: {
             handler(value) {
                 this.drawline(value)
+                console.log(value);
             }
         },
         deep:true //深度监听

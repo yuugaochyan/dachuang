@@ -5,7 +5,7 @@
                 
                 <transition name="el-zoom-in-top" >
                     <div class="msg" v-if=showinfo>
-                        <h1>你的可视化：{{tbData.title}}</h1>
+                        <h1>你的可视化：{{tbName}}</h1>
                         <h3>可视化类型：{{tbData.type}}</h3>
                     </div>
                 </transition>
@@ -19,10 +19,10 @@
             
             </div>
             <div class="right">
-                <chart v-if="tbData.type=='chart'" :id="tbData.i" :obdata="tbData.objectData"></chart>
-                <mqttline v-if="tbData.type=='mqttline'" :id="tbData.i" :obdata="tbData.objectData"></mqttline>
-                <sqltb v-if="tbData.type=='table'" :id="tbData.i" :obdata="tbData.objectData"></sqltb>
-                <mqttnum v-if="tbData.type=='mqttnum'" :id="tbData.i" :obdata="tbData.objectData"></mqttnum>
+                <chart v-if="tbData.type=='chart'" :id="tbID" :obdata="tbData.Graph"></chart>
+                <mqttline v-if="tbData.type=='mqttline'" :id="tbID" :obdata="tbData.Graph"></mqttline>
+                <sqltb v-if="tbData.type=='table'" :id="tbID" :obdata="tbData.Graph"></sqltb>
+                <mqttnum v-if="tbData.type=='mqttnum'" :id="tbID" :obdata="tbData.Graph"></mqttnum>
             </div>
             
             
@@ -43,6 +43,7 @@ export default {
         return {
             tbData:{},
             tbID:'',
+            tbName:'',
             reset:false,
             showinfo:false
         }
@@ -57,12 +58,13 @@ export default {
         getTbData() {
             let that = this;
             this.tbID = this.$route.params.tbID
+            this.tbName = this.$route.params.tbName
             let postData=this.$qs.stringify({
                 tbID:that.tbID,
             })
             const result = axios({
                 method: 'post',
-                url:'/getTBData',
+                url:'/getGraphInfo',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
