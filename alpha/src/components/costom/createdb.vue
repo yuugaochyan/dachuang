@@ -16,7 +16,7 @@
                         border
                         style="width: 100%">
                             <el-table-column
-                                prop="name"
+                                prop="dbName"
                                 label="仪表盘名字"
                                 width="180">
                             </el-table-column>

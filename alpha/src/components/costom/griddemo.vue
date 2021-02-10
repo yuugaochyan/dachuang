@@ -126,12 +126,11 @@ export default {
       
     },
     init() {
-      
+      console.log(this.dbID);
       let that=this
       let postDta=this.$qs.stringify({
-          dbID:3
+          dbID:that.dbID
       })
-      // console.log(this.dbID);
       const result = axios({
           method: 'post',
           url:'/getDBItemInfo',

@@ -26,6 +26,7 @@ public class DashBoardController {
     @RequestMapping(value = "/getDBItemInfo",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> getDBitemInfo(int dbID){
+        System.out.println(dbID);
         Map<String,Object> map=new HashMap<>();
         map.put("status",200);
         map.put("data",dashBoardService.getdbItemBydbID(dbID));
