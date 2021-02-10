@@ -212,7 +212,8 @@ export default {
             this.$router.push({
                 name:'viewtb',
                 params: {
-                    tbID:row.tbID
+                    tbID:row.tbID,
+                    tbName:row.name
                 }
             })
         },
@@ -221,7 +222,8 @@ export default {
             this.$router.push({
                 name:'edittb',
                 params: {
-                    tbID:row.tbID
+                    tbID:row.tbID,
+                    tbName:row.name
                 }
             })
         },
@@ -254,10 +256,10 @@ export default {
                 const userID=localStorage.getItem("userID")
                 let postData=this.$qs.stringify({
                     userID:userID,
-                    db:{
-                        name:this.newDB.name,
-                        info:this.newDB.info
-                    }
+                    
+                    dbName:this.newDB.name,
+                    info:this.newDB.info
+                    
                 })
                 const result = axios({
                     method: 'post',
@@ -267,7 +269,7 @@ export default {
                     if(resp.data.status==200) {
                     that.$message({
                         showClose: true,
-                        message: '创建成功',
+                        message: resp.data.msg,
                         center: true,
                         type: 'success'
                     });

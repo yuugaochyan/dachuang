@@ -218,7 +218,7 @@ export default {
 
                 
                 let postData=this.$qs.stringify({
-                    userID:userID,
+                    
                     dbID:this.dbID,
                     tbList:tbIDList,
                     
@@ -226,13 +226,13 @@ export default {
                 // console.log(postData);
                 const result = axios({
                     method: 'post',
-                    url:'/getTBList',
+                    url:'/addGraphToDB',
                     data:postData
                 }).then(function(resp){
                     if(resp.data.status==200) {
                         that.$notify({
                             
-                            message: '添加成功',
+                            message: resp.data.msg,
                             offset: 100,
                             type: 'success'
                         });
@@ -262,19 +262,19 @@ export default {
             let that = this;
             let postData={
                 userID:userID,
-                data:locaData,
+                items:locaData,
             }
             // console.log(postData);
             const result = axios({
                 method: 'post',
-                url:'/saveDB',
+                url:'/saveItemLoc',
                 data:postData
             }).then(function(resp){
                 
                 if(resp.data.status==200) {
                     that.$notify({
                         
-                        message: '保存成功',
+                        message: resp.data.msg,
                         offset: 100,
                         type: 'success'
                     });
