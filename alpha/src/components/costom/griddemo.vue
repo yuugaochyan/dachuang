@@ -131,6 +131,7 @@ export default {
       let postDta=this.$qs.stringify({
           dbID:that.dbID
       })
+      console.log(this.dbID);
       const result = axios({
           method: 'post',
           url:'/getDBItemInfo',
