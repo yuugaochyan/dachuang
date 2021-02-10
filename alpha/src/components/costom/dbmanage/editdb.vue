@@ -269,7 +269,7 @@ export default {
       console.log(this.dbID);
       const result = axios({
           method: 'post',
-          url:'/getDBitemInfo',
+          url:'/getDBItemInfo',
           data:postDta
       }).then(function(resp){
           if(resp.data.status==200) {
@@ -327,7 +327,7 @@ export default {
             })
             const result = axios({
                 method: 'post',
-                url:'/getTBList',
+                url:'/getGraphList',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
@@ -392,11 +392,9 @@ export default {
                 locaData.push(pDitem);
             }
             let that = this;
-            let postData={
-                userID:userID,
-                items:locaData,
-            }
-            // console.log(postData);
+            let postData=locaData
+
+            console.log(postData);
             const result = axios({
                 method: 'post',
                 url:'/saveItemLoc',

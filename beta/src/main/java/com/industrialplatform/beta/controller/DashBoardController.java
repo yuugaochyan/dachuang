@@ -60,6 +60,17 @@ public class DashBoardController {
         return map;
     }
 
+//    获取图表列表
+    @RequestMapping(value = "/getGraphList",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> getGraphList(int userID){
+        Map<String,Object> map=new HashMap<>();
+        map.put("status",200);
+        map.put("msg","图表列表获取成功！");
+        map.put("data",dashBoardService.getGraphList(userID));
+        return map;
+    }
+
 //    获取图表信息
     @RequestMapping(value = "/getGraphInfo",method = RequestMethod.POST)
     @ResponseBody

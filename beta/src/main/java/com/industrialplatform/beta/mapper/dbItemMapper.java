@@ -32,6 +32,7 @@ public interface dbItemMapper {
     int getCurrentLineLegendNum(int graphID);
 
 //    获取整体信息
+    List<Graph> getGraphListByUserID(int userID);
     List<DashBoard> getDBListByUserID(int userID);
     List<dashBoardItem> getItemLocationListBydbID(int dbID);
     dashBoardItem getItemInfoByItemID(int id);

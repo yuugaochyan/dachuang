@@ -37,6 +37,11 @@ public class DashBoardService {
         return dbItemMapper.getDBListByUserID(userID);
     }
 
+//    获取图表列表
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public List<Graph> getGraphList(int userID){
+        return dbItemMapper.getGraphListByUserID(userID);
+    }
 
 //    根据dashboardID调取所有信息
     @Transactional(propagation = Propagation.SUPPORTS)

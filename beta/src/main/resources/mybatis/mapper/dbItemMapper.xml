@@ -62,6 +62,12 @@
         from dashboard
         where userID=#{userID}
     </select>
+<!--  获取该用户的所有图表列表  -->
+    <select id="getGraphListByUserID" parameterType="int" resultType="Graph">
+        select ID as graphID,graphName,type as graphType
+        from graphmasterinfo
+        where userID=#{userID}
+    </select>
 
 <!--  获取db所有的ItemID  -->
     <select id="getdbItemIDList" parameterType="int" resultType="int">
