@@ -96,13 +96,13 @@
                             width="55">
                         </el-table-column>
                         <el-table-column
-                            prop="name"
+                            prop="graphName"
                             label="可视化名字"
                             width="150">
                         </el-table-column>
                         <el-table-column
-                            prop="info"
-                            label="描述"
+                            prop="graphType"
+                            label="可视化类型"
                             width="200">
                         </el-table-column>
                         
@@ -257,7 +257,8 @@ export default {
                     showClose: true,
                     message: '双击屏幕可打开工具箱,仪表盘将会每隔30秒进行自动保存,如遇数据显示不全请尝试刷新',
                     center: true,
-                    type: 'info'
+                    type: 'info',
+                    duration:0
             });
         },
         init() {
