@@ -50,6 +50,19 @@
         <result property="yType" column="c_yType"/>
     </resultMap>
 
+<!--  创建仪表盘  -->
+    <insert id="createDashBoard" parameterType="DashBoard">
+        insert into dashboard(dbName,userID,info)
+        values(#{dbName},#{userID},#{info})
+    </insert>
+
+<!--  获取该用户的所有仪表盘列表  -->
+    <select id="getDBListByUserID" parameterType="int" resultType="DashBoard">
+        select dbID,dbName,info
+        from dashboard
+        where userID=#{userID}
+    </select>
+
 <!--  获取db所有的ItemID  -->
     <select id="getdbItemIDList" parameterType="int" resultType="int">
         select itemID
@@ -66,15 +79,15 @@
 <!--  获取chart的类型  -->
     <select id="getChartTypeById" parameterType="int" resultType="String">
         select b.graphType
-        from dbitem a,graph b,dbitembind e
-        where a.itemID=#{id} and a.itemID=e.itemID and b.graphID=e.graphID
+        from graph b
+        where b.graphID=#{id}
     </select>
 
 <!--  获取图表ID  -->
     <select id="getGraphIdByItemId" parameterType="int" resultType="int">
-        select b.graphID
-        from dbitem a,graph b,dbitembind e
-        where a.itemID=#{id} and a.itemID=e.itemID and b.graphID=e.graphID
+        select e.graphID
+        from dbitembind e
+        where e.itemID=#{id}
     </select>
 
 <!--  获取当前最大的图表ID  -->
@@ -124,10 +137,17 @@
         where graphID=#{graphID}
     </select>
 
+<!--  获取当前DB的item数量  -->
+    <select id="countdbItemNum" parameterType="int" resultType="int">
+        select count(*)
+        from dbitem
+        where dbID=#{dbID}
+    </select>
+
 <!--  获取Item位置列表  -->
     <select id="getItemLocationListBydbID" parameterType="int" resultType="dashBoardItem">
         select x,y,w,h
-        from dbitm
+        from dbitem
         where dbID=#{dbID}
     </select>
 <!--  获取item基本信息  -->
@@ -142,6 +162,12 @@
         from dbitem a
         where a.itemID=#{id}
     </select>
+<!--  更新item位置  -->
+    <update id="updateItemLoc" parameterType="dashBoardItem">
+        update dbitem
+        set x=#{x},y=#{y},w=#{w},h=#{h}
+        where itemID=#{i}
+    </update>
 
 <!--  注册新Item  -->
     <insert id="addNewItemToDB">
@@ -160,12 +186,12 @@
     </insert>
 
 <!--  获取图表基本信息  -->
-    <select id="getGraphByItemID" parameterType="int" resultMap="itemObjectMap">
+    <select id="getGraphByGraphID" parameterType="int" resultMap="itemObjectMap">
         select b.graphID as b_graphID,
                b.graphName as b_graphName,
                b.graphType as b_graphType
-        from dbitem a,graph b,dbitembind e
-        where a.itemID=#{id} and a.itemID=e.itemID and b.graphID=e.graphID
+        from graph b
+        where b.graphID=#{id}
     </select>
 <!--  添加Graph  -->
     <insert id="addGraph" >
@@ -270,7 +296,7 @@
     </select>
 
 <!-- 获取mqtt图表数据  -->
-    <select id="getMQTTGraphDataByItemID" resultType="mqttGraph" parameterType="int">
+    <select id="getMQTTGraphDataByGraphID" resultType="mqttGraph" parameterType="int">
         select a.mqttID,
                a.tag,
                a.max,
@@ -278,23 +304,23 @@
                a.tagName,
                a.type,
                a.graphName
-        from mqttgraph a,dbitembind b
-        where a.mqttID=b.graphID and b.itemID=#{itemID}
+        from mqttgraph a
+        where a.mqttID=#{graphID}
     </select>
 <!--  添加MQTTGraph  -->
     <insert id="addMQTTGraph" >
-        insert into mqttgraph(mqttID,tag,max,min,tagName,type)
-        values(#{mqttID},#{tag},#{max},#{min},#{tagName},#{type})
+        insert into mqttgraph(mqttID,tag,max,min,tagName,type,graphName)
+        values(#{mqttID},#{tag},#{max},#{min},#{tagName},#{type},#{graphName})
     </insert>
 
 
 <!-- 获取table信息  -->
-    <select id="getTableInfoByItemID" resultType="Table" parameterType="int">
+    <select id="getTableInfoByGraphID" resultType="Table" parameterType="int">
         select a.tableID,
                a.tableName,
                a.graphName
-        from tableitem a,dbitembind b
-        where a.tableID=b.graphID and b.itemID=#{itemID}
+        from tableitem a
+        where a.tableID=#{graphID}
     </select>
 <!--  添加Table  -->
     <insert id="addTable" >

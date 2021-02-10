@@ -33,6 +33,8 @@ class BetaApplicationTests {
 //        dataBaseService.getTableData("equipmentrepair");
 //        dashBoardService.getdbItemByItemID(1007);
         dashBoardService.getdbItemBydbID(1);
+//        int a[]={10001,10002};
+//        dashBoardService.addGraphsToDashBoard(a,3);
 
 
 

@@ -11,11 +11,17 @@ import java.util.Map;
 @Mapper
 @Repository
 public interface dbItemMapper {
-    int[] getdbItemIDList(int dbID);
 
+//    仪表盘创建
+    int createDashBoard(DashBoard dashBoard);
+
+//    获取零碎信息
+    int[] getdbItemIDList(int dbID);
+    int countdbItemNum(int dbID);
     String getChartTypeById(int id);
     String getGraphTypeByGraphID(int graphID);
     int getGraphIdByItemId(int id);
+
     int getCurrentItemID();
     int getCurrentItemNum();
     int getCurrentGrpahID();
@@ -25,12 +31,15 @@ public interface dbItemMapper {
     int getCurrentLineLegendID(int graphID);
     int getCurrentLineLegendNum(int graphID);
 
+//    获取整体信息
+    List<DashBoard> getDBListByUserID(int userID);
     List<dashBoardItem> getItemLocationListBydbID(int dbID);
     dashBoardItem getItemInfoByItemID(int id);
-    Graph getGraphByItemID(int id);
-    mqttGraph getMQTTGraphDataByItemID(int itemID);
-    Table getTableInfoByItemID(int itemID);
+    Graph getGraphByGraphID(int id);
+    mqttGraph getMQTTGraphDataByGraphID(int graphID);
+    Table getTableInfoByGraphID(int graphID);
 
+//    获取chart信息
     BarChart getBarChartByGraphID(int graphid);
     LineChart getLineChartByGraphID(int graphid);
     ScatterChart getScatterChartByGraphID(int graphid);
@@ -47,11 +56,13 @@ public interface dbItemMapper {
     float[] getScatterXData(int graphID);
     float[] getScatterYData(int graphID);
 
-    int registGraph(@Param("ID")int ID,@Param("userID")int userID,@Param("type")String type);
+//    仪表盘事物
     int addNewItemToDB(int itemID,int dbID,String type,int x,int y);
     int bindGraphToItem(int graphID,int itemID);
+    int updateItemLoc(dashBoardItem dashBoardItem);
 
-
+//    图表事物Insert
+    int registGraph(@Param("ID")int ID,@Param("userID")int userID,@Param("type")String type);
     int addGraph(Graph graph);
     int addMQTTGraph(mqttGraph mqttGraph);
     int addTable(Table table);

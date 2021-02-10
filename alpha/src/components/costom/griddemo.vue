@@ -129,7 +129,7 @@ export default {
       
       let that=this
       let postDta=this.$qs.stringify({
-          dbID:1
+          dbID:3
       })
       // console.log(this.dbID);
       const result = axios({

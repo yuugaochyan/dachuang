@@ -24,7 +24,21 @@ public class DashBoardService {
     @Autowired
     dataBaseMapper dataBaseMapper;
 
-//    获取根据dashboardID调取所有信息
+//    创建仪表盘
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public boolean createDB(DashBoard dashBoard){
+        dbItemMapper.createDashBoard(dashBoard);
+        return true;
+    }
+
+//    获取仪表盘列表
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public List<DashBoard> getDBList(int userID){
+        return dbItemMapper.getDBListByUserID(userID);
+    }
+
+
+//    根据dashboardID调取所有信息
     @Transactional(propagation = Propagation.SUPPORTS)
     public List<dashBoardItem> getdbItemBydbID(int dbID){
         List<dashBoardItem> items=new ArrayList<>();
@@ -38,39 +52,55 @@ public class DashBoardService {
     }
 
 
+//    保存item位置
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public boolean saveItemLoc(List<dashBoardItem> items){
+        for(dashBoardItem item:items){
+            dbItemMapper.updateItemLoc(item);
+        }
+        return  true;
+    }
+
+
 //    获取item信息
     @Transactional(propagation = Propagation.SUPPORTS)
     public dashBoardItem getdbItemByItemID(int ItemID){
         dashBoardItem dashBoardItem=dbItemMapper.getItemInfoByItemID(ItemID);
+        int graphID=dbItemMapper.getGraphIdByItemId(ItemID);
+        dashBoardItem.setObjectData(getGraphInfo(graphID));
+        System.out.println(dashBoardItem);
+        return dashBoardItem;
+    }
+
+//    获取图表的信息
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public Object getGraphInfo(int graphID){
+        String type=dbItemMapper.getGraphTypeByGraphID(graphID);
         Map<String,Integer> ObjectMap=new HashMap<>();
         ObjectMap.put("chart",1);
         ObjectMap.put("mqttline",2);
         ObjectMap.put("mqttnum",2);
         ObjectMap.put("table",3);
-        System.out.println(dashBoardItem.getType());
-        switch (ObjectMap.get(dashBoardItem.getType()))
+        switch (ObjectMap.get(type))
         {
             case 1:
-                dashBoardItem.setObjectData(getGraphByID(ItemID));
-                break;
+                return getGraphByID(graphID);
             case 2:
-                dashBoardItem.setObjectData(getMQTTGraph(ItemID));
-                break;
+                return getMQTTGraph(graphID);
             case 3:
-                dashBoardItem.setObjectData(getTable(ItemID));
-                break;
+                return getTable(graphID);
             default:
+                return null;
         }
-        System.out.println(dashBoardItem);
-        return dashBoardItem;
     }
 
 
 //    添加图表至仪表盘中
     public boolean addGraphsToDashBoard(int[] graphIDs,int dbID){
-        List<dashBoardItem> itemsLoc=dbItemMapper.getItemLocationListBydbID(dbID);
         int[][] dbLoc=new int[DB_MAX_SIZE][DB_MAX_SIZE];
         int x,y,w,h,flag;
+        if(dbItemMapper.countdbItemNum(dbID)!=0){
+        List<dashBoardItem> itemsLoc=dbItemMapper.getItemLocationListBydbID(dbID);
         for(dashBoardItem Loc:itemsLoc){
             x=Loc.getX();
             y=Loc.getY();
@@ -78,37 +108,30 @@ public class DashBoardService {
             h=Loc.getH();
             for(int j=0;j<h;j++) {
                 for (int i = 0; i < w; i++) {
-                    dbLoc[x+j][y+i]=1;
+                    dbLoc[y+j][x+i]=1;
                 }
             }
-        }
+        }}
         x=0;
         y=0;
         for(int graphID:graphIDs){
             flag=0;
             while(flag==0){
-                if(dbLoc[x][y]==0){
-                    if (dbLoc[x][y+1]==0){
-                        if(dbLoc[x+1][y]==0) {
-                            if (dbLoc[x + 1][y + 1] == 0) {
+                if(dbLoc[y][x]==0){
+                    if (dbLoc[y][x+1]==0){
+                        if(dbLoc[y+1][x]==0) {
+                            if (dbLoc[y + 1][x + 1] == 0) {
                                 addOneGraphToDashBoard(graphID,dbID,x,y);
                                 flag=1;
-                                dbLoc[x][y]=1;dbLoc[x][y+1]=1;dbLoc[x+1][y]=1;dbLoc[x+1][y+1]=1;
+                                dbLoc[y][x]=1;dbLoc[y][x+1]=1;dbLoc[y+1][x]=1;dbLoc[y+1][x+1]=1;
                             }
                         }
                     }
                 }
-                if(y<=11)y++;
-                else {x++;y=0;}
-
+                if(x<10)x++;
+                else {y++;x=0;}
             }
-
         }
-
-
-
-
-
         return true;
     }
 
@@ -119,7 +142,7 @@ public class DashBoardService {
         String type=dbItemMapper.getGraphTypeByGraphID(graphID);
         int itemID=0;
         if (dbItemMapper.getCurrentItemNum()==0)itemID=1000;
-        else itemID=dbItemMapper.getCurrentItemID();
+        else itemID=dbItemMapper.getCurrentItemID()+1;
         dbItemMapper.addNewItemToDB(itemID,dbID,type,x,y);
         dbItemMapper.bindGraphToItem(graphID,itemID);
         return true;
@@ -128,8 +151,8 @@ public class DashBoardService {
 
 //    获取Graph信息
     @Transactional(propagation = Propagation.SUPPORTS)
-    public Graph getGraphByID(int ItemID){
-        String type=dbItemMapper.getChartTypeById(ItemID);
+    public Graph getGraphByID(int graphID){
+        String type=dbItemMapper.getChartTypeById(graphID);
 //        dashBoardItem dashBoardItem=dbItemMapper.getItemInfoByItemID(ItemID);
         Map<String,Integer> chartMap=new HashMap<>();
         chartMap.put("bar",1);
@@ -140,14 +163,13 @@ public class DashBoardService {
         switch(chartMap.get(type))
         {
             case 1:
-                Graph<BarChart> barGraph=dbItemMapper.getGraphByItemID(ItemID);
-                int graphid=barGraph.getGraphID();
-                BarChart barChart=dbItemMapper.getBarChartByGraphID(graphid);
+                Graph<BarChart> barGraph=dbItemMapper.getGraphByGraphID(graphID);
+                BarChart barChart=dbItemMapper.getBarChartByGraphID(graphID);
                 barGraph.setChart(barChart);
                 barGraph.setLegend(new ArrayList<>());
-                barGraph.getChart().setXArray(dbItemMapper.getBarChartXArrayData(graphid));
+                barGraph.getChart().setXArray(dbItemMapper.getBarChartXArrayData(graphID));
                 for(BarDetail serie:barGraph.getChart().getSeries()){
-                    serie.setData(dbItemMapper.getBarData(graphid,serie.getLegendID()));
+                    serie.setData(dbItemMapper.getBarData(graphID,serie.getLegendID()));
                     serie.setType("bar");
                     barGraph.getLegend().add(serie.getName());
                 }
@@ -159,14 +181,13 @@ public class DashBoardService {
 //                dashBoardItem.setObjectData(barGraph);
                 return barGraph;
             case 2:
-                Graph<LineChart> lineGraph=dbItemMapper.getGraphByItemID(ItemID);
-                graphid=lineGraph.getGraphID();
-                LineChart lineChart=dbItemMapper.getLineChartByGraphID(graphid);
+                Graph<LineChart> lineGraph=dbItemMapper.getGraphByGraphID(graphID);
+                LineChart lineChart=dbItemMapper.getLineChartByGraphID(graphID);
                 lineGraph.setChart(lineChart);
                 lineGraph.setLegend(new ArrayList<>());
-                lineGraph.getChart().setXArray(dbItemMapper.getLineChartXArrayData(graphid));
+                lineGraph.getChart().setXArray(dbItemMapper.getLineChartXArrayData(graphID));
                 for(LineDetail serie:lineGraph.getChart().getSeries()){
-                    serie.setData(dbItemMapper.getLineData(graphid,serie.getLegendID()));
+                    serie.setData(dbItemMapper.getLineData(graphID,serie.getLegendID()));
                     serie.setType("line");
                     lineGraph.getLegend().add(serie.getName());
                 }
@@ -178,10 +199,9 @@ public class DashBoardService {
 //                dashBoardItem.setObjectData(lineGraph);
                 return lineGraph;
             case 3:
-                Graph<PieChart> pieGraph=dbItemMapper.getGraphByItemID(ItemID);
-                graphid=pieGraph.getGraphID();
-                List<String> pieCol=dbItemMapper.getPieColumn(graphid);
-                int[] pieValue=dbItemMapper.getPieValue(graphid);
+                Graph<PieChart> pieGraph=dbItemMapper.getGraphByGraphID(graphID);
+                List<String> pieCol=dbItemMapper.getPieColumn(graphID);
+                int[] pieValue=dbItemMapper.getPieValue(graphID);
                 pieGraph.setChart(new PieChart());
                 pieGraph.setLegend(new ArrayList<>());
                 pieGraph.getChart().setSeries(new ArrayList<>());
@@ -204,11 +224,10 @@ public class DashBoardService {
 //                dashBoardItem.setObjectData(pieGraph);
                 return pieGraph;
             case 4:
-                Graph<ScatterChart> scatterGraph=dbItemMapper.getGraphByItemID(ItemID);
-                graphid=scatterGraph.getGraphID();
-                float[] xData=dbItemMapper.getScatterXData(graphid);
-                float[] yData=dbItemMapper.getScatterYData(graphid);
-                ScatterChart scatterChart=dbItemMapper.getScatterChartByGraphID(graphid);
+                Graph<ScatterChart> scatterGraph=dbItemMapper.getGraphByGraphID(graphID);
+                float[] xData=dbItemMapper.getScatterXData(graphID);
+                float[] yData=dbItemMapper.getScatterYData(graphID);
+                ScatterChart scatterChart=dbItemMapper.getScatterChartByGraphID(graphID);
                 scatterChart.setSeries(new ArrayList<>());
                 ScatterDetail scatterDetail=new ScatterDetail();
                 scatterDetail.setData(new float[xData.length][2]);
@@ -234,8 +253,8 @@ public class DashBoardService {
 
 //    获取mqtt图表信息
     @Transactional(propagation = Propagation.SUPPORTS)
-    public mqttGraph getMQTTGraph(int itemID){
-        mqttGraph mqttGraph=dbItemMapper.getMQTTGraphDataByItemID(itemID);
+    public mqttGraph getMQTTGraph(int graphID){
+        mqttGraph mqttGraph=dbItemMapper.getMQTTGraphDataByGraphID(graphID);
         if(mqttGraph.getType()!=null)
         {
             mqttGraph.setLegend(new ArrayList<>());
@@ -247,8 +266,8 @@ public class DashBoardService {
 
 //    获取tableItem信息
     @Transactional(propagation = Propagation.SUPPORTS)
-    public Table getTable(int itemID){
-        Table table=dbItemMapper.getTableInfoByItemID(itemID);
+    public Table getTable(int graphID){
+        Table table=dbItemMapper.getTableInfoByGraphID(graphID);
         table.setHeader(dataBaseMapper.getTableColNameByTableName(table.getTableName()));
         List<Map<String,Object>> result=dataBaseMapper.getRowData(table.getTableName());
         List<String> cols=table.getHeader();
