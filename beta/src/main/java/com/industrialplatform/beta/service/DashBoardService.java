@@ -73,7 +73,7 @@ public class DashBoardService {
         dashBoardItem dashBoardItem=dbItemMapper.getItemInfoByItemID(ItemID);
         int graphID=dbItemMapper.getGraphIdByItemId(ItemID);
         dashBoardItem.setObjectData(getGraphInfo(graphID));
-        System.out.println(dashBoardItem);
+//        System.out.println(dashBoardItem);
         return dashBoardItem;
     }
 
@@ -265,6 +265,9 @@ public class DashBoardService {
             mqttGraph.setLegend(new ArrayList<>());
             mqttGraph.getLegend().add(mqttGraph.getTagName());
         }
+        mqttGraph.setXType("category");
+        mqttGraph.setYType("value");
+        mqttGraph.setLengs(5);
 //        System.out.println(mqttGraph);
         return mqttGraph;
     }

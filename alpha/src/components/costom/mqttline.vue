@@ -60,7 +60,7 @@ export default {
                 // this.datalist.value=msg.v;
                 console.log(msg.v);
                 if(msg.v<max && msg.v>min){
-                    // that.vlist.push(msg.v);
+                    that.vlist.push(msg.v);
                     var time = new Date(msg.t*1000)
                     // console.log(msg.t);
                     var formatTime = time.toTimeString().substr(0,8)

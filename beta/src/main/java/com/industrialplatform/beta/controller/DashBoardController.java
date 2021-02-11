@@ -104,9 +104,10 @@ public class DashBoardController {
 //    增添图表至仪表盘中
     @RequestMapping(value = "/addGraphToDB",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> addGraphToDB(int dbID,int[] tblist){
+    public Map<String,Object> addGraphToDB(int dbID,int[] tbList){
+        System.out.println(tbList[0]);
         Map<String,Object> map=new HashMap<>();
-        if(dashBoardService.addGraphsToDashBoard(tblist,dbID)){
+        if(dashBoardService.addGraphsToDashBoard(tbList,dbID)){
             map.put("status",200);
             map.put("msg","图表添加成功！");
         }else{
