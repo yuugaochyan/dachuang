@@ -47,7 +47,7 @@
                     <el-select v-model="dbform.db" placeholder="请选择仪表盘">
                         <el-option
                         v-for="item in dbData"
-                        :key="item.dbID"
+                        :key="item.dbId"
                         :label="item.dbName"
                         :value="item.dbID">
                         </el-option>
@@ -90,7 +90,7 @@ const options= {
 }
 client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
 export default {
-    name:'createmqttnum',
+    name:'editmqttnum',
     data(){
         return {
             rules: {
@@ -127,7 +127,7 @@ export default {
             steplabel1:"放弃编辑",
             steplabel2:"下一步",
             tableData:{},
-            step1:true,
+            step1:false,
             step2:false,
             step3:false,
             chartform:{
@@ -150,8 +150,9 @@ export default {
                 }
             },
             tag:'',
-            dbData:[],
             tbID:'',
+            tbData:{},
+            dbData:[]
         }
     },
     
@@ -244,6 +245,7 @@ export default {
 
                         postData={
                             userID:userID,
+                            graphID:this.tbID,
                             graphName:this.chartform.graphName,
                             tag:this.tag,
                             tagName:this.chartform.dataSource,
@@ -257,8 +259,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.tbID=resp.data.tbID;
-                            that.getDbData();
+                            that.getDbData()
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -319,6 +320,34 @@ export default {
             let that = this;
             this.$router.push('/createtb')
         },
+        getTbData() {
+            let that = this;
+            this.tbID = this.$route.params.tbID
+            this.chartform.graphName = this.$route.params.tbName
+            let postData=this.$qs.stringify({
+                tbID:that.tbID,
+            })
+            const result = axios({
+                method: 'post',
+                url:'/getGraphInfo',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.tbData=resp.data.data
+                // console.log(that.tbData);
+                that.chartform.graphType=resp.data.data.Graph.graphType
+                that.chartform.dataSource=resp.data.data.Graph.dataSource
+                that.chartform.graphName=resp.data.data.Graph.graphName
+                that.Chart.name=resp.data.data.Graph.legend[0]
+                }
+            })
+            setTimeout(()=>{
+                this.step1=true
+            },500)
+        },
+    },
+    mounted () {
+        this.getTbData();
     },
     beforeDestroy() {
         client.end()

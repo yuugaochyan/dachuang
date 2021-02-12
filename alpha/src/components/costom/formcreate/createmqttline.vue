@@ -56,10 +56,10 @@
                     <el-form-item label="你的仪表盘"  prop="db">
                     <el-select v-model="dbform.db" placeholder="请选择仪表盘">
                         <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        v-for="item in dbData"
+                        :key="item.dbID"
+                        :label="item.dbName"
+                        :value="item.dbID">
                         </el-option>
                     </el-select>
                     </el-form-item>
@@ -74,7 +74,7 @@
 
             <el-steps :active="active" finish-status="success" class="bt-step" align-center>
                 <el-step title="第一步" description="命名这个问题并选择图表类型和数据源"></el-step>
-                <el-step title="第二步" description="配置x-y轴和数据，将问题存入你的库里"></el-step>
+                <el-step title="第二步" description="配置相关数据设置，将问题存入你的库里"></el-step>
                 <el-step title="第三步" description="放进仪表盘看看吧？"></el-step>
             </el-steps>
             </div>
@@ -163,11 +163,29 @@ export default {
                 db:''
             },
             chart:'',
-            tag:''
+            tag:'',
+            tbID:'',
+            dbData:[]
         }
     },
     
     methods: {
+        getDbData() {
+            let that = this;
+            const userID=localStorage.getItem("userID")
+            let postData=this.$qs.stringify({
+                userID:userID,
+            })
+            const result = axios({
+                method: 'post',
+                url:'/getDBList',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.dbData=resp.data.data
+            }
+            })
+        },
         drawline(Type){
             var vlist=[];
             var tlist=[];
@@ -334,6 +352,8 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
+                            that.tbID=resp.data.tbID;
+                            that.getDbData();
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -361,16 +381,31 @@ export default {
                 else if(this.active==2) {
                     this.$refs.chartformref3.validate((valid)=>{
                     if(!valid) return;
-                    this.active++;
-                    this.$message({
-                        showClose: true,
-                        message: '已经放入仪表盘！前往仪表盘管理看看吧？',
-                        center: true,
-                        type: 'success'
-                    });
-                    setTimeout(function() {
-                        that.$router.push('/createtb')
-                    },200)
+                    let postData=this.$qs.stringify({
+                        dbID:this.dbform.db,
+                        tblist:[this.tbID]
+                    },{
+                        indices:false
+                    })
+                    const result = axios({
+                        method: 'post',
+                        url:'/addGraphToDB',
+                        data:postData,
+                        indices:false
+                        }).then(function(resp){
+                            if(resp.data.status==200) {
+                            that.active++;
+                            that.$message({
+                                showClose: true,
+                                message: '已经放入仪表盘！前往仪表盘管理看看吧？',
+                                center: true,
+                                type: 'success'
+                            });
+                            setTimeout(function() {
+                                that.$router.push('/createdb')
+                            },300)
+                        }
+                    })
                     })
                 }
             })

@@ -7,20 +7,20 @@
                     <!-- <el-button @click="drawer = true" circle type="warning" icon="iconfont icon-preview" style="margin-left: 16px;"></el-button> -->
                 <!-- </el-tooltip> -->
 
-                <div class="vueGridLayout">
+        <div class="vueGridLayout">
         <grid-layout
-          :layout="layoutData"
-          :col-num="12"
-          :row-height="layoutHeight"
-          :is-draggable="editable"
-          :is-resizable="editable"
-          :is-mirrored="false"
-          :vertical-compact="true"
-          :margin="[10, 10]"
-          :use-css-transforms="true"
+            :layout="layoutData"
+            :col-num="12"
+            :row-height="layoutHeight"
+            :is-draggable="editable"
+            :is-resizable="editable"
+            :is-mirrored="false"
+            :vertical-compact="true"
+            :margin="[10, 10]"
+            :use-css-transforms="true"
         >
-          <grid-item
-            v-for="(item,index) in layoutData"
+            <grid-item
+            v-for="(item) in layoutData"
             :x="item.x"
             :y="item.y"
             :w="item.w"
@@ -34,25 +34,24 @@
             @resized="resizedEvent"
             @moved="movedEvent"
             
-          >
+            >
             
             
-            <div class="title">
-              {{index}}. {{item.title}}
-              <el-tooltip class="item" effect="dark" content="删除这个可视化" placement="bottom-start" v-if="editable">
-                <el-button size="mini" @click="deleteTB(item.i)" circle type="del" icon="iconfont icon-delete" class="toolbt"></el-button>
-              </el-tooltip>
-            </div>
-            <div class="tb">
-                <chart v-if="item.type=='chart'" :id="item.i" :obdata="item.objectData"></chart>
-                <mqttline v-if="item.type=='mqttline'" :id="item.i" :obdata="item.objectData"></mqttline>
-                <sqltb v-if="item.type=='table'" :id="item.i" :obdata="item.objectData"></sqltb>
-                <mqttnum v-if="item.type=='mqttnum'" :id="item.i" :obdata="item.objectData"></mqttnum>
-                
-            </div>
-          </grid-item>
+                <div class="title">
+                    {{item.title}}
+                    <el-tooltip class="item" effect="dark" content="删除这个可视化" placement="bottom-start" v-if="editable">
+                        <el-button size="mini" @click="deleteTB(item.i)" circle type="del" icon="iconfont icon-delete" class="toolbt"></el-button>
+                    </el-tooltip>
+                </div>
+                <div class="tb">
+                    <chart v-if="item.type=='chart'" :id="item.i" :obdata="item.objectData"></chart>
+                    <mqttline v-if="item.type=='mqttline'" :id="item.i" :obdata="item.objectData"></mqttline>
+                    <sqltb v-if="item.type=='table'" :id="item.i" :obdata="item.objectData"></sqltb>
+                    <mqttnum v-if="item.type=='mqttnum'" :id="item.i" :obdata="item.objectData"></mqttnum>
+                    
+                </div>
+            </grid-item>
         </grid-layout>
-      
     
     
     </div>
@@ -66,19 +65,28 @@
                     size=180>
                     <span slot="title" class="tool-banner"><i class="el-icon-s-tools"></i>工具箱</span>
                     <div class="toolbar">
-                        <el-button @click="asideResize" type="warning"  plain>适应调整</el-button>
+                        <el-tooltip class="item" effect="dark" content="调整图表位置（alt+R）" placement="bottom-end">
+                            <el-button @click="asideResize" type="warning"  plain>适应调整</el-button>
+                        </el-tooltip>
                         <br>
                         <el-divider></el-divider>
-                        <el-button @click="editTable=true" type="warning"  plain>编辑问题</el-button>
+                        <el-tooltip class="item" effect="dark" content="编辑仪表盘信息（alt+E）" placement="bottom-end">
+                            <el-button @click="editTable=true" type="warning"  plain>编辑问题</el-button>
+                        </el-tooltip><br>
+                        <el-divider></el-divider>
+                        <el-tooltip class="item" effect="dark" content="新增可视化到仪表盘（alt+A)" placement="bottom-end">
+                            <el-button @click="add" type="warning"  plain>新增图表</el-button>
+                        </el-tooltip>
                         <br>
                         <el-divider></el-divider>
-                        <el-button @click="add" type="warning"  plain>新增图表</el-button>
+                        <el-tooltip class="item" effect="dark" content="保存这个仪表盘（alt+S）" placement="bottom-end">
+                            <el-button @click="savedb" type="warning"  plain>保存问题</el-button>
+                        </el-tooltip>
                         <br>
                         <el-divider></el-divider>
-                        <el-button @click="savedb" type="warning"  plain>保存问题</el-button>
-                        <br>
-                        <el-divider></el-divider>
-                        <el-button @click="goback" type="warning"  plain>返回列表</el-button>
+                        <el-tooltip class="item" effect="dark" content="返回仪表盘管理页面" placement="bottom-end">
+                            <el-button @click="goback" type="warning"  plain>返回列表</el-button>
+                        </el-tooltip>
                     </div>
                 </el-drawer>
 
@@ -178,50 +186,54 @@ export default {
             interval:'',
             editable:true,
             layout: [
-        { x: 0, y: 0, w: 4, h: 2, i: 0 } //数据格式
-      ],
-      // 布局数据
-      layoutData: [],
-      layoutHeight: 130,
-      layoutConfig: {
-        height: 330, // 默认高度
-        dialogVisible: false // 是否可拖拽或改变大小
-      },
-      minW:2,
-      minH:2,
-      maxW:6,
-      maxH:3,
-      reset:false
+              { x: 0, y: 0, w: 4, h: 2, i: 0 } //数据格式
+            ],
+            // 布局数据
+            layoutData: [],
+            layoutHeight: 130,
+            layoutConfig: {
+              height: 330, // 默认高度
+              dialogVisible: false // 是否可拖拽或改变大小
+            },
+            minW:2,
+            minH:2,
+            maxW:6,
+            maxH:3,
+            reset:false
         }
     },
     methods: {
+        asideResize(){
+            let myEvent = new Event('resize'); // resize是指resize事件
+            window.dispatchEvent(myEvent); // 触发window的resize事件
+        },
         handleSelectionChange(val) {
             this.multipleTable=val
         },
         deleteTB(tbID){
-      console.log(tbID);
-      let that = this;
-      let postData=this.$qs.stringify({
-          dbID:that.dbID,
-          tbID:tbID
-      })
-      const result = axios({
-          method: 'post',
-          url:'/deleteTBinDB',
-          data:postData
-      }).then(function(resp){
-          if(resp.data.status==200) {
-            that.$message({
-              showClose: true,
-              message: '删除成功',
-              center: true,
-              type: 'success'
-            });
-          }
-          that.reload();
-      })
-      
-    },
+            console.log(tbID);
+            let that = this;
+            let postData=this.$qs.stringify({
+                dbID:that.dbID,
+                tbID:tbID
+            })
+            const result = axios({
+                method: 'post',
+                url:'/deleteTBinDB',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.$message({
+                    showClose: true,
+                    message: '删除成功',
+                    center: true,
+                    type: 'success'
+                });
+                }
+                that.reload();
+            })
+            
+        },
     
     resizedEvent: function(i, newH, newW, newHPx, newWPx){
         // console.log("RESIZED i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);
@@ -262,28 +274,26 @@ export default {
             });
         },
         init() {
-      
-      let that=this
-      let postDta=this.$qs.stringify({
-          dbID:this.dbID
-      })
-      console.log(this.dbID);
-      const result = axios({
-          method: 'post',
-          url:'/getDBItemInfo',
-          data:postDta
-      }).then(function(resp){
-          if(resp.data.status==200) {
-              that.layoutData = resp.data.data;
-              localStorage.setItem('pandectDisplace', JSON.stringify(that.layoutData));
-          }
-      })
-      
-    },
-        asideResize(){
-            let myEvent = new Event('resize'); // resize是指resize事件
-            window.dispatchEvent(myEvent); // 触发window的resize事件
+        
+        let that=this
+        let postDta=this.$qs.stringify({
+            dbID:this.dbID
+        })
+        console.log(this.dbID);
+        const result = axios({
+            method: 'post',
+            url:'/getDBItemInfo',
+            data:postDta
+        }).then(function(resp){
+            if(resp.data.status==200) {
+                that.layoutData = resp.data.data;
+                localStorage.setItem('pandectDisplace', JSON.stringify(that.layoutData));
+                // that.asideResize();
+            }
+        })
+        
         },
+        
         goback() {
             this.$router.push('/createdb')
         },
@@ -351,10 +361,10 @@ export default {
 
                 
                 let postData=this.$qs.stringify({
-                  dbID: this.dbID,
-                  tbList: tbIDList
+                    dbID: this.dbID,
+                    tbList: tbIDList
                 },{
-                  indices:false
+                    indices:false
                 })
                 console.log(postData);
                 const result = axios({
@@ -413,7 +423,45 @@ export default {
                     
                 }
             })
-        }
+        },
+        handleEvent(e){
+            var that = this;
+            //alt+F  
+            let key = window.event.keyCode;  
+            if (83 == e.keyCode && e.altKey) {
+                //~如果是alt+S 的操作的话，方法执行与此
+                that.savedb()
+            }
+        },
+        handleEvent2(e){
+            var that = this;
+            //alt+F  
+            let key = window.event.keyCode;  
+            if (82 == e.keyCode && e.altKey) {
+                //~如果是alt+R 的操作的话，方法执行与此
+                that.asideResize()
+                // console.log("resize");
+            }
+        },
+        handleEvent3(e){
+            var that = this;
+            //alt+F  
+            let key = window.event.keyCode;  
+            if (69 == e.keyCode && e.altKey) {
+                //~如果是alt+E 的操作的话，方法执行与此
+                that.editTable=true
+            }
+        },
+        handleEvent4(e){
+            var that = this;
+            //alt+F  
+            let key = window.event.keyCode;  
+            if (65 == e.keyCode && e.altKey) {
+                //~如果是alt+A 的操作的话，方法执行与此
+                that.add();
+                // console.log("resize");
+            }
+        },
     },
     created() {
         this.interval =setInterval(()=>{
@@ -421,12 +469,24 @@ export default {
                 this.savedb();
             },0)
         },30000)
+        this.getDbData();
+        document.addEventListener('keydown',this.handleEvent)
+        document.addEventListener('keydown',this.handleEvent2)
+        document.addEventListener('keydown',this.handleEvent3)
+        document.addEventListener('keydown',this.handleEvent4)
+        // await this.asideResize();
     },
     mounted() {
-        this.getDbData();
+        setTimeout(()=>{
+            this.asideResize()
+        },500)
     },
     beforeDestroy() {
         clearInterval(this.interval);
+        document.removeEventListener('keydown', this.handleEvent);
+        document.removeEventListener('keydown', this.handleEvent2);
+        document.removeEventListener('keydown', this.handleEvent3);
+        document.removeEventListener('keydown', this.handleEvent4);
     },
     watch: {
         layoutData: function(){

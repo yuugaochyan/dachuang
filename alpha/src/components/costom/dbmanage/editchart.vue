@@ -226,7 +226,7 @@
                     <el-select v-model="dbform.db" placeholder="请选择仪表盘">
                         <el-option
                         v-for="item in dbData"
-                        :key="item.dbID"
+                        :key="item.dbId"
                         :label="item.dbName"
                         :value="item.dbID">
                         </el-option>
@@ -259,7 +259,7 @@
 <script>
 import axios from 'axios'
 export default {
-    name:'createchart',
+    name:'editchart',
     data(){
         return {
             rules: {
@@ -340,7 +340,7 @@ export default {
             active:0,
             steplabel2:'下一步',
             steplabel1:'上一步',
-            step1:true,
+            step1:false,
             step2:false,
             step3:false,
             xData:[],
@@ -350,8 +350,9 @@ export default {
             dbform:{
                 db:''
             },
-            dbData:[],
+            tbData:{},
             tbID:'',
+            dbData:[]
         }
     },
     
@@ -630,6 +631,7 @@ export default {
                     if(this.chartform.graphType=='bar'){
                         postData={
                             userID:userID,
+                            graphID:this.tbID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -650,7 +652,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.tbID=resp.data.tbID;
+                            that.getDbData()
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -659,7 +661,6 @@ export default {
                                 center: true,
                                 type: 'success'
                             });
-                            that.getDbData();
                             that.step2=false;
                             setTimeout(function() {
                                 that.step3=true;
@@ -671,6 +672,7 @@ export default {
                     else if(this.chartform.graphType=='scatter'){
                         postData={
                             userID:userID,
+                            graphID:this.tbID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -686,7 +688,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.tbID=resp.data.tbID;
+                            that.getDbData()
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -695,7 +697,6 @@ export default {
                                 center: true,
                                 type: 'success'
                             });
-                            that.getDbData();
                             that.step2=false;
                             setTimeout(function() {
                                 that.step3=true;
@@ -708,6 +709,7 @@ export default {
                         if(this.Chart.yNum==1){
                         postData={
                             userID:userID,
+                            graphID:this.tbID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -725,6 +727,7 @@ export default {
                         else if(this.Chart.yNum==2) {
                             postData={
                             userID:userID,
+                            graphID:this.tbID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -745,6 +748,7 @@ export default {
                         else if(this.Chart.yNum==3) {
                             postData={
                             userID:userID,
+                            graphID:this.tbID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -772,7 +776,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.tbID=resp.data.tbID;
+                            that.getDbData()
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -781,7 +785,6 @@ export default {
                                 center: true,
                                 type: 'success'
                             });
-                            that.getDbData();
                             that.step2=false;
                             setTimeout(function() {
                                 that.step3=true;
@@ -793,6 +796,7 @@ export default {
                     else if(this.chartform.graphType=='pie'){
                         postData={
                             userID:userID,
+                            graphID:this.tbID,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -808,7 +812,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.tbID=resp.data.tbID;
+                            that.getDbData()
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -818,7 +822,6 @@ export default {
                                 type: 'success'
                             });
                             that.step2=false;
-                            that.getDbData();
                             setTimeout(function() {
                                 that.step3=true;
                             },500);
@@ -829,7 +832,7 @@ export default {
                     
 
                     
-                    // console.log(postData);
+                    console.log(postData);
                     
                     })
                     
@@ -862,7 +865,6 @@ export default {
                             },300)
                         }
                     })
-                    
                     })
                 }
             })
@@ -878,7 +880,7 @@ export default {
                 },500)
             }
             if(this.active==1) {
-                this.$router.push('/createtb')
+                this.$router.push('/createdb')
             }
         },
         changeX() {
@@ -887,12 +889,36 @@ export default {
         changeY() {
             this.drawpie()
         },
-        
+        getTbData() {
+            let that = this;
+            this.tbID = this.$route.params.tbID
+            this.chartform.graphName = this.$route.params.tbName
+            let postData=this.$qs.stringify({
+                tbID:that.tbID,
+            })
+            const result = axios({
+                method: 'post',
+                url:'/getGraphInfo',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.tbData=resp.data.data
+                // console.log(that.tbData);
+                that.chartform.graphType=resp.data.data.Graph.graphType
+                that.chartform.dataSource=resp.data.data.Graph.dataSource
+                that.chartform.graphName=resp.data.data.Graph.graphName
+                that.Chart.name=resp.data.data.Graph.legend[0]
+                }
+            })
+            setTimeout(()=>{
+                this.step1=true
+            },500)
+        },
     },
     
-    // mounted () {
-        // this.getData();
-    // },
+    mounted () {
+        this.getTbData();
+    },
     // watch: {
         // formdata: {
             // handler(value) {

@@ -19,7 +19,10 @@ import createmqttnum from '@/components/costom/formcreate/createmqttnum'
 import viewdb from '@/components/costom/dbmanage/viewdb'
 import editdb from '@/components/costom/dbmanage/editdb'
 import viewtb from '@/components/costom/dbmanage/viewtb'
-import edittb from '@/components/costom/dbmanage/edittb'
+import editchart from '@/components/costom/dbmanage/editchart'
+import edittable from '@/components/costom/dbmanage/edittable'
+import editmqttline from '@/components/costom/dbmanage/editmqttline'
+import editmqttnum from '@/components/costom/dbmanage/editmqttnum'
 Vue.use(VueRouter)
 
 const routes = [
@@ -55,7 +58,10 @@ const routes = [
       {path:'/viewdb/:dbID', component: viewdb,name:"viewdb"},
       {path:'/editdb/:dbID', component: editdb,name:"editdb"},
       {path:'/viewtb/:tbID', component: viewtb,name:"viewtb"},
-      {path:'/edittb/:tbID', component: edittb,name:"edittb"},
+      {path:'/editchart/:tbID', component: editchart,name:"editchart"},
+      {path:'/edittable/:tbID', component: edittable,name:"edittable"},
+      {path:'/editmqttline/:tbID', component: editmqttline,name:"editmqttline"},
+      {path:'/editmqttnum/:tbID', component: editmqttnum,name:"editmqttnum"},
     ]},
     
     // {path:'/mainfac', component: mainfac,},

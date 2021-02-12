@@ -10,7 +10,7 @@
                     </el-form-item>
                     <br>
                     <el-form-item label="数据来源"  prop="dataSource">
-                    <el-select v-model="chartform.dataSource" placeholder="请选择数据源" >
+                    <el-select v-model="chartform.dataSource" placeholder="请选择数据源" @change="getData">
                         <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -19,35 +19,16 @@
                         </el-option>
                     </el-select>
                     </el-form-item>
-                    
                 </el-form>
                 </transition>
 
                 <transition name="el-fade-in" >
-                    <el-form :model="chartform" 
-                    v-show="step2" 
-                    :rules="rules2" ref="chartformref2" :inline="true">
-                    
-
-                    <el-form-item label="警告值下限" prop="name">
-                        <el-input v-model="chartform.min" ></el-input>
-                    </el-form-item>
-                    <el-form-item label="警告值上限" prop="name">
-                        <el-input v-model="chartform.max" ></el-input>
-                    </el-form-item>
-                    <!-- <el-form-item label="预览生成图表"> -->
-                        <!-- <el-button @click="drawline('bar')"></el-button> -->
-                    <!-- </el-form-item> -->
-                    </el-form>
-                </transition>
-
-                <transition name="el-fade-in" >
-                <el-form :model="dbform" v-show="step3" :rules="rules3" ref="chartformref3">
+                <el-form :model="dbform" v-show="step2" :rules="rules2" ref="chartformref2">
                     <el-form-item label="你的仪表盘"  prop="db">
                     <el-select v-model="dbform.db" placeholder="请选择仪表盘">
                         <el-option
                         v-for="item in dbData"
-                        :key="item.dbID"
+                        :key="item.dbId"
                         :label="item.dbName"
                         :value="item.dbID">
                         </el-option>
@@ -64,12 +45,11 @@
 
             <el-steps :active="active" finish-status="success" class="bt-step" align-center>
                 <el-step title="第一步" description="命名这个问题并选择数据源"></el-step>
-                <el-step title="第二步" description="配置警告值上下限，将问题存入你的库里"></el-step>
-                <el-step title="第三步" description="放进仪表盘看看吧？"></el-step>
+                <el-step title="第二步" description="放进仪表盘看看吧？"></el-step>
             </el-steps>
             </div>
             <div class="right">
-                <dv-digital-flop :config="config" style="width:100%;height:100%;" />
+                <dv-scroll-board :config="tableData" style="width:100%;height:100%" />
             </div>
             
             
@@ -79,18 +59,8 @@
 
 <script>
 import axios from 'axios'
-import mqtt from 'mqtt'
-var client
-const options= {
-    connectTimeout: 40000,
-    clientId: 'mqtitId-Home',
-    username: 'hyiot',
-    password: '1234abcd',
-    clean: true
-}
-client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
 export default {
-    name:'createmqttnum',
+    name:'edittable',
     data(){
         return {
             rules: {
@@ -103,15 +73,6 @@ export default {
                 ],
             },
             rules2: {
-                
-                max: [
-                    { required: true, message: '请输入最大值', trigger: 'blur' },
-                ],
-                min: [
-                    { required: true, message: '请输入最小值', trigger: 'blur' },
-                ],
-            },
-            rules3: {
                 db: [
                     { required: true, message: '请选择数据来源！', trigger: 'blur' },
                 ],
@@ -124,34 +85,22 @@ export default {
                 label: 'eqpseasonstatistic'
             }],
             active:0,
-            steplabel1:"放弃编辑",
-            steplabel2:"下一步",
+            steplabel1:"算了",
+            steplabel2:"保存图表",
             tableData:{},
-            step1:true,
+            step1:false,
             step2:false,
-            step3:false,
             chartform:{
                 graphName:'',
                 dataSource:'',
-                name:'',
-                max:10000,
-                min:0,
             },
             dbform:{
                 db:''
             },
-            config:{
-                number:[0.0],
-                toFixed: 1,
-                content:'{nt}',
-                style: {
-                    fontSize:120,
-                    fill:'#dfdfdf'
-                }
-            },
-            tag:'',
-            dbData:[],
+            config:{},
+            tbData:{},
             tbID:'',
+            dbData:[]
         }
     },
     
@@ -172,55 +121,22 @@ export default {
             }
             })
         },
-        drawline(){
+        getData () {
 
-            
-            var tag='';
             let that=this
-            
             let postDta=this.$qs.stringify({
                 dataSource:that.chartform.dataSource
             })
-            this.$axios.post("/getmqttTable",postDta)
+            // console.log(that.chartform.dataSource);
+            this.$axios.post("/getTable",postDta)
             .then((resp)=>{
-                tag=resp.data.tag;
-                that.tag=resp.data.tag;
-            })
-            client.on('connect', (e) => {
-                console.log("连接成功！！！")
-                client.subscribe(tag, { qos: 0 }, (error) => {
-                if (!error) {
-                    console.log('订阅成功')
-                } else {
-                    console.log('订阅失败')
-                }
-                })
-            })
-        // 接收消息处理
-            client.on('message', (topic, message) => {
-                let msg = JSON.parse(message.toString())
-                // this.datalist.name=msg.n;
-                // this.datalist.value=msg.v;
-                console.log(msg.v);
-                that.config.number[0]=parseInt(msg.v)
-                var max=that.chartform.max;
-                var min=that.chartform.min;
-                // console.log(that.config.number[0]);
-                if(msg.v>max){
-                    that.config.style.fill='red'
-                }
-                else if(msg.v<min){
-                    that.config.style.fill='white'
-                }
-                else {
-                    that.config.style.fill='#3de7c9'
-                }
-                that.config.content=that.chartform.graphName+': {nt}'
-                this.config = { ...this.config }
-                
-            })
+                console.log(resp)
+                that.tableData=resp.data.data
+            }),
+            this.config=this.tableData
+            this.config = { ...this.config }
+
         },
-        
 
         nextstep() {
             let that=this;
@@ -229,36 +145,21 @@ export default {
                 if(!valid) return;
                 
                 if(this.active==0) {
-                    this.active++;
-                    this.steplabel2='保存图表'
-                    this.step1=false;
-                    setTimeout(function() {
-                        that.step2=true;
-                    },500);
-                    this.drawline()
-                }
-                else if(this.active==1) {
-                    this.$refs.chartformref2.validate((valid)=>{
-                    if(!valid) return;
                     const userID=localStorage.getItem("userID")
-
-                        postData={
-                            userID:userID,
-                            graphName:this.chartform.graphName,
-                            tag:this.tag,
-                            tagName:this.chartform.dataSource,
-                            max:this.chartform.max,
-                            min:this.chartform.min,
-                        }
+                    postData={
+                        graphID:this.tbID,
+                        userID:userID,
+                        graphName:this.chartform.graphName,
+                        tableName:this.chartform.dataSource,
+                    }
                         const result = axios({
                         method: 'post',
-                        url:'/addMQTT',
+                        url:'/addTable',
                         data:postData
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.tbID=resp.data.tbID;
-                            that.getDbData();
+                            that.getDbData;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -267,24 +168,15 @@ export default {
                                 center: true,
                                 type: 'success'
                             });
-                            that.step2=false;
+                            that.step1=false;
                             setTimeout(function() {
-                                that.step3=true;
+                                that.step2=true;
                             },500);
                         }
                         })
-                    
-
-                    
-
-                    
-                    console.log(postData);
-                    
-                    })
-                    
                 }
-                else if(this.active==2) {
-                    this.$refs.chartformref3.validate((valid)=>{
+                else if(this.active==1) {
+                    this.$refs.chartformref2.validate((valid)=>{
                     if(!valid) return;
                     let postData=this.$qs.stringify({
                         dbID:this.dbform.db,
@@ -311,29 +203,56 @@ export default {
                             },300)
                         }
                     })
+                    
                     })
                 }
             })
         },
         laststep() {
             let that = this;
+            
             this.$router.push('/createtb')
+            
+        },
+        getTbData() {
+            let that = this;
+            this.tbID = this.$route.params.tbID
+            this.chartform.graphName = this.$route.params.tbName
+            let postData=this.$qs.stringify({
+                tbID:that.tbID,
+            })
+            const result = axios({
+                method: 'post',
+                url:'/getGraphInfo',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.tbData=resp.data.data
+                // console.log(that.tbData);
+                // that.chartform.graphType=resp.data.data.Graph.graphType
+                that.chartform.dataSource=resp.data.data.Graph.dataSource
+                that.chartform.graphName=resp.data.data.Graph.graphName
+                // that.Chart.name=resp.data.data.Graph.legend[0]
+                }
+            })
+            setTimeout(()=>{
+                this.step1=true
+            },500)
         },
     },
-    beforeDestroy() {
-        client.end()
+    created() {
+        this.getTbData();
     },
-    
     // mounted () {
         // this.getData();
     // },
     // watch: {
-        // tableData: {
-            // handler() {
-                // this.getData()
-            // }
-        // },
-        // deep:true //深度监听
+    //     tableData: {
+    //         handler() {
+    //             this.getData()
+    //         }
+    //     },
+    //     deep:true //深度监听
     // }
 
 }
@@ -356,7 +275,7 @@ export default {
 }
 .right {
     flex:3;
-    padding: 25px;
+    padding: 100px;
 }
 .bt-step {
     position: absolute;

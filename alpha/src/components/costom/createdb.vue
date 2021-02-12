@@ -54,13 +54,13 @@
                         border
                         style="width: 100%">
                             <el-table-column
-                                prop="name"
+                                prop="graphName"
                                 label="可视化名字"
                                 width="180">
                             </el-table-column>
                             <el-table-column
-                                prop="info"
-                                label="描述"
+                                prop="graphType"
+                                label="可视化类型"
                                 width="580">
                             </el-table-column>
                             <el-table-column
@@ -156,7 +156,7 @@ export default {
             })
             const result = axios({
                 method: 'post',
-                url:'/getTBList',
+                url:'/getGraphList',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
@@ -219,13 +219,43 @@ export default {
         },
         editTB(row) {
             // console.log(row.dbID);
-            this.$router.push({
-                name:'edittb',
-                params: {
-                    tbID:row.tbID,
-                    tbName:row.name
-                }
-            })
+            console.log(row.graphType);
+            if(row.graphType=='chart') {
+                this.$router.push({
+                    name:'editchart',
+                    params: {
+                        tbID:row.tbID,
+                        tbName:row.name
+                    }
+                })
+            }
+            else if(row.graphType=='table') {
+                this.$router.push({
+                    name:'edittable',
+                    params: {
+                        tbID:row.tbID,
+                        tbName:row.name
+                    }
+                })
+            }
+            else if(row.graphType=='mqttline') {
+                this.$router.push({
+                    name:'editmqttline',
+                    params: {
+                        tbID:row.tbID,
+                        tbName:row.name
+                    }
+                })
+            }
+            else if(row.graphType=='mqttnum') {
+                this.$router.push({
+                    name:'editmqttnum',
+                    params: {
+                        tbID:row.tbID,
+                        tbName:row.name
+                    }
+                })
+            }
         },
         deleteTB(row) {
             let that = this;
@@ -304,7 +334,7 @@ export default {
 }
 .dbcol1 {
     flex:2;
-    margin-right: 40PX;
+    // margin-right: 40PX;
     background-color:  #ddbb80;
     height: 100%;
 }
