@@ -127,7 +127,10 @@ export default {
             minH:2,
             maxW:6,
             maxH:3,
-            reset:false
+            reset:false,
+            msg1:'',
+            msg2:'',
+            msg3:'',
         }
     },
     methods: {
@@ -149,13 +152,32 @@ export default {
                 // }
             // })
             this.init();
-            this.$message({
+            setTimeout(()=>{
+                this.msg1=this.$notify({
+                        showClose: true,
+                        message: '双击屏幕可打开工具箱→',
+                        type: 'info',
+                        offset: 100,
+                        duration:0
+                });
+            },300)
+            setTimeout(()=>{
+                this.msg2=this.$notify({
                     showClose: true,
-                    message: '双击屏幕可打开工具箱,如遇数据显示不全请尝试刷新',
-                    center: true,
+                    message: '如遇数据显示不全请尝试刷新Σ(⊙▽⊙"a',
+                    offset: 100,
+                    type: 'warning',
+                    duration:0
+                });
+            },600)
+            setTimeout(()=>{
+                this.msg3=this.$notify({
+                    message: '尝试使用快捷键！如alt+R来进行适应调整(*^▽^*)',
+                    offset: 100,
                     type: 'info',
                     duration:0
-            });
+                });
+            },900)
         },
         asideResize(){
             let myEvent = new Event('resize'); // resize是指resize事件
@@ -226,6 +248,9 @@ export default {
     beforeDestroy() {
         document.removeEventListener('keydown', this.handleEvent);
         document.removeEventListener('keydown', this.handleEvent2);
+        this.msg1.close()
+        this.msg2.close()
+        this.msg3.close()
     },
     watch: {
         layoutData: function(){

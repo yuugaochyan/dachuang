@@ -40,7 +40,7 @@
                 <div class="title">
                     {{item.title}}
                     <el-tooltip class="item" effect="dark" content="删除这个可视化" placement="bottom-start" v-if="editable">
-                        <el-button size="mini" @click="deleteTB(item.i)" circle type="del" icon="iconfont icon-delete" class="toolbt"></el-button>
+                        <el-button size="mini" @click="deleteTB(item.i)" circle type="info" icon="iconfont icon-delete" class="tool-bt"></el-button>
                     </el-tooltip>
                 </div>
                 <div class="tb">
@@ -199,7 +199,11 @@ export default {
             minH:2,
             maxW:6,
             maxH:3,
-            reset:false
+            reset:false,
+            msg1:'',
+            msg2:'',
+            msg3:'',
+            msg4:'',
         }
     },
     methods: {
@@ -265,13 +269,41 @@ export default {
                 // }
             // })
             this.init();
-            this.$message({
+            setTimeout(()=>{
+                this.msg1=this.$notify({
+                        showClose: true,
+                        message: '双击屏幕可打开工具箱→',
+                        type: 'info',
+                        offset: 100,
+                        duration:0
+                });
+            },300)
+            setTimeout(()=>{
+                this.msg2=this.$notify({
                     showClose: true,
-                    message: '双击屏幕可打开工具箱,仪表盘将会每隔30秒进行自动保存,如遇数据显示不全请尝试刷新',
-                    center: true,
+                    message: '仪表盘将会每隔30秒进行自动保存(✧◡✧)',
+                    type: 'warning',
+                    offset: 100,
+                    duration:0
+                });
+            },600)
+            setTimeout(()=>{
+                this.msg3=this.$notify({
+                    showClose: true,
+                    message: '如遇数据显示不全请尝试刷新Σ(⊙▽⊙"a',
+                    offset: 100,
+                    type: 'warning',
+                    duration:0
+                });
+            },900)
+            setTimeout(()=>{
+                this.msg4=this.$notify({
+                    message: '尝试使用快捷键！如alt+R来进行适应调整(*^▽^*)',
+                    offset: 100,
                     type: 'info',
                     duration:0
-            });
+                });
+            },1200)
         },
         init() {
         
@@ -487,6 +519,10 @@ export default {
         document.removeEventListener('keydown', this.handleEvent2);
         document.removeEventListener('keydown', this.handleEvent3);
         document.removeEventListener('keydown', this.handleEvent4);
+        this.msg1.close()
+        this.msg2.close()
+        this.msg3.close()
+        this.msg4.close()
     },
     watch: {
         layoutData: function(){
@@ -558,26 +594,9 @@ export default {
   height: calc(93.6vh);
   width: 100%;
 }
-.toolbt {
+.tool-bt {
   float: right;
   margin: 5px;
 }
-.el-button--del {
-  color: #FFF;
-  background-color: #883030;
-  border-color: #883030;
-}
-.el-button--del.is-active,
-.el-button--del:active {
-  background:#b34141;
-  border-color: #883030;
-  color: #fff;
-}
 
-.el-button--del:focus,
-.el-button--del:hover {
-  background:#b34141;
-  border-color:#883030;
-  color: #fff;
-}
 </style>
