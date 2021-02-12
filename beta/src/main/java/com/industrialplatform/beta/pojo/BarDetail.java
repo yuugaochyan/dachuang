@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class BarDetail {
     private int legendID;
+    private String type;
     private String name;
     private String dataCol;
     private int[] data;

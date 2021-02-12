@@ -1,5 +1,7 @@
 package com.industrialplatform.beta.controller;
 
+import com.industrialplatform.beta.mapper.EquipmentRepairMapper;
+import com.industrialplatform.beta.mapper.dbItemMapper;
 import com.industrialplatform.beta.pojo.*;
 import com.industrialplatform.beta.service.DashBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpHeaders;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -15,10 +18,102 @@ public class DashBoardController {
     @Autowired
     private DashBoardService dashBoardService;
 
-    @RequestMapping(value = "/getDBItemInfo",method = RequestMethod.GET)
-    public Map<String,Object> getDBItemInfo(){
+    @Autowired
+    private com.industrialplatform.beta.mapper.dbItemMapper dbItemMapper;
+
+
+//    调取仪表盘所有item信息
+    @RequestMapping(value = "/getDBItemInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> getDBitemInfo(int dbID){
+        System.out.println(dbID);
         Map<String,Object> map=new HashMap<>();
-        map.put("data",dashBoardService.getdbItemByItemID(1002));
+        map.put("status",200);
+        map.put("data",dashBoardService.getdbItemBydbID(dbID));
+        map.put("msg","获取仪表盘组件信息成功！");
+        return map;
+    }
+
+//    创建仪表盘
+    @RequestMapping(value = "/addDB",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> addDB(DashBoard dashBoard){
+        Map<String,Object> map=new HashMap<>();
+        if (dashBoardService.createDB(dashBoard)){
+            map.put("status",200);
+            map.put("msg","仪表盘创建成功！");
+        }else{
+            map.put("status",404);
+            map.put("msg","仪表盘创建失败！");
+        }
+        return map;
+    }
+
+//    获取仪表盘列表
+    @RequestMapping(value = "/getDBList",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> getDBList(int userID){
+        Map<String,Object> map=new HashMap<>();
+            map.put("status",200);
+            map.put("msg","仪表盘列表获取成功！");
+            map.put("data",dashBoardService.getDBList(userID));
+        return map;
+    }
+
+//    获取图表列表
+    @RequestMapping(value = "/getGraphList",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> getGraphList(int userID){
+        Map<String,Object> map=new HashMap<>();
+        map.put("status",200);
+        map.put("msg","图表列表获取成功！");
+        map.put("data",dashBoardService.getGraphList(userID));
+        return map;
+    }
+
+//    获取图表信息
+    @RequestMapping(value = "/getGraphInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> getGraphInfo(int graphID){
+        Map<String,Object> map=new HashMap<>();
+        Map<String,Object> DATA=new HashMap<>();
+        DATA.put("type",dbItemMapper.getGraphTypeByGraphID(graphID));
+        DATA.put("Graph",dashBoardService.getGraphByID(graphID));
+        map.put("status",200);
+        map.put("msg","图表信息获取成功！");
+        map.put("data",DATA);
+        return map;
+    }
+
+
+//    保存item位置信息
+    @RequestMapping(value = "/saveItemLoc",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> saveItemLoc(@RequestBody List<dashBoardItem> items){
+        Map<String,Object> map=new HashMap<>();
+        if(dashBoardService.saveItemLoc(items)){
+            map.put("status",200);
+            map.put("msg","保存成功！");
+        }else{
+            map.put("status",404);
+            map.put("msg","保存失败！");
+        }
+        return map;
+    }
+
+//    增添图表至仪表盘中
+    @RequestMapping(value = "/addGraphToDB",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> addGraphToDB(int dbID,int[] tbList){
+        System.out.println(tbList[0]);
+        Map<String,Object> map=new HashMap<>();
+        if(dashBoardService.addGraphsToDashBoard(tbList,dbID)){
+            map.put("status",200);
+            map.put("msg","图表添加成功！");
+        }else{
+            map.put("status",404);
+            map.put("msg","图表添加失败！");
+        }
         return map;
     }
 
@@ -46,7 +141,6 @@ public class DashBoardController {
     @ResponseBody
     public Map<String,Object> addLineGraph(@RequestBody Graph<LineChart> lineGraph){
         System.out.println(lineGraph);
-//        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
         int ID=dashBoardService.addLineGraph(lineGraph.getUserID(), lineGraph);
         if(ID!=-1){
@@ -66,7 +160,6 @@ public class DashBoardController {
     @ResponseBody
     public Map<String,Object> addPieGraph(@RequestBody Graph<PieChart> pieGraph){
         System.out.println(pieGraph);
-//        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
         int ID=dashBoardService.addPieGraph(pieGraph.getUserID(),pieGraph);
         if(ID!=-1){
@@ -147,7 +240,7 @@ public class DashBoardController {
     @RequestMapping(value = "/getTable",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> getTable(String dataSource){
-        System.out.println(dataSource);
+//        System.out.println(dataSource);
         Map<String,Object> map=new HashMap<>();
         Table table=dashBoardService.getTableByTableName(dataSource);
         if(table!=null){

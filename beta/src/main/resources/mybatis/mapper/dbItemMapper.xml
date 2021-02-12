@@ -50,52 +50,72 @@
         <result property="yType" column="c_yType"/>
     </resultMap>
 
+<!--  创建仪表盘  -->
+    <insert id="createDashBoard" parameterType="DashBoard">
+        insert into dashboard(dbName,userID,info)
+        values(#{dbName},#{userID},#{info})
+    </insert>
 
-<!--  获取图表的类型  -->
+<!--  获取该用户的所有仪表盘列表  -->
+    <select id="getDBListByUserID" parameterType="int" resultType="DashBoard">
+        select dbID,dbName,info
+        from dashboard
+        where userID=#{userID}
+    </select>
+<!--  获取该用户的所有图表列表  -->
+    <select id="getGraphListByUserID" parameterType="int" resultType="Graph">
+        select ID as graphID,graphName,type as graphType
+        from graphmasterinfo
+        where userID=#{userID}
+    </select>
+
+<!--  获取db所有的ItemID  -->
+    <select id="getdbItemIDList" parameterType="int" resultType="int">
+        select itemID
+        from dbitem
+        where dbID=#{dbID}
+    </select>
+
+<!--  获取graph的类型  -->
+    <select id="getGraphTypeByGraphID" parameterType="int" resultType="String">
+        select type
+        from graphmasterinfo
+        where ID=#{graphID}
+    </select>
+<!--  获取chart的类型  -->
     <select id="getChartTypeById" parameterType="int" resultType="String">
         select b.graphType
-        from dbitem a,graph b,dbitembind e
-        where a.itemID=#{id} and a.itemID=e.itemID and b.graphID=e.graphID
+        from graph b
+        where b.graphID=#{id}
     </select>
 
 <!--  获取图表ID  -->
     <select id="getGraphIdByItemId" parameterType="int" resultType="int">
-        select b.graphID
-        from dbitem a,graph b,dbitembind e
-        where a.itemID=#{id} and a.itemID=e.itemID and b.graphID=e.graphID
+        select e.graphID
+        from dbitembind e
+        where e.itemID=#{id}
     </select>
 
 <!--  获取当前最大的图表ID  -->
     <select id="getCurrentGrpahID" resultType="int">
-        select max(graphID)
-        from graph
+        select max(ID)
+        from graphmasterinfo
     </select>
-<!--  当前图表数  -->
+<!--  获取当前图表数  -->
     <select id="getCurrentGraphNum" resultType="int">
-        select count(graphID)
-        from graph
+        select count(ID)
+        from graphmasterinfo
     </select>
 
-<!--  获取当前最大的MQTTID  -->
-    <select id="getCurrentMQTTID" resultType="int">
-        select max(mqttID)
-        from mqttgraph
+<!--  获取当前最大的itemID  -->
+    <select id="getCurrentItemID" resultType="int">
+        select max(itemID)
+        from dbitem
     </select>
-<!--  获取当前MQTT图表数  -->
-    <select id="getCurrentMQTTNum" resultType="int">
-        select count(mqttID)
-        from mqttgraph
-    </select>
-
-<!--  获取当前最大的TableID  -->
-    <select id="getCurrentTableID" resultType="int">
-        select max(tableID)
-        from tableitem
-    </select>
-<!--  获取当前的Table数量  -->
-    <select id="getCurrentTableNum" resultType="int">
-        select count(tableID)
-        from tableitem
+<!--  获取当前的item数  -->
+    <select id="getCurrentItemNum" resultType="int">
+        select count(itemID)
+        from dbitem
     </select>
 
 <!--  获取当前柱状图最大的legendID  -->
@@ -116,16 +136,29 @@
         from linedetail
         where graphID=#{graphID}
     </select>
-<!--  获取当前折线图最大的legendID  -->
+<!--  获取当前折线图的legend数量  -->
     <select id="getCurrentLineLegendNum" resultType="int">
         select count(*)
         from linedetail
         where graphID=#{graphID}
     </select>
 
+<!--  获取当前DB的item数量  -->
+    <select id="countdbItemNum" parameterType="int" resultType="int">
+        select count(*)
+        from dbitem
+        where dbID=#{dbID}
+    </select>
+
+<!--  获取Item位置列表  -->
+    <select id="getItemLocationListBydbID" parameterType="int" resultType="dashBoardItem">
+        select x,y,w,h
+        from dbitem
+        where dbID=#{dbID}
+    </select>
 <!--  获取item基本信息  -->
     <select id="getItemInfoByItemID" parameterType="int" resultType="dashBoardItem">
-        select a.itemID as itemID,
+        select a.itemID as i,
                a.x as x,
                a.y as y,
                a.w as w,
@@ -135,19 +168,41 @@
         from dbitem a
         where a.itemID=#{id}
     </select>
+<!--  更新item位置  -->
+    <update id="updateItemLoc" parameterType="dashBoardItem">
+        update dbitem
+        set x=#{x},y=#{y},w=#{w},h=#{h}
+        where itemID=#{i}
+    </update>
+
+<!--  注册新Item  -->
+    <insert id="addNewItemToDB">
+        insert into dbitem(itemID,dbID,type,x,y)
+        values(#{itemID},#{dbID},#{type},#{x},#{y})
+    </insert>
+<!--  图表item绑定  -->
+    <insert id="bindGraphToItem">
+        insert into dbitembind(itemID,graphID)
+        values(#{itemID},#{graphID})
+    </insert>
+<!--  注册图表  -->
+    <insert id="registGraph" >
+        insert into graphmasterinfo(ID,userID,type)
+        values(#{ID},#{userID},#{type})
+    </insert>
 
 <!--  获取图表基本信息  -->
-    <select id="getGraphByItemID" parameterType="int" resultMap="itemObjectMap">
+    <select id="getGraphByGraphID" parameterType="int" resultMap="itemObjectMap">
         select b.graphID as b_graphID,
                b.graphName as b_graphName,
                b.graphType as b_graphType
-        from dbitem a,graph b,dbitembind e
-        where a.itemID=#{id} and a.itemID=e.itemID and b.graphID=e.graphID
+        from graph b
+        where b.graphID=#{id}
     </select>
 <!--  添加Graph  -->
     <insert id="addGraph" >
-        insert into graph(graphID,userID,graphName,graphType,dataSource)
-        values(#{graph.graphID},#{userID},#{graph.graphName},#{graph.graphType},#{graph.dataSource})
+        insert into graph(graphID,graphName,graphType,dataSource)
+        values(#{graphID},#{graphName},#{graphType},#{dataSource})
     </insert>
 
 <!--  获取柱状图基本信息  -->
@@ -247,35 +302,35 @@
     </select>
 
 <!-- 获取mqtt图表数据  -->
-    <select id="getMQTTGraphDataByItemID" resultType="mqttGraph" parameterType="int">
-        select mqttID,
-               tag,
-               max,
-               min,
-               tagName,
-               type
-        from mqttgraph
-        where itemID=#{itemID}
+    <select id="getMQTTGraphDataByGraphID" resultType="mqttGraph" parameterType="int">
+        select a.mqttID,
+               a.tag,
+               a.max,
+               a.min,
+               a.tagName,
+               a.type,
+               a.graphName
+        from mqttgraph a
+        where a.mqttID=#{graphID}
     </select>
 <!--  添加MQTTGraph  -->
     <insert id="addMQTTGraph" >
-        insert into mqttgraph(userID,mqttID,tag,max,min,tagName,type)
-        values(#{userID},#{mqttID},#{tag},#{max},#{min},#{tagName},#{type})
+        insert into mqttgraph(mqttID,tag,max,min,tagName,type,graphName)
+        values(#{mqttID},#{tag},#{max},#{min},#{tagName},#{type},#{graphName})
     </insert>
 
 
 <!-- 获取table信息  -->
-    <select id="getTableInfoByItemID" resultType="Table" parameterType="int">
-        select tableID,
-               tableName,
-               graphName
-        from tableitem
-        where itemID=#{itemID}
+    <select id="getTableInfoByGraphID" resultType="Table" parameterType="int">
+        select a.tableID,
+               a.tableName,
+               a.graphName
+        from tableitem a
+        where a.tableID=#{graphID}
     </select>
 <!--  添加Table  -->
     <insert id="addTable" >
-        insert into tableitem(userID,tableID,tableName,graphName)
-        values(#{userID},#{tableID},#{tableName},#{graphName})
+        insert into tableitem(tableID,tableName,graphName)
+        values(#{tableID},#{tableName},#{graphName})
     </insert>
-
 </mapper>

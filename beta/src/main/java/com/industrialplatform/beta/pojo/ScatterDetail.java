@@ -7,5 +7,6 @@ import java.util.List;
 
 @Data
 public class ScatterDetail {
+    private String type;
     private float[][] data;
 }

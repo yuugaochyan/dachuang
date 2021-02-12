@@ -8,9 +8,12 @@ import java.util.List;
 public class mqttGraph {
     private int userID;
     private int mqttID;
+    private String graphName;
     private String tag;
     private String tagName;
     private String type;
+    private String xType;
+    private String yType;
     private int max;
     private int min;
     private int lengs;

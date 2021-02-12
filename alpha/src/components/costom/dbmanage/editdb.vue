@@ -270,7 +270,7 @@ export default {
       console.log(this.dbID);
       const result = axios({
           method: 'post',
-          url:'/getDBitemInfo',
+          url:'/getDBItemInfo',
           data:postDta
       }).then(function(resp){
           if(resp.data.status==200) {
@@ -328,7 +328,7 @@ export default {
             })
             const result = axios({
                 method: 'post',
-                url:'/getTBList',
+                url:'/getGraphList',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
@@ -345,22 +345,23 @@ export default {
                 let that = this;
                 const userID=localStorage.getItem("userID")
                 for(let tb in this.multipleTable) {
-                    tbIDList.push(this.multipleTable[tb].tbID)
+                    tbIDList.push(this.multipleTable[tb].graphID)
                 }
-                console.log(tbIDList);
+                // console.log(tbIDList);
 
                 
                 let postData=this.$qs.stringify({
-                    
-                    dbID:this.dbID,
-                    tbList:tbIDList,
-                    
+                  dbID: this.dbID,
+                  tbList: tbIDList
+                },{
+                  indices:false
                 })
-                // console.log(postData);
+                console.log(postData);
                 const result = axios({
                     method: 'post',
                     url:'/addGraphToDB',
-                    data:postData
+                    data:postData,
+                    indices:false
                 }).then(function(resp){
                     if(resp.data.status==200) {
                         that.$notify({
@@ -393,11 +394,9 @@ export default {
                 locaData.push(pDitem);
             }
             let that = this;
-            let postData={
-                userID:userID,
-                items:locaData,
-            }
-            // console.log(postData);
+            let postData=locaData
+
+            console.log(postData);
             const result = axios({
                 method: 'post',
                 url:'/saveItemLoc',

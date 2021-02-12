@@ -126,15 +126,15 @@ export default {
       
     },
     init() {
-      
+      console.log(this.dbID);
       let that=this
       let postDta=this.$qs.stringify({
-          dbID:this.dbID
+          dbID:that.dbID
       })
       console.log(this.dbID);
       const result = axios({
           method: 'post',
-          url:'/getDBitemInfo',
+          url:'/getDBItemInfo',
           data:postDta
       }).then(function(resp){
           if(resp.data.status==200) {
