@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Form, FormItem, Input, Message, Container, Header, Aside,Main, Footer,Menu ,MenuItem,MenuItemGroup,Submenu,Carousel,CarouselItem,PageHeader,link,Backtop,Row,Col,Card,MessageBox,Tabs,TabPane,RadioButton,RadioGroup,Dialog,Tooltip,Radio,Select,Option,Step,Steps,Divider,Table,TableColumn,Breadcrumb,BreadcrumbItem,Drawer,Tree,Notification} from 'element-ui'
+import { Button, Form, FormItem, Input, Message, Container, Header, Aside,Main, Footer,Menu ,MenuItem,MenuItemGroup,Submenu,Carousel,CarouselItem,PageHeader,link,Backtop,Row,Col,Card,MessageBox,Tabs,TabPane,RadioButton,RadioGroup,Dialog,Tooltip,Radio,Select,Option,Step,Steps,Divider,Table,TableColumn,Breadcrumb,BreadcrumbItem,Drawer,Tree,Notification,Pagination} from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Form)
@@ -40,6 +40,7 @@ Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
 Vue.use(Drawer)
 Vue.use(Tree)
+Vue.use(Pagination)
 Vue.prototype.$message = Message
 Vue.prototype.$messagebox = MessageBox
 Vue.prototype.$notify = Notification

@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     userID:JSON.parse(localStorage.getItem("userID")),
-    token:JSON.parse(localStorage.getItem("token"))
+    token:JSON.parse(localStorage.getItem("token")),
+    clientHeight:JSON.parse(localStorage.getItem("clientHeight")),
   },
   mutations: {
     setuserID(state,v) {
@@ -16,6 +17,10 @@ export default new Vuex.Store({
     setToken(state,v) {
       localStorage.setItem('token',JSON.stringify(v));
       state.token = v;
+    },
+    setHeight(state,v) {
+      localStorage.setItem('clientHeight',JSON.stringify(v));
+      state.clientHeight = v;
     }
   },
   actions: {

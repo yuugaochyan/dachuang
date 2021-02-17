@@ -12,7 +12,9 @@
                         </div>
                         <el-table
                         :data="dbData"
-                        height="700"
+                        :height="clientHeight"
+                        :max-height="clientHeight"
+                        element-loading-text="拼命加载中"
                         border
                         style="width: 100%">
                             <el-table-column
@@ -42,7 +44,19 @@
                                 
                             </el-table-column>
                         </el-table>
+                        <!-- //&分页 -->
+                        <el-pagination
+                            background
+                            @size-change="dbSizeChange"
+                            @current-change="dbCurrentChange"
+                            :current-page="dbCurrentPage"
+                            :page-sizes="[5, 10, 15, 20]"
+                            :page-size="dbSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="dbtotal">
+                        </el-pagination>
                     </el-tab-pane>
+
                     <el-tab-pane >
                         <span slot="label"><i class="iconfont icon-keshihua"></i>可视化管理</span>
                         <div class="banner2">
@@ -50,7 +64,8 @@
                         </div>
                         <el-table
                         :data="tbData"
-                        height="700"
+                        :height="clientHeight"
+                        :max-height="clientHeight"
                         border
                         style="width: 100%">
                             <el-table-column
@@ -80,6 +95,17 @@
                                 
                             </el-table-column>
                         </el-table>
+                        <!-- //&分页 -->
+                        <el-pagination
+                            background
+                            @size-change="tbSizeChange"
+                            @current-change="tbCurrentChange"
+                            :current-page="tbCurrentPage"
+                            :page-sizes="[5, 10, 15, 20]"
+                            :page-size="tbSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="tbtotal">
+                        </el-pagination>
                     </el-tab-pane>
                     
                 </el-tabs>
@@ -126,9 +152,103 @@ export default {
             },
             showAddDB:false,
             formLabelWidth: '120px',
+            tableHeight:null,
+            clientHeight:'',
+            //^db分页
+            dbSize:5,
+            dbCurrentPage:1,
+            dbtotal:'',
+            //^db分页
+            tbSize:5,
+            tbCurrentPage:1,
+            tbtotal:'',
         }
     },
     methods: {
+        dbSizeChange(val) {
+            this.dbSize=val;
+            let that = this;
+            const userID=localStorage.getItem("userID")
+            let postData=this.$qs.stringify({
+                userID:userID,
+                pagenum:that.dbCurrentPage,
+                pagesize:that.dbSize
+            })
+            // console.log(this.dbCurrentPage);
+            // console.log(this.dbSize);
+            const result = axios({
+                method: 'post',
+                url:'/changePage',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.dbData=resp.data.data
+            }
+            })
+        },
+        dbCurrentChange(val) {
+            let that = this;
+            const userID=localStorage.getItem("userID")
+            this.dbCurrentPage=val;
+            let postData=this.$qs.stringify({
+                userID:userID,
+                pagenum:that.dbCurrentPage,
+                pagesize:that.dbSize
+            })
+            // console.log(this.dbCurrentPage);
+            // console.log(this.dbSize);
+            const result = axios({
+                method: 'post',
+                url:'/changePage',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.dbData=resp.data.data
+            }
+            })
+        },
+        tbSizeChange(val) {
+            this.tbSize=val;
+            let that = this;
+            const userID=localStorage.getItem("userID")
+            let postData=this.$qs.stringify({
+                userID:userID,
+                pagenum:that.tbCurrentPage,
+                pagesize:that.tbSize
+            })
+            // console.log(this.dbCurrentPage);
+            // console.log(this.dbSize);
+            const result = axios({
+                method: 'post',
+                url:'/changePage',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.tbData=resp.data.data
+            }
+            })
+        },
+        tbCurrentChange(val) {
+            let that = this;
+            const userID=localStorage.getItem("userID")
+            this.tbCurrentPage=val;
+            let postData=this.$qs.stringify({
+                userID:userID,
+                pagenum:that.tbCurrentPage,
+                pagesize:that.tbSize
+            })
+            // console.log(this.dbCurrentPage);
+            // console.log(this.dbSize);
+            const result = axios({
+                method: 'post',
+                url:'/changePage',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.tbData=resp.data.data
+            }
+            })
+        },
         gotoAddTB() {
             this.$router.push('/createtb')
         },
@@ -137,6 +257,8 @@ export default {
             const userID=localStorage.getItem("userID")
             let postData=this.$qs.stringify({
                 userID:userID,
+                pagenum:that.dbCurrentPage,
+                pagesize:that.dbSize
             })
             const result = axios({
                 method: 'post',
@@ -145,6 +267,7 @@ export default {
             }).then(function(resp){
                 if(resp.data.status==200) {
                 that.dbData=resp.data.data
+                that.dbtotal=that.dbData.length
             }
             })
         },
@@ -161,6 +284,7 @@ export default {
             }).then(function(resp){
                 if(resp.data.status==200) {
                 that.tbData=resp.data.data
+                that.tbtotal=that.tbData.length
             }
             })
         },
@@ -312,8 +436,17 @@ export default {
     mounted() {
         this.getDbData();
         this.getTbData();
-        console.log(this.dbData);
-        console.log(this.dbData);
+        // console.log(this.dbData);
+        // console.log(this.dbData);
+        const that = this;
+        this.clientHeight=localStorage.getItem('clientHeight')-150
+        window.onresize = function temp() {
+            that.$store.commit(
+                "setHeight",
+                document.documentElement.clientHeight - 110
+            );
+        };
+
     },
     watch: {
         dbData: function(){

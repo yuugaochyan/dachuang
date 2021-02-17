@@ -39,9 +39,16 @@
             
                 <div class="title">
                     {{item.title}}
-                    <el-tooltip class="item" effect="dark" content="删除这个可视化" placement="bottom-start" v-if="editable">
-                        <el-button size="mini" @click="deleteTB(item.i)" circle type="info" icon="iconfont icon-delete" class="tool-bt"></el-button>
+                    <div class="tool-bt">
+                    <el-tooltip  effect="dark" content="删除这个可视化" placement="bottom-start" v-if="editable">
+                        <el-button size="mini" @click="deleteTB(item.i)" circle type="info" icon="iconfont icon-delete" ></el-button>
                     </el-tooltip>
+                    </div>
+                    <div class="tool-bt">
+                    <el-tooltip  effect="dark" content="编辑这个可视化" placement="bottom-start" v-if="editable">
+                        <el-button size="mini" @click="editTB(item)" circle type="warning" icon="iconfont icon-edit" ></el-button>
+                    </el-tooltip>
+                    </div>
                 </div>
                 <div class="tb">
                     <chart v-if="item.type=='chart'" :id="item.i" :obdata="item.objectData"></chart>
@@ -237,6 +244,45 @@ export default {
                 that.reload();
             })
             
+        },
+        editTB(tb) {
+            console.log(tb.type);
+            if(tb.type=='chart') {
+                this.$router.push({
+                    name:'editchart',
+                    params: {
+                        tbID:tb.i,
+                        tbName:tb.title
+                    }
+                })
+            }
+            else if(tb.type=='table') {
+                this.$router.push({
+                    name:'edittable',
+                    params: {
+                        tbID:tb.i,
+                        tbName:tb.title
+                    }
+                })
+            }
+            else if(tb.type=='mqttline') {
+                this.$router.push({
+                    name:'editmqttline',
+                    params: {
+                        tbID:tb.i,
+                        tbName:tb.title
+                    }
+                })
+            }
+            else if(tb.type=='mqttnum') {
+                this.$router.push({
+                    name:'editmqttnum',
+                    params: {
+                        tbID:tb.i,
+                        tbName:tb.title
+                    }
+                })
+            }
         },
     
     resizedEvent: function(i, newH, newW, newHPx, newWPx){
@@ -577,17 +623,20 @@ export default {
   
 }
 .tb {
-    height: 90%;
+    height: 87%;
     width: 97%;
     background-color: #5b5b5f;
     margin: 0 auto;
 }
 .title {
     margin: 0 auto;
-    text-align: center;
+    // text-align: center;
+    padding-left: 7%;
     color: white;
-    height: 10%;
-    font-size: 150%;
+    height: 12%;
+    font-size: 170%;
+    // padding-right: 1%;
+    // padding-top: 2%;
 }
 .vueGridLayout {
   margin: 0 auto;
@@ -595,8 +644,10 @@ export default {
   width: 100%;
 }
 .tool-bt {
-  float: right;
-  margin: 5px;
+    float: right;
+    margin-right: 5px;
+    margin-top: 2px;
 }
+
 
 </style>

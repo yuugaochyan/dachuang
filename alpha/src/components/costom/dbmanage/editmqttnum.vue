@@ -12,7 +12,7 @@
                     <el-form-item label="数据来源"  prop="dataSource">
                     <el-select v-model="chartform.dataSource" placeholder="请选择数据源" >
                         <el-option
-                        v-for="item in options"
+                        v-for="item in tagList"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -116,13 +116,7 @@ export default {
                     { required: true, message: '请选择数据来源！', trigger: 'blur' },
                 ],
             },
-            options: [{
-                value: 'equipmentrepair',
-                label: 'equipmentrepair'
-            }, {
-                value: 'eqpseasonstatistic',
-                label: 'eqpseasonstatistic'
-            }],
+            tagList: [],
             active:0,
             steplabel1:"放弃编辑",
             steplabel2:"下一步",
@@ -226,6 +220,7 @@ export default {
         nextstep() {
             let that=this;
             var postData={}
+            var tagName=''
             this.$refs.chartformref.validate((valid)=>{
                 if(!valid) return;
                 
@@ -242,13 +237,19 @@ export default {
                     this.$refs.chartformref2.validate((valid)=>{
                     if(!valid) return;
                     const userID=localStorage.getItem("userID")
-
+                    for(let key in this.tagList) {
+                        // console.log(key);
+                        // console.log(that.tagList[key]);
+                        if(that.tagList[key].value==that.chartform.dataSource) {
+                            tagName=that.tagList[key].label
+                        }
+                    }
                         postData={
                             userID:userID,
                             graphID:this.tbID,
                             graphName:this.chartform.graphName,
-                            tag:this.tag,
-                            tagName:this.chartform.dataSource,
+                            tag:this.chartform.dataSource,
+                            tagName:tagName,
                             max:this.chartform.max,
                             min:this.chartform.min,
                         }
@@ -318,7 +319,8 @@ export default {
         },
         laststep() {
             let that = this;
-            this.$router.push('/createtb')
+            this.$router.push('/createdb')
+            client.end()
         },
         getTbData() {
             let that = this;
@@ -345,9 +347,27 @@ export default {
                 this.step1=true
             },500)
         },
+        gettag() {
+            let that =this;
+            const userID=localStorage.getItem("userID")
+            let postData=this.$qs.stringify({
+                userID:userID
+            })
+            const result = axios({
+                method: 'post',
+                url:'/getTagList',
+                data:postData,
+                }).then(function(resp){
+                    if(resp.data.status==200) {
+                    that.tagList=resp.data.data
+                    that.step1=true
+                }
+            })
+        }
     },
     mounted () {
         this.getTbData();
+        this.gettag();
     },
     beforeDestroy() {
         client.end()
