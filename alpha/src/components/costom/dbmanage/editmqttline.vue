@@ -57,7 +57,7 @@
                     <el-select v-model="dbform.db" placeholder="请选择仪表盘">
                         <el-option
                         v-for="item in dbData"
-                        :key="item.dbID"
+                        :key="item.dbId"
                         :label="item.dbName"
                         :value="item.dbID">
                         </el-option>
@@ -100,7 +100,7 @@ const options= {
 }
 client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
 export default {
-    name:'createmqttline',
+    name:'editmqttline',
     data(){
         return {
             rules: {
@@ -158,6 +158,7 @@ export default {
             },
             chart:'',
             tag:'',
+            tbData:{},
             tbID:'',
             dbData:[]
         }
@@ -184,22 +185,22 @@ export default {
             var vlist=[];
             var tlist=[];
             
-            var tag=this.chartform.dataSource;
+            var tag='';
             let that=this
             
-            // let postDta=this.$qs.stringify({
-                // dataSource:that.chartform.dataSource
-            // })
-            // this.$axios.post("/getmqttTable",postDta)
-            // .then((resp)=>{
-                // tag=resp.data.tag;
-                // that.tag=resp.data.tag;
-            // })
+            let postDta=this.$qs.stringify({
+                dataSource:that.chartform.dataSource
+            })
+            this.$axios.post("/getmqttTable",postDta)
+            .then((resp)=>{
+                tag=resp.data.tag;
+                that.tag=resp.data.tag;
+            })
             client.on('connect', (e) => {
                 console.log("连接成功！！！")
                 client.subscribe(tag, { qos: 0 }, (error) => {
                 if (!error) {
-                    // console.log('订阅成功')
+                    console.log('订阅成功')
                 } else {
                     console.log('订阅失败')
                 }
@@ -311,7 +312,7 @@ export default {
 
         nextstep() {
             let that=this;
-            var postData={};
+            var postData={}
             var tagName=''
             this.$refs.chartformref.validate((valid)=>{
                 if(!valid) return;
@@ -328,7 +329,7 @@ export default {
                 else if(this.active==1) {
                     this.$refs.chartformref2.validate((valid)=>{
                     if(!valid) return;
-                    // console.log(options);
+                    const userID=localStorage.getItem("userID")
                     for(let key in this.tagList) {
                         // console.log(key);
                         // console.log(that.tagList[key]);
@@ -336,17 +337,15 @@ export default {
                             tagName=that.tagList[key].label
                         }
                     }
-                    // console.log(tagName);
-                    const userID=localStorage.getItem("userID")
-
                         postData={
                             userID:userID,
+                            graphID:this.tbID,
                             graphName:this.chartform.graphName,
                             tag:this.chartform.dataSource,
                             tagName:tagName,
                             max:this.chartform.max,
                             min:this.chartform.min,
-                            lengs:this.chartform.lengs,
+                            lengs:this.chartform.lens,
                             type:this.chartform.graphType,
                         }
                         const result = axios({
@@ -356,8 +355,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.tbID=resp.data.tbID;
-                            that.getDbData();
+                            that.getDbData()
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -416,7 +414,33 @@ export default {
         },
         laststep() {
             let that = this;
-            this.$router.push('/createtb')
+            client.end()
+            this.$router.push('/createdb')
+        },
+        getTbData() {
+            let that = this;
+            this.tbID = this.$route.params.tbID
+            this.chartform.graphName = this.$route.params.tbName
+            let postData=this.$qs.stringify({
+                tbID:that.tbID,
+            })
+            const result = axios({
+                method: 'post',
+                url:'/getGraphInfo',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.tbData=resp.data.data
+                // console.log(that.tbData);
+                that.chartform.graphType=resp.data.data.Graph.graphType
+                that.chartform.dataSource=resp.data.data.Graph.dataSource
+                that.chartform.graphName=resp.data.data.Graph.graphName
+                that.chartform.name=resp.data.data.Graph.legend[0]
+                }
+            })
+            setTimeout(()=>{
+                this.step1=true
+            },500)
         },
         gettag() {
             let that =this;
@@ -436,13 +460,17 @@ export default {
             })
         }
     },
+    created() {
+        this.getTbData();
+        this.gettag()
+    },
     beforeDestroy() {
         client.end()
     },
     
-    mounted () {
-        this.gettag();
-    },
+    // mounted () {
+        // this.getData();
+    // },
     // watch: {
         // tableData: {
             // handler() {

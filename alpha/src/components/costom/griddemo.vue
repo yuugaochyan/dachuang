@@ -143,7 +143,7 @@ export default {
           }
       })
       
-    },
+    },    
     resizedEvent: function(i, newH, newW, newHPx, newWPx){
         // console.log("RESIZED i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);
         localStorage.setItem('pandectDisplace', JSON.stringify(this.layoutData));
