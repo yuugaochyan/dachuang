@@ -111,7 +111,7 @@ export default {
         useremail: that.regForm.mail,
       })).then(function (resp) {
         console.log(resp.data)
-        if (resp.data.success) {
+        if (resp.data.status===200) {
           that.$message({
             showClose: true,
             message: '注册成功！登录以开始',

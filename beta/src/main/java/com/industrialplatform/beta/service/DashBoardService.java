@@ -321,7 +321,7 @@ public class DashBoardService {
         int graphID=0;
         if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
         else graphID= dbItemMapper.getCurrentGrpahID()+1;
-        dbItemMapper.registGraph(graphID,userID,"chart");
+        dbItemMapper.registGraph(graphID,userID,"chart",barGraph.getGraphName());
         barGraph.setGraphID(graphID);
         dbItemMapper.addGraph(barGraph);
         BarChart barChart=barGraph.getChart();
@@ -344,7 +344,7 @@ public class DashBoardService {
         int graphID=0;
         if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
         else graphID= dbItemMapper.getCurrentGrpahID()+1;
-        dbItemMapper.registGraph(graphID,userID,"chart");
+        dbItemMapper.registGraph(graphID,userID,"chart",lineGraph.getGraphName());
         lineGraph.setGraphID(graphID);
         dbItemMapper.addGraph(lineGraph);
         LineChart lineChart=lineGraph.getChart();
@@ -367,7 +367,7 @@ public class DashBoardService {
         int graphID=0;
         if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
         else graphID= dbItemMapper.getCurrentGrpahID()+1;
-        dbItemMapper.registGraph(graphID,userID,"chart");
+        dbItemMapper.registGraph(graphID,userID,"chart",pieGraph.getGraphName());
         pieGraph.setGraphID(graphID);
         dbItemMapper.addGraph(pieGraph);
         PieChart pieChart=pieGraph.getChart();
@@ -382,7 +382,7 @@ public class DashBoardService {
         int graphID=0;
         if(dbItemMapper.getCurrentGraphNum()==0) graphID=10001;
         else graphID=dbItemMapper.getCurrentGrpahID()+1;
-        dbItemMapper.registGraph(graphID,userID,"chart");
+        dbItemMapper.registGraph(graphID,userID,"chart",scatterGraph.getGraphName());
         scatterGraph.setGraphID(graphID);
         dbItemMapper.addGraph(scatterGraph);
         ScatterChart scatterChart=scatterGraph.getChart();
@@ -398,9 +398,9 @@ public class DashBoardService {
         if(dbItemMapper.getCurrentGraphNum()==0) mqttID=10001;
         else mqttID=dbItemMapper.getCurrentGrpahID()+1;
         if(mqttGraph.getType()!=null)
-            dbItemMapper.registGraph(mqttID,mqttGraph.getUserID(),"mqttline");
+            dbItemMapper.registGraph(mqttID,mqttGraph.getUserID(),"mqttline",mqttGraph.getGraphName());
         else
-            dbItemMapper.registGraph(mqttID,mqttGraph.getUserID(),"mqttnum");
+            dbItemMapper.registGraph(mqttID,mqttGraph.getUserID(),"mqttnum",mqttGraph.getGraphName());
         mqttGraph.setMqttID(mqttID);
         dbItemMapper.addMQTTGraph(mqttGraph);
         if (mqttID!=0) return mqttID;
@@ -413,7 +413,7 @@ public class DashBoardService {
         int tableID=0;
         if(dbItemMapper.getCurrentGraphNum()==0) tableID=10001;
         else tableID=dbItemMapper.getCurrentGrpahID()+1;
-        dbItemMapper.registGraph(tableID,table.getUserID(),"table");
+        dbItemMapper.registGraph(tableID,table.getUserID(),"table",table.getGraphName());
         table.setTableID(tableID);
         dbItemMapper.addTable(table);
         if(tableID!=0) return tableID;

@@ -23,4 +23,17 @@ public class UserService {
         throw  new RuntimeException("登陆失败");
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public boolean Register(User user){
+        if (userMapper.queryUserByName(user.getUsername())==null)
+        {   userMapper.addUser(user);
+            return true;
+        }
+        else{
+            //用户名重复
+            return false;
+        }
+    }
+
+
 }

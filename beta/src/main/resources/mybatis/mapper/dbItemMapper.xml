@@ -187,8 +187,8 @@
     </insert>
 <!--  注册图表  -->
     <insert id="registGraph" >
-        insert into graphmasterinfo(ID,userID,type)
-        values(#{ID},#{userID},#{type})
+        insert into graphmasterinfo(ID,userID,type,graphName)
+        values(#{ID},#{userID},#{type},#{graphName})
     </insert>
 
 <!--  获取图表基本信息  -->

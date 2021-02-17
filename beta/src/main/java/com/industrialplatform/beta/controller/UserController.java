@@ -60,16 +60,18 @@ public class UserController {
     //增加新用户   前端接口需改为User对应变量名
     @RequestMapping(value = "/addUser",method = RequestMethod.POST)
     @ResponseBody
-    public boolean addUser( User user){
-        System.out.println(user.getUsername());
-        if (userMapper.queryUserByName(user.getUsername())==null)
-        {   userMapper.addUser(user);
-            return true;
+    public Map<String,Object> addUser(User user){
+        Map<String,Object> map=new HashMap<>();
+        if (userService.Register(user))
+        {
+            map.put("status",200);
+            map.put("msg","注册成功!");
         }
         else{
-            //用户名重复
-            return false;
+            map.put("status",404);
+            map.put("msg","注册失败！");
         }
+        return map;
     }
 
     //注册test

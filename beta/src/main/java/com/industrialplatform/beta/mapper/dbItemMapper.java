@@ -63,7 +63,7 @@ public interface dbItemMapper {
     int updateItemLoc(dashBoardItem dashBoardItem);
 
 //    图表事物Insert
-    int registGraph(@Param("ID")int ID,@Param("userID")int userID,@Param("type")String type);
+    int registGraph(@Param("ID")int ID,@Param("userID")int userID,@Param("type")String type,@Param("graphName")String graphName);
     int addGraph(Graph graph);
     int addMQTTGraph(mqttGraph mqttGraph);
     int addTable(Table table);
