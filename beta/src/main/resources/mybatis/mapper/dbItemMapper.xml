@@ -69,6 +69,17 @@
         where userID=#{userID}
     </select>
 
+<!--  删除仪表盘  -->
+    <delete id="deleteDB" parameterType="int">
+        delete from dashboard
+        where dbID=#{dbID}
+    </delete>
+<!--  删除图表  -->
+    <delete id="deleteGraph" parameterType="int">
+        delete from graphmasterinfo
+        where ID=#{graphID}
+    </delete>
+
 <!--  获取db所有的ItemID  -->
     <select id="getdbItemIDList" parameterType="int" resultType="int">
         select itemID

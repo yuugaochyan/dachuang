@@ -18,6 +18,17 @@ public class DataBaseController {
     @Autowired
     private DataBaseService dataBaseService;
 
+//    获取mqtttag列表
+    @RequestMapping(value = "/getMqttTagList",method = RequestMethod.POST)
+    public Map<String,Object> getMqttTagList(){
+        Map<String,Object> map=new HashMap<>();
+        map.put("data",dataBaseService.getMqttTagList());
+        map.put("status",200);
+        map.put("msg","获取数据成功！");
+        return map;
+    }
+
+//    获取关系表的数据
     @RequestMapping(value = "/getTableData",method = RequestMethod.POST)
     public Map<String,Object> getTableData(@RequestParam("dataSource") String tableName){
         Map<String,Object> map=new HashMap<>();

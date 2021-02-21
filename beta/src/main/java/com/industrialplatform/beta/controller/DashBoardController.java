@@ -52,24 +52,63 @@ public class DashBoardController {
 //    获取仪表盘列表
     @RequestMapping(value = "/getDBList",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> getDBList(int userID){
+    public Map<String,Object> getDBList(@RequestParam("userID") int userID,
+                                        @RequestParam("pagenum") int pagenum,
+                                        @RequestParam("pagesize") int pagesize){
+        System.out.println(pagenum);
         Map<String,Object> map=new HashMap<>();
             map.put("status",200);
             map.put("msg","仪表盘列表获取成功！");
-            map.put("data",dashBoardService.getDBList(userID));
+            map.put("data",dashBoardService.getDBList(userID,pagenum,pagesize));
         return map;
     }
+
 
 //    获取图表列表
     @RequestMapping(value = "/getGraphList",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> getGraphList(int userID){
+    public Map<String,Object> getGraphList(@RequestParam("userID") int userID,
+                                           @RequestParam("pagenum") int pagenum,
+                                           @RequestParam("pagesize") int pagesize){
         Map<String,Object> map=new HashMap<>();
         map.put("status",200);
         map.put("msg","图表列表获取成功！");
-        map.put("data",dashBoardService.getGraphList(userID));
+        map.put("data",dashBoardService.getGraphList(userID,pagenum,pagesize));
         return map;
     }
+
+
+//    删除仪表盘
+    @RequestMapping(value = "/deleteDB",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> deleteDB(int dbID){
+        Map<String,Object> map=new HashMap<>();
+        if(dashBoardService.deleteDB(dbID)) {
+            map.put("status",200);
+            map.put("msg","删除成功!");
+        }else{
+            map.put("status",404);
+            map.put("msg","删除失败!");
+        }
+        return map;
+    }
+
+
+//    删除图表
+    @RequestMapping(value = "/deleteGraph",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> deleteGraph(int graphID){
+        Map<String,Object> map=new HashMap<>();
+        if(dashBoardService.deleteGraph(graphID)) {
+            map.put("status",200);
+            map.put("msg","删除成功!");
+        }else{
+            map.put("status",404);
+            map.put("msg","删除失败!");
+        }
+        return map;
+    }
+
 
 //    获取图表信息
     @RequestMapping(value = "/getGraphInfo",method = RequestMethod.POST)

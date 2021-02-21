@@ -33,15 +33,44 @@ public class DashBoardService {
 
 //    获取仪表盘列表
     @Transactional(propagation = Propagation.SUPPORTS)
-    public List<DashBoard> getDBList(int userID){
-        return dbItemMapper.getDBListByUserID(userID);
+    public List<DashBoard> getDBList(int userID,int pagenum,int pagesize){
+        List<DashBoard> dashBoards=dbItemMapper.getDBListByUserID(userID);
+        List<DashBoard> target=new ArrayList<>();
+        int i=pagesize*(pagenum-1)+1;
+        for(int j=1;j<=pagesize&&i<=dashBoards.size();i++,j++){
+            target.add(dashBoards.get(i-1));
+        }
+        return target;
     }
 
 //    获取图表列表
     @Transactional(propagation = Propagation.SUPPORTS)
-    public List<Graph> getGraphList(int userID){
-        return dbItemMapper.getGraphListByUserID(userID);
+    public List<Graph> getGraphList(int userID,int pagenum,int pagesize){
+        List<Graph> graphs=dbItemMapper.getGraphListByUserID(userID);
+        List<Graph> target=new ArrayList<>();
+        int i=pagesize*(pagenum-1)+1;
+        for(int j=1;j<=pagesize&&i<=graphs.size();i++,j++){
+            target.add(graphs.get(i-1));
+        }
+        return target;
     }
+
+
+//    删除仪表盘
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public  boolean deleteDB(int dbID){
+        dbItemMapper.deleteDB(dbID);
+        return true;
+    }
+
+
+//    删除图表
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public  boolean deleteGraph(int graphID){
+        dbItemMapper.deleteGraph(graphID);
+        return true;
+    }
+
 
 //    根据dashboardID调取所有信息
     @Transactional(propagation = Propagation.SUPPORTS)

@@ -195,8 +195,9 @@ export default {
                 pagenum:that.dbCurrentPage,
                 pagesize:that.dbSize
             })
-            // console.log(this.dbCurrentPage);
-            // console.log(this.dbSize);
+            console.log(this.dbCurrentPage);
+            console.log(this.dbSize);
+            console.log(111);
             const result = axios({
                 method: 'post',
                 url:'/changePage',
@@ -241,7 +242,7 @@ export default {
             // console.log(this.dbSize);
             const result = axios({
                 method: 'post',
-                url:'/changePage',
+                url:'/getDBList',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
@@ -260,6 +261,10 @@ export default {
                 pagenum:that.dbCurrentPage,
                 pagesize:that.dbSize
             })
+            console.log(111)
+            console.log(that.dbCurrentPage)
+            console.log(that.dbSize)
+           console.log(userID)
             const result = axios({
                 method: 'post',
                 url:'/getDBList',

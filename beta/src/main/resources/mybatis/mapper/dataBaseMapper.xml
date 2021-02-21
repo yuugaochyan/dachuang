@@ -4,6 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.industrialplatform.beta.mapper.dataBaseMapper">
 
+<!--  获取mqtttag列表  -->
+    <select id="getMqttTagList" resultType="mqttTag">
+        select *
+        from mqtttag
+    </select>
+
+<!--  获取表的列名  -->
     <select id="getTableColNameByTableName" parameterType="String" resultType="String">
         select COLUMN_NAME
         from information_schema.COLUMNS

@@ -62,8 +62,15 @@ public interface dbItemMapper {
     int bindGraphToItem(int graphID,int itemID);
     int updateItemLoc(dashBoardItem dashBoardItem);
 
-//    图表事物Insert
-    int registGraph(@Param("ID")int ID,@Param("userID")int userID,@Param("type")String type,@Param("graphName")String graphName);
+//    删除事物
+    int deleteDB(int dbID);
+    int deleteGraph(int graphID);
+
+    //    图表事物Insert
+    int registGraph(@Param("ID")int ID,
+                    @Param("userID")int userID,
+                    @Param("type")String type,
+                    @Param("graphName")String graphName);
     int addGraph(Graph graph);
     int addMQTTGraph(mqttGraph mqttGraph);
     int addTable(Table table);

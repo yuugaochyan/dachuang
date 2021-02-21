@@ -1,6 +1,7 @@
 package com.industrialplatform.beta.service;
 
 import com.industrialplatform.beta.mapper.dataBaseMapper;
+import com.industrialplatform.beta.pojo.mqttTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,6 +19,12 @@ public class DataBaseService {
 
     @Autowired
     dataBaseMapper dataBaseMapper;
+
+//    获取MqttTag信息
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public List<mqttTag> getMqttTagList(){
+        return dataBaseMapper.getMqttTagList();
+    }
 
 //  获取表的具体数据
     @Transactional(propagation = Propagation.SUPPORTS)
