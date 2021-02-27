@@ -592,7 +592,7 @@ export default {
             let postDta=this.$qs.stringify({
                 dataSource:that.chartform.dataSource
             })
-            console.log(that.chartform.dataSource);
+            // console.log(that.chartform.dataSource);
             this.$axios.post("/getTableData",postDta)
             .then((resp)=>{
                 console.log(resp)
@@ -908,16 +908,146 @@ export default {
                 that.chartform.dataSource=resp.data.data.Graph.dataSource
                 that.chartform.graphName=resp.data.data.Graph.graphName
                 that.Chart.name=resp.data.data.Graph.legend[0]
+                
                 }
             })
             setTimeout(()=>{
-                this.step1=true
+                this.step1=true;
+                this.drawinit(that.chartform.graphType)
             },500)
         },
+        drawinit(type) {
+            if(type!='pie') {
+            let that=this
+            
+
+            
+
+            let chart = this.$echarts.init(document.getElementById('chart'))
+            chart.setOption({
+                
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    },
+                    show: true,
+                    formatter: '({c})'
+                },
+                legend: { //图例
+                    textStyle:{
+                        // fontSize: 18,//字体大小
+                        color: '#ffffff'
+                    },
+                    data: this.tbData.Graph.legend,
+                    
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                // grid: { //?绘图区域
+                    // left: '3%',
+                    // right: '4%',
+                    // bottom: '3%',
+                    // containLabel: true
+                // },
+                xAxis: [
+                    {
+                        type: this.tbData.Graph.xtype,
+                        // boundaryGap: false,
+                        data: this.tbData.Graph.xarray,
+                        axisLabel: {
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: this.tbData.Graph.ytype,
+                        axisLabel: {
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+                    }
+                ],
+                series: this.tbData.Graph.series
+                
+            });
+            
+            // window.onresize=that.chart.resize,
+            window.addEventListener("resize", function () {
+                if(that.chart) {
+                    that.chart.resize();
+                    // console.log("监听到变化");
+                }
+            })
+            }
+        
+        
+            else if(type=='pie') {
+            let that=this
+            
+            
+            let chart = this.$echarts.init(document.getElementById('chart'))
+            chart.setOption({
+                
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    },
+                    show: true
+                },
+                legend: { //图例
+                    textStyle:{
+                        // fontSize: 18,//字体大小
+                        color: '#ffffff'
+                    },
+                    data: this.tbData.Graph.legend,
+                    
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                // grid: { //?绘图区域
+                    // left: '3%',
+                    // right: '4%',
+                    // bottom: '3%',
+                    // containLabel: true
+                // },
+                series: this.tbData.Graph.series
+                
+            });
+            
+            // window.onresize=that.chart.resize,
+            window.addEventListener("resize", function () {
+                if(that.chart) {
+                    that.chart.resize();
+                    // console.log("监听到变化");
+                }
+            })
+            }
+        
+        }
     },
     
     mounted () {
         this.getTbData();
+        // console.log(this.tbData);
+        // this.drawinit(this.chartform.graphType)
     },
     // watch: {
         // formdata: {

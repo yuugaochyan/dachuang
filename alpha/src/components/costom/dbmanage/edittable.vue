@@ -236,6 +236,7 @@ export default {
                 }
             })
             setTimeout(()=>{
+                this.getData()
                 this.step1=true
             },500)
         },

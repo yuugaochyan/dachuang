@@ -13,9 +13,9 @@
                     <el-select v-model="chartform.dataSource" placeholder="请选择数据源" >
                         <el-option
                         v-for="item in tagList"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        :key="item.tagID"
+                        :label="item.tagName"
+                        :value="item.tag">
                         </el-option>
                     </el-select>
                     </el-form-item>
@@ -328,7 +328,7 @@ export default {
             })
             const result = axios({
                 method: 'post',
-                url:'/getTagList',
+                url:'/getMqttTagList',
                 data:postData,
                 }).then(function(resp){
                     if(resp.data.status==200) {

@@ -35,7 +35,7 @@ export default {
                 toFixed: 1,
                 content:this.obdata.tagName+': {nt}',
                 style: {
-                    fontSize:this.obdata.fontSize,
+                    fontSize:120,
                     fill:'#dfdfdf'
                 }
             }
@@ -83,6 +83,7 @@ export default {
                 else {
                     that.config.style.fill='#3de7c9'
                 }
+                
                 this.config = { ...this.config }
                 // console.log(this.datalist);
                 // this.drawBar(this.tmplist,this.timelist,this.linename);

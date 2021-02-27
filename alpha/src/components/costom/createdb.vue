@@ -178,7 +178,7 @@ export default {
             // console.log(this.dbSize);
             const result = axios({
                 method: 'post',
-                url:'/changePage',
+                url:'/getDBList',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
@@ -199,7 +199,7 @@ export default {
             // console.log(this.dbSize);
             const result = axios({
                 method: 'post',
-                url:'/changePage',
+                url:'/getDBList',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
@@ -220,7 +220,7 @@ export default {
             // console.log(this.dbSize);
             const result = axios({
                 method: 'post',
-                url:'/changePage',
+                url:'/getGraphList',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
@@ -241,7 +241,7 @@ export default {
             // console.log(this.dbSize);
             const result = axios({
                 method: 'post',
-                url:'/changePage',
+                url:'/getGraphList',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
@@ -294,7 +294,7 @@ export default {
                 name:'viewdb',
                 params: {
                     dbID:row.dbID,
-                    dbName:row.name,
+                    dbName:row.dbName,
                     dbInfo:row.info
                 }
             })
@@ -304,7 +304,7 @@ export default {
                 name:'editdb',
                 params: {
                     dbID:row.dbID,
-                    dbName:row.name,
+                    dbName:row.dbName,
                     dbInfo:row.info
                 }
             })
@@ -313,7 +313,6 @@ export default {
             let that = this;
             const userID=localStorage.getItem("userID")
             let postData=this.$qs.stringify({
-                userID:userID,
                 dbID:row.dbID,
             })
             const result = axios({
@@ -324,7 +323,7 @@ export default {
                 if(resp.data.status==200) {
                 that.$message({
                     showClose: true,
-                    message: '已经删除成功',
+                    message: resp.data.msg,
                     center: true,
                     type: 'success'
                 });
@@ -336,8 +335,8 @@ export default {
             this.$router.push({
                 name:'viewtb',
                 params: {
-                    tbID:row.tbID,
-                    tbName:row.name
+                    tbID:row.graphID,
+                    tbName:row.graphName
                 }
             })
         },
@@ -348,8 +347,8 @@ export default {
                 this.$router.push({
                     name:'editchart',
                     params: {
-                        tbID:row.tbID,
-                        tbName:row.name
+                        tbID:row.graphID,
+                        tbName:row.graphName
                     }
                 })
             }
@@ -357,8 +356,8 @@ export default {
                 this.$router.push({
                     name:'edittable',
                     params: {
-                        tbID:row.tbID,
-                        tbName:row.name
+                        tbID:row.graphID,
+                        tbName:row.graphName
                     }
                 })
             }
@@ -366,8 +365,8 @@ export default {
                 this.$router.push({
                     name:'editmqttline',
                     params: {
-                        tbID:row.tbID,
-                        tbName:row.name
+                        tbID:row.graphID,
+                        tbName:row.graphName
                     }
                 })
             }
@@ -375,8 +374,8 @@ export default {
                 this.$router.push({
                     name:'editmqttnum',
                     params: {
-                        tbID:row.tbID,
-                        tbName:row.name
+                        tbID:row.graphID,
+                        tbName:row.graphName
                     }
                 })
             }
@@ -386,17 +385,17 @@ export default {
             const userID=localStorage.getItem("userID")
             let postData=this.$qs.stringify({
                 userID:userID,
-                tbID:row.tbID,
+                tbID:row.graphID,
             })
             const result = axios({
                 method: 'post',
-                url:'/deleteTB',
+                url:'/deleteGraph',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
                 that.$message({
                     showClose: true,
-                    message: '已经删除成功',
+                    message: resp.data.msg,
                     center: true,
                     type: 'success'
                 });
@@ -440,6 +439,7 @@ export default {
         // console.log(this.dbData);
         const that = this;
         this.clientHeight=localStorage.getItem('clientHeight')-150
+        console.log(this.clientHeight);
         window.onresize = function temp() {
             that.$store.commit(
                 "setHeight",

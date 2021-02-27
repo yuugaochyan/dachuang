@@ -58,6 +58,9 @@ export default {
                 let msg = JSON.parse(message.toString())
                 // this.datalist.name=msg.n;
                 // this.datalist.value=msg.v;
+                if(msg.n==tag) {
+                    console.log(msg.v);
+                }
                 console.log(msg.v);
                 if(msg.v<max && msg.v>min){
                     that.vlist.push(msg.v);

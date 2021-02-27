@@ -225,18 +225,17 @@ export default {
             console.log(tbID);
             let that = this;
             let postData=this.$qs.stringify({
-                dbID:that.dbID,
-                tbID:tbID
+                fraphID:tbID
             })
             const result = axios({
                 method: 'post',
-                url:'/deleteTBinDB',
+                url:'/deleteGraph',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
                 that.$message({
                     showClose: true,
-                    message: '删除成功',
+                    message: resp.data.msg,
                     center: true,
                     type: 'success'
                 });
