@@ -182,7 +182,7 @@ export default {
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
-                that.dbData=resp.data.data
+                that.dbData=resp.data.data.list
             }
             })
         },
@@ -203,7 +203,7 @@ export default {
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
-                that.dbData=resp.data.data
+                that.dbData=resp.data.data.list
             }
             })
         },
@@ -224,7 +224,7 @@ export default {
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
-                that.tbData=resp.data.data
+                that.tbData=resp.data.data.list
             }
             })
         },
@@ -245,7 +245,7 @@ export default {
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
-                that.tbData=resp.data.data
+                that.tbData=resp.data.data.list
             }
             })
         },
@@ -266,8 +266,8 @@ export default {
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
-                that.dbData=resp.data.data
-                that.dbtotal=that.dbData.length
+                that.dbData=resp.data.data.list
+                that.dbtotal=resp.data.data.total
             }
             })
         },
@@ -285,8 +285,8 @@ export default {
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
-                that.tbData=resp.data.data
-                that.tbtotal=that.tbData.length
+                that.tbData=resp.data.data.list
+                that.tbtotal=resp.data.data.total
             }
             })
         },
