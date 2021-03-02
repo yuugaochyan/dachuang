@@ -346,6 +346,7 @@ export default {
                     center: true,
                     type: 'success'
                 });
+                that.getDbData();
             }
             })
         },
@@ -418,6 +419,7 @@ export default {
                     center: true,
                     type: 'success'
                 });
+                that.getTbData();
             }
             })
         },

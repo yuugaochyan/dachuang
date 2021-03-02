@@ -8,5 +8,6 @@ public class LineDetail {
     private String name;
     private String type;
     private String dataCol;
+    private String color;
     private int[] data;
 }
