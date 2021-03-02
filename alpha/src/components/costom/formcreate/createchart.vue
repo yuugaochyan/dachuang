@@ -33,7 +33,7 @@
                 <transition name="el-fade-in" >
                     <el-form :model="Chart" 
                     v-show="step2&&chartform.graphType=='bar'" 
-                    :rules="rules2" ref="chartformref2" :inline="true">
+                    :rules="rules2" ref="chartformref2" :inline=true>
                     <el-form-item label="x轴数据"  prop="xArraySource">
                         <el-select v-model="Chart.xArraySource" 
                         placeholder="请选择x轴数据"
@@ -67,15 +67,15 @@
                     </el-form>
                 </transition>
 
-                <!-- //^第二步-折现图 -->
+                <!-- //^第二步-折线图 -->
                 <transition name="el-fade-in" >
-                    <el-form :model="Chart" 
+                    <el-form :model="lineChart" 
                     v-show="step2&&chartform.graphType=='line'" 
                     :rules="rules2" ref="chartformref2" :inline="true">
-                    <el-form-item label="x轴数据来源"  prop="xArraySource" >
-                        <el-select v-model="Chart.xArraySource" 
+                    <el-form-item label="数据来源"  prop="xArraySource" placeholder="选择x轴数据">
+                        <el-select v-model="lineChart.xArraySource" 
                         placeholder="请选择x轴数据"
-                        @change="changeX">
+                        @change="changeX" >
                             <el-option
                             v-for="opx in colList"
                             :key="opx"
@@ -84,23 +84,12 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <!-- <el-form-item label="y轴数据数量"  prop="yNum" > -->
-                        <!-- <el-select v-model="Chart.yNum"  -->
-                        <!-- placeholder="请选择y轴数据量（最多叠加三条）" -->
-                        <!-- @change="changeX"> -->
-                            <!-- <el-option -->
-                            <!-- v-for="n in yNumList" -->
-                            <!-- :key="n" -->
-                            <!-- :label="n" -->
-                            <!-- :value="n"> -->
-                            <!-- </el-option> -->
-                        <!-- </el-select> -->
-                    <!-- </el-form-item> -->
-                    <!-- <el-divider></el-divider> -->
-                    <el-form-item label="y轴数据"  prop="yArraySource">
-                        <el-select v-model="Chart.yArraySource" 
+                    
+                    <el-form-item prop="yArraySource" placeholder="选择y轴数据" 
+                    v-for="(item,index) in colList" :key="index" v-show="index<yNum">
+                        <el-select v-model="lineChart.yArraySource[index]" 
                         placeholder="请选择y轴数据"
-                        @change="changeX">
+                        @change="changeX" >
                             <el-option
                             v-for="opy in colList"
                             :key="opy"
@@ -108,47 +97,36 @@
                             :value="opy">
                             </el-option>
                         </el-select>
+                        <el-button type="success"  @click="configLine(index)">设置</el-button>
                     </el-form-item>
-                    <el-form-item label="数据名"  prop="name">
-                        <el-input v-model="Chart.name" @change="changeX"></el-input>
-                    </el-form-item>
-                    
-                    <!-- <el-form-item label="y轴数据"  prop="yArraySource2" v-show="Chart.yNum>=2"> -->
-                        <!-- <el-select v-model="Chart.yArraySource2"  -->
-                        <!-- placeholder="请选择y轴数据" -->
-                        <!-- @change="changeX"> -->
-                            <!-- <el-option -->
-                            <!-- v-for="opy in colList" -->
-                            <!-- :key="opy" -->
-                            <!-- :label="opy" -->
-                            <!-- :value="opy"> -->
-                            <!-- </el-option> -->
-                        <!-- </el-select> -->
-                    <!-- </el-form-item> -->
-                    <!-- <el-form-item label="数据名"  prop="name2" v-show="Chart.yNum>=2"> -->
-                        <!-- <el-input v-model="Chart.name2" @change="changeX"></el-input> -->
-                    <!-- </el-form-item> -->
-                    <!--  -->
-                    <!-- <el-form-item label="y轴数据"  prop="yArraySource3" v-show="Chart.yNum==3"> -->
-                        <!-- <el-select v-model="Chart.yArraySource3"  -->
-                        <!-- placeholder="请选择y轴数据" -->
-                        <!-- @change="changeX"> -->
-                            <!-- <el-option -->
-                            <!-- v-for="opy in colList" -->
-                            <!-- :key="opy" -->
-                            <!-- :label="opy" -->
-                            <!-- :value="opy"> -->
-                            <!-- </el-option> -->
-                        <!-- </el-select> -->
-                    <!-- </el-form-item> -->
-                    <!-- <el-form-item label="数据名"  prop="name3" v-show="Chart.yNum==3"> -->
-                        <!-- <el-input v-model="Chart.name3" @change="changeX"></el-input> -->
-                    <!-- </el-form-item> -->
-                    <!-- <el-form-item label="预览生成图表"> -->
-                        <!-- <el-button @click="drawline('line')"></el-button> -->
-                    <!-- </el-form-item> -->
+                    <el-dialog
+                        title="提示"
+                        :visible.sync="lineConfigVis"
+                        width="30%"
+                        :before-close="handleClose">
+                        <span>
+                            <el-form :model="lineChart">
+                                <el-form-item label="数据名">
+                                    <el-input v-model="lineChart.name[configingLine]" clearable placeholder="为这个可视化问题取个名字吧"></el-input>
+                                </el-form-item>
+                                <el-form-item label="颜色">
+                                    <el-color-picker v-model="lineChart.color[configingLine]"></el-color-picker>
+                                </el-form-item>
+                            </el-form>
+                        </span>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="lineConfigVis = false">取 消</el-button>
+                            <el-button type="primary" @click="lineConfigVis = false">确 定</el-button>
+                        </span>
+                    </el-dialog>
+
+                    <br>
+                    <el-button type="success"  @click="pushyNum">+</el-button>
+                    <el-button type="danger"  @click="popyNum">-</el-button>
                     </el-form>
                 </transition>
+
+                
 
                 <!-- //^第二步-饼图 -->
                 <transition name="el-fade-in" >
@@ -329,12 +307,15 @@ export default {
                 xArraySource:'',
                 yArraySource:'',
                 name:'',
-                yNum:1,
-                yArraySource2:'',
-                yArraySource3:'',
-                name2:'',
-                name3:''
             },
+            lineChart:{
+                xArraySource:'',
+                yArraySource:[''],
+                name:[''],
+                color:['']
+            },
+            yName:[],
+            yNum:1,
             tableData:{},
             reset:false,
             active:0,
@@ -345,6 +326,7 @@ export default {
             step3:false,
             xData:[],
             yData:[],
+            ylineData:[],
             xType:'',
             yType:'',
             dbform:{
@@ -352,6 +334,8 @@ export default {
             },
             dbData:[],
             tbID:'',
+            lineConfigVis:false,
+            configingLine:1,
         }
     },
     
@@ -372,11 +356,32 @@ export default {
             }
             })
         },
+        configLine(index) {
+            this.configingLine=index;
+            this.lineConfigVis=true;
+        },
+        pushyNum() {
+            if(this.yNum<this.colList.length) {
+                this.yNum++;
+                console.log(this.lineChart.yArraySource);
+                this.drawline(this.chartform.graphType)
+            }
+        },
+        popyNum() {
+            if(this.yNum>0) {
+                this.lineChart.yArraySource.pop();
+                console.log(this.lineChart.yArraySource);
+                this.yNum--
+                this.drawline(this.chartform.graphType)
+            }
+        },
         drawline(Type){
             let that=this
             var series=[];
             var legend=[];
             var location=[];
+            // console.log(Type);
+            // console.log(this.Chart.xArraySource);
 
             if(Type=='bar'||Type=='line') {
                 this.xType='category'
@@ -386,7 +391,7 @@ export default {
                 this.xType='value'
                 this.yType='value'
             }
-            
+            if(Type=='bar'||Type=='scatter') {
             for(let key in this.tableData) {
                 if(key==that.Chart.xArraySource) {
                     that.xData=this.tableData[key]
@@ -395,7 +400,36 @@ export default {
                     that.yData=this.tableData[key]
                 }
             }
-            if(Type=='bar'||Type=='line') {
+            }
+            if(Type=='line') {
+                // console.log(this.lineChart.yArraySource);
+                for(let key in this.tableData) {
+                    if(key==that.lineChart.xArraySource) {
+                        that.xData=this.tableData[key]
+                    }
+                    for(let i in this.lineChart.yArraySource) {
+                        // console.log(this.lineChart.yArraySource[i]);
+                        // console.log(key);
+                        if(key==this.lineChart.yArraySource[i]) {
+                            that.ylineData[i]=this.tableData[key];
+                            let obj={
+                            name:this.lineChart.name,
+                            type:Type,
+                            data:this.ylineData[i]
+                            }
+                            series.push(obj)
+                            console.log(series);
+                            legend.push(this.lineChart.name[i])
+                            // console.log(this.tableData[key]);
+                        }
+                        
+                    }
+                }
+                
+                
+                
+            }
+            else if(Type=='bar') {
                 let obj={
                     name:this.Chart.name,
                     type:Type,
@@ -403,35 +437,6 @@ export default {
                 }
                 series.push(obj)
                 legend.push(this.Chart.name)
-            if(this.Chart.yNum>=2) {
-                
-                for(let key in this.tableData) {
-                    if(key==that.Chart.yArraySource2) {
-                        that.yData=this.tableData[key]
-                    }
-                }
-                let obj2={
-                    name:this.Chart.name2,
-                    type:Type,
-                    data:this.yData
-                }
-                series.push(obj2)
-                legend.push(this.Chart.name2)
-            }
-            if(this.Chart.yNum>=3) {
-                for(let key in this.tableData) {
-                    if(key==that.Chart.yArraySource3) {
-                        that.yData=this.tableData[key]
-                    }
-                }
-                let obj3={
-                    name:this.Chart.name3,
-                    type:Type,
-                    data:this.yData
-                }
-                series.push(obj3)
-                legend.push(this.Chart.name3)
-            }
             }
             else if(Type=='scatter') {
                 for(let x in this.xData) {
@@ -448,7 +453,7 @@ export default {
             }
 
             let chart = this.$echarts.init(document.getElementById('chart'))
-            chart.setOption({
+            let option={
                 
                 tooltip: {
                     trigger: 'axis',
@@ -483,6 +488,13 @@ export default {
                 xAxis: [
                     {
                         type: this.xType,
+                        name:this.Chart.xArraySource,
+                        nameLocation:'middle',
+                        nameTextStyle:{
+                            color:"#ffffff", 
+                            fontSize:16,  
+                            padding:10
+                        },
                         // boundaryGap: false,
                         data: this.xData,
                         axisLabel: {
@@ -495,17 +507,25 @@ export default {
                 yAxis: [
                     {
                         type: this.yType,
+                        name:this.Chart.yArraySource,
+                        nameLocation:'middle',
                         axisLabel: {
                             textStyle: {
                                 color: '#ffffff'
                             }
                         },
+                        nameTextStyle:{
+                            color:"#ffffff", 
+                            fontSize:16,  
+                            padding:10
+                        },
                     }
                 ],
                 series: series
                 
-            });
-            
+            }
+            chart.setOption(option);
+            chart.setOption(option,true)
             // window.onresize=that.chart.resize,
             window.addEventListener("resize", function () {
                 if(that.chart) {
@@ -513,8 +533,9 @@ export default {
                     // console.log("监听到变化");
                 }
             })
+        
         },
-        drawpie(){
+        drawpie() {
             let that=this
             var series=[];
 
@@ -882,6 +903,7 @@ export default {
             }
         },
         changeX() {
+            // console.log(this.chartform.graphType);
             this.drawline(this.chartform.graphType)
         },
         changeY() {

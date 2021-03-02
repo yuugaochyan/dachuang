@@ -23,7 +23,8 @@ export default {
             series=[], //^数据
             legend=[],
             xtype='',
-            ytype=''
+            ytype='',
+            xArraySource='',
         }={}){
             let that=this
             this.chart = this.$echarts.init(document.getElementById(this.id))
@@ -69,6 +70,13 @@ export default {
                                 color: '#ffffff'
                             }
                         },
+                        name:xArraySource,
+                        nameLocation:'middle',
+                        nameTextStyle:{
+                            color:"#ffffff", 
+                            fontSize:16,  
+                            padding:10
+                        },
                     }
                 ],
                 yAxis: [
@@ -78,6 +86,13 @@ export default {
                             textStyle: {
                                 color: '#ffffff'
                             }
+                        },
+                        name:series[0].dataCol,
+                        nameLocation:'middle',
+                        nameTextStyle:{
+                            color:"#ffffff", 
+                            fontSize:16,  
+                            padding:10
                         },
                     }
                 ],

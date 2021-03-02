@@ -4,9 +4,19 @@
             <div class="left">
                 
                 <transition name="el-zoom-in-top" >
-                    <div class="msg" v-if=showinfo>
-                        <h1>你的可视化：{{tbName}}</h1>
-                        <h3>可视化类型：{{tbData.type}}</h3>
+                    <div class="view-msg" v-if=showinfo>
+                        <el-divider direction="vertical"></el-divider>
+                        <h1>你的可视化：</h1><br>
+                        <span class="view-t1">{{tbData.Graph.graphName}}</span>
+                        <el-divider direction="vertical"></el-divider>
+                        <el-divider direction="vertical"></el-divider>
+                        <h3>可视化类型：</h3><br>
+                        <span class="view-t2">{{tbData.type}}</span>
+                        <el-divider direction="vertical"></el-divider>
+                        <el-divider direction="vertical"></el-divider>
+                        <h3>数据源：</h3><br>
+                        <span class="view-t2">{{tbData.Graph.dataSource}}</span>
+                        <el-divider direction="vertical"></el-divider>
                     </div>
                 </transition>
                 
@@ -82,7 +92,16 @@ export default {
     
     },
     created() {
+        const loading = this.$loading({
+            lock: true,
+            text: '拼命加载中',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+        });
         this.getTbData();
+        setTimeout(() => {
+                loading.close();
+        }, 1000);
     },
     watch: {
         tbData: function(){
@@ -125,5 +144,22 @@ export default {
     bottom: 25%;
     right: 10%;
 }
-
+.view-msg {
+    >h1 {
+        color: rgb(117, 117, 117);
+        display: inline;
+    }
+    >h3 {
+        color: rgb(117, 117, 117);
+        display: inline;
+    }
+    >.view-t1 {
+        font-size: 35px;
+        padding-left: 35px;
+    }
+    >.view-t2 {
+        font-size: 25px;
+        padding-left: 35px;
+    }
+}
 </style>

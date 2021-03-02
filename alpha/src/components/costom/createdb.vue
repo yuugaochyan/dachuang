@@ -299,26 +299,37 @@ export default {
                 name:'viewdb',
                 params: {
                     dbID:row.dbID,
-                    dbName:row.name,
+                    dbName:row.dbName,
                     dbInfo:row.info
                 }
             })
         },
         editDB(row) {
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            // location.reload();
+            setTimeout(() => {
+                loading.close();
+            }, 1000);
+            
             this.$router.push({
                 name:'editdb',
                 params: {
                     dbID:row.dbID,
-                    dbName:row.name,
+                    dbName:row.dbName,
                     dbInfo:row.info
                 }
             })
+            
         },
         deleteDB(row) {
             let that = this;
             const userID=localStorage.getItem("userID")
             let postData=this.$qs.stringify({
-                userID:userID,
                 dbID:row.dbID,
             })
             const result = axios({
@@ -329,7 +340,7 @@ export default {
                 if(resp.data.status==200) {
                 that.$message({
                     showClose: true,
-                    message: '已经删除成功',
+                    message: resp.data.msg,
                     center: true,
                     type: 'success'
                 });
@@ -341,8 +352,8 @@ export default {
             this.$router.push({
                 name:'viewtb',
                 params: {
-                    tbID:row.tbID,
-                    tbName:row.name
+                    tbID:row.graphID,
+                    tbName:row.graphName
                 }
             })
         },
@@ -353,8 +364,8 @@ export default {
                 this.$router.push({
                     name:'editchart',
                     params: {
-                        tbID:row.tbID,
-                        tbName:row.name
+                        tbID:row.graphID,
+                        tbName:row.graphName
                     }
                 })
             }
@@ -362,8 +373,8 @@ export default {
                 this.$router.push({
                     name:'edittable',
                     params: {
-                        tbID:row.tbID,
-                        tbName:row.name
+                        tbID:row.graphID,
+                        tbName:row.graphName
                     }
                 })
             }
@@ -371,8 +382,8 @@ export default {
                 this.$router.push({
                     name:'editmqttline',
                     params: {
-                        tbID:row.tbID,
-                        tbName:row.name
+                        tbID:row.graphID,
+                        tbName:row.graphName
                     }
                 })
             }
@@ -380,8 +391,8 @@ export default {
                 this.$router.push({
                     name:'editmqttnum',
                     params: {
-                        tbID:row.tbID,
-                        tbName:row.name
+                        tbID:row.graphID,
+                        tbName:row.graphName
                     }
                 })
             }
@@ -391,17 +402,17 @@ export default {
             const userID=localStorage.getItem("userID")
             let postData=this.$qs.stringify({
                 userID:userID,
-                tbID:row.tbID,
+                tbID:row.graphID,
             })
             const result = axios({
                 method: 'post',
-                url:'/deleteTB',
+                url:'/deleteGraph',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
                 that.$message({
                     showClose: true,
-                    message: '已经删除成功',
+                    message: resp.data.msg,
                     center: true,
                     type: 'success'
                 });
@@ -439,18 +450,30 @@ export default {
         }
     },
     mounted() {
+        const loading = this.$loading({
+            lock: true,
+            text: '拼命加载中',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+        });
+            // this.reload()
+            
         this.getDbData();
         this.getTbData();
         // console.log(this.dbData);
         // console.log(this.dbData);
         const that = this;
         this.clientHeight=localStorage.getItem('clientHeight')-150
+        console.log(this.clientHeight);
         window.onresize = function temp() {
             that.$store.commit(
                 "setHeight",
                 document.documentElement.clientHeight - 110
             );
         };
+        setTimeout(() => {
+                loading.close();
+        }, 1000);
 
     },
     watch: {

@@ -11,7 +11,7 @@
 <script>
 import axios from 'axios'
 import mqtt from 'mqtt'
-var client
+var client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
 const options= {
     connectTimeout: 40000,
     clientId: 'mqtitId-Home',
@@ -35,10 +35,11 @@ export default {
                 toFixed: 1,
                 content:this.obdata.tagName+': {nt}',
                 style: {
-                    fontSize:this.obdata.fontSize,
+                    fontSize:120,
                     fill:'#dfdfdf'
                 }
-            }
+            },
+            interval:''
         }
     },
     
@@ -83,6 +84,7 @@ export default {
                 else {
                     that.config.style.fill='#3de7c9'
                 }
+                
                 this.config = { ...this.config }
                 // console.log(this.datalist);
                 // this.drawBar(this.tmplist,this.timelist,this.linename);
@@ -91,18 +93,31 @@ export default {
                 // this.config.data=this.barlist;
                 
             })
+            client.on('reconnect', (error) => {
+                // console.log('正在重连:', error)
+            })
+            // 链接异常处理
+            client.on('error', (error) => {
+                console.log('连接失败:', error)
+            })
         },
 
         
         
         
     },
-    mounted () {
+    created () {
+        let that = this;
         this.drawline(this.obdata);
+        this.interval =setInterval(()=>{
+            setTimeout(()=>{
+                
+            },0)
+        },30000)
     },
     beforeDestroy() {
-        
-        client.end()
+        clearInterval(this.interval);
+        // client.end()
     },
     watch: {
         obdata: {

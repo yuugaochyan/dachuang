@@ -236,9 +236,23 @@ export default {
         },
     },
     created() {
+        const loading = this.$loading({
+            lock: true,
+            text: '拼命加载中',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+        });
         this.getDbData();
         document.addEventListener('keydown',this.handleEvent)
         document.addEventListener('keydown',this.handleEvent2)
+        this.resizeinterval =setInterval(()=>{
+            setTimeout(()=>{
+                this.asideResize();
+            },0)
+        },1000)
+        setTimeout(() => {
+                loading.close();
+        }, 1000);
     },
     mounted() {
         setTimeout(()=>{

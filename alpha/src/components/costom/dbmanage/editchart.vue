@@ -236,7 +236,7 @@
                 </transition>
 
             <div class="bt-next">
-                <el-button type="info"  @click="laststep" v-show="active>0">{{steplabel1}}</el-button>
+                <el-button type="info"  @click="laststep">{{steplabel1}}</el-button>
                 <el-button type="warning"  @click="nextstep">{{steplabel2}}</el-button>
             </div>
 
@@ -339,7 +339,7 @@ export default {
             reset:false,
             active:0,
             steplabel2:'下一步',
-            steplabel1:'上一步',
+            steplabel1:'放弃编辑',
             step1:false,
             step2:false,
             step3:false,
@@ -491,6 +491,13 @@ export default {
                                 color: '#ffffff'
                             }
                         },
+                        name:this.Chart.xArraySource,
+                        nameLocation:'middle',
+                        nameTextStyle:{
+                            color:"#ffffff", 
+                            fontSize:16,  
+                            padding:10
+                        },
                     }
                 ],
                 yAxis: [
@@ -500,6 +507,13 @@ export default {
                             textStyle: {
                                 color: '#ffffff'
                             }
+                        },
+                        name:this.Chart.yArraySource,
+                        nameLocation:'middle',
+                        nameTextStyle:{
+                            color:"#ffffff", 
+                            fontSize:16,  
+                            padding:10
                         },
                     }
                 ],
@@ -592,7 +606,7 @@ export default {
             let postDta=this.$qs.stringify({
                 dataSource:that.chartform.dataSource
             })
-            console.log(that.chartform.dataSource);
+            // console.log(that.chartform.dataSource);
             this.$axios.post("/getTableData",postDta)
             .then((resp)=>{
                 console.log(resp)
@@ -609,6 +623,7 @@ export default {
                 
                 if(this.active==0) {
                     this.active++;
+                    this.steplabel1='上一步'
                     this.steplabel2='保存图表'
                     this.step1=false;
                     this.getData();
@@ -871,9 +886,14 @@ export default {
         },
         laststep() {
             let that = this;
+            if(this.active==0) {
+                this.$router.push('/createdb')
+            }
+            else {
             this.active--;
             if(this.active==0) {
                 this.steplabel2='下一步'
+                this.steplabel1='放弃编辑'
                 this.step2=false;
                 setTimeout(function() {
                     that.step1=true;
@@ -881,6 +901,7 @@ export default {
             }
             if(this.active==1) {
                 this.$router.push('/createdb')
+            }
             }
         },
         changeX() {
@@ -908,16 +929,172 @@ export default {
                 that.chartform.dataSource=resp.data.data.Graph.dataSource
                 that.chartform.graphName=resp.data.data.Graph.graphName
                 that.Chart.name=resp.data.data.Graph.legend[0]
+                setTimeout(()=>{
+                that.step1=true;
+                that.drawinit(that.chartform.graphType)
+                },700)
                 }
             })
-            setTimeout(()=>{
-                this.step1=true
-            },500)
+            // setTimeout(()=>{
+                // this.step1=true;
+                // this.drawinit(that.chartform.graphType)
+            // },1000)
         },
+        drawinit(type) {
+            if(type!='pie') {
+            let that=this
+            
+
+            
+
+            let chart = this.$echarts.init(document.getElementById('chart'))
+            chart.setOption({
+                
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    },
+                    show: true,
+                    formatter: '({c})'
+                },
+                legend: { //图例
+                    textStyle:{
+                        // fontSize: 18,//字体大小
+                        color: '#ffffff'
+                    },
+                    data: this.tbData.Graph.legend,
+                    
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                // grid: { //?绘图区域
+                    // left: '3%',
+                    // right: '4%',
+                    // bottom: '3%',
+                    // containLabel: true
+                // },
+                xAxis: [
+                    {
+                        type: this.tbData.Graph.xtype,
+                        // boundaryGap: false,
+                        data: this.tbData.Graph.xarray,
+                        axisLabel: {
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+                        name:this.tbData.Graph.xArraySource,
+                        nameLocation:'middle',
+                        nameTextStyle:{
+                            color:"#ffffff", 
+                            fontSize:16,  
+                            padding:10
+                        },
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: this.tbData.Graph.ytype,
+                        axisLabel: {
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+                        name:this.tbData.Graph.series[0].dataCol,
+                        nameLocation:'middle',
+                        nameTextStyle:{
+                            color:"#ffffff", 
+                            fontSize:16,  
+                            padding:10
+                        },
+                    }
+                ],
+                series: this.tbData.Graph.series
+                
+            });
+            
+            // window.onresize=that.chart.resize,
+            window.addEventListener("resize", function () {
+                if(that.chart) {
+                    that.chart.resize();
+                    // console.log("监听到变化");
+                }
+            })
+            }
+        
+        
+            else if(type=='pie') {
+            let that=this
+            
+            
+            let chart = this.$echarts.init(document.getElementById('chart'))
+            chart.setOption({
+                
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    },
+                    show: true
+                },
+                legend: { //图例
+                    textStyle:{
+                        // fontSize: 18,//字体大小
+                        color: '#ffffff'
+                    },
+                    data: this.tbData.Graph.legend,
+                    
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                // grid: { //?绘图区域
+                    // left: '3%',
+                    // right: '4%',
+                    // bottom: '3%',
+                    // containLabel: true
+                // },
+                series: this.tbData.Graph.series
+                
+            });
+            
+            // window.onresize=that.chart.resize,
+            window.addEventListener("resize", function () {
+                if(that.chart) {
+                    that.chart.resize();
+                    // console.log("监听到变化");
+                }
+            })
+            }
+        
+        }
     },
     
     mounted () {
+        const loading = this.$loading({
+            lock: true,
+            text: '拼命加载中',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+        });
         this.getTbData();
+        setTimeout(() => {
+                loading.close();
+        }, 1000);
+        // console.log(this.tbData);
+        // this.drawinit(this.chartform.graphType)
     },
     // watch: {
         // formdata: {

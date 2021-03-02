@@ -18,9 +18,9 @@
                     <el-select v-model="chartform.dataSource" placeholder="请选择数据源" >
                         <el-option
                         v-for="item in tagList"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        :key="item.tagID"
+                        :label="item.tagName"
+                        :value="item.tag">
                         </el-option>
                     </el-select>
                     </el-form-item>
@@ -67,7 +67,7 @@
                 </transition>
 
             <div class="bt-next">
-                <el-button type="info"  @click="laststep" v-show="active>0">{{steplabel1}}</el-button>
+                <el-button type="info"  @click="laststep" >{{steplabel1}}</el-button>
                 <el-button type="warning"  @click="nextstep">{{steplabel2}}</el-button>
             </div>
 
@@ -320,6 +320,7 @@ export default {
                 if(this.active==0) {
                     this.active++;
                     this.steplabel2='保存图表'
+                    this.steplabel1='上一步'
                     this.step1=false;
                     setTimeout(function() {
                         that.step2=true;
@@ -414,8 +415,24 @@ export default {
         },
         laststep() {
             let that = this;
-            client.end()
+            if(this.active==0) {
             this.$router.push('/createdb')
+            client.end()
+            }
+            else {
+                this.active--;
+                if(this.active==0) {
+                this.steplabel2='下一步'
+                this.steplabel1='放弃编辑'
+                this.step2=false;
+                setTimeout(function() {
+                    that.step1=true;
+                },500)
+                }
+                if(this.active==1) {
+                    this.$router.push('/createdb')
+                }
+            }
         },
         getTbData() {
             let that = this;
@@ -440,6 +457,7 @@ export default {
             })
             setTimeout(()=>{
                 this.step1=true
+                this.drawline(that.chartform.graphType)
             },500)
         },
         gettag() {
@@ -450,7 +468,7 @@ export default {
             })
             const result = axios({
                 method: 'post',
-                url:'/getTagList',
+                url:'/getMqttTagList',
                 data:postData,
                 }).then(function(resp){
                     if(resp.data.status==200) {
@@ -461,8 +479,19 @@ export default {
         }
     },
     created() {
+        const loading = this.$loading({
+            lock: true,
+            text: '拼命加载中',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+        });
         this.getTbData();
         this.gettag()
+        setTimeout(() => {
+                loading.close();
+        }, 1000);
+        
+        
     },
     beforeDestroy() {
         client.end()
