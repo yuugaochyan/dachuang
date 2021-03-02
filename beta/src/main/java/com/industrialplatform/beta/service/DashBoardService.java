@@ -33,26 +33,34 @@ public class DashBoardService {
 
 //    获取仪表盘列表
     @Transactional(propagation = Propagation.SUPPORTS)
-    public List<DashBoard> getDBList(int userID,int pagenum,int pagesize){
+    public Map<String,Object> getDBList(int userID,int pagenum,int pagesize){
+        Map<String,Object> map=new HashMap<>();
         List<DashBoard> dashBoards=dbItemMapper.getDBListByUserID(userID);
+        int total=dashBoards.size();
         List<DashBoard> target=new ArrayList<>();
         int i=pagesize*(pagenum-1)+1;
         for(int j=1;j<=pagesize&&i<=dashBoards.size();i++,j++){
             target.add(dashBoards.get(i-1));
         }
-        return target;
+        map.put("list",target);
+        map.put("total",total);
+        return map;
     }
 
 //    获取图表列表
     @Transactional(propagation = Propagation.SUPPORTS)
-    public List<Graph> getGraphList(int userID,int pagenum,int pagesize){
+    public Map<String,Object> getGraphList(int userID,int pagenum,int pagesize){
+        Map<String,Object> map=new HashMap<>();
         List<Graph> graphs=dbItemMapper.getGraphListByUserID(userID);
+        int total=graphs.size();
         List<Graph> target=new ArrayList<>();
         int i=pagesize*(pagenum-1)+1;
         for(int j=1;j<=pagesize&&i<=graphs.size();i++,j++){
             target.add(graphs.get(i-1));
         }
-        return target;
+        map.put("list",target);
+        map.put("total",total);
+        return map;
     }
 
 
