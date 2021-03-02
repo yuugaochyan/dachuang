@@ -341,6 +341,10 @@ export default {
                     center: true,
                     type: 'success'
                 });
+                if(that.dbData.length==1) {
+                    this.dbCurrentChange--;
+                }
+                that.getDbData()
             }
             })
         },
@@ -413,6 +417,10 @@ export default {
                     center: true,
                     type: 'success'
                 });
+                if(that.tbData.length==1) {
+                    this.tbCurrentChange--;
+                }
+                that.getTbData()
             }
             })
         },
