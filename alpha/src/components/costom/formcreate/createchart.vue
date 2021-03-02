@@ -737,7 +737,16 @@ export default {
                     }
                     //^封装数据line
                     else if(this.chartform.graphType=='line'){
-                        if(this.Chart.yNum==1){
+                        
+                        var series
+                        for(let key in this.lineChart.yArraySource) {
+                            let obj= {
+                                name:this.lineChart.name[key],
+                                dataCol:this.lineChart.yArraySource[key],
+                                color:this.lineChart.color[key]
+                            }
+                            series.push(obj)
+                        }
                         postData={
                             userID:userID,
                             graphName:this.chartform.graphName,
@@ -747,56 +756,10 @@ export default {
                                 xType:"category",
                                 yType:"value",
                                 xArraySource:this.Chart.xArraySource,
-                                series:[{
-                                    name:this.Chart.name,
-                                    dataCol:this.Chart.yArraySource
-                                }]
+                                series:series
                             }
                         }
-                        }
-                        else if(this.Chart.yNum==2) {
-                            postData={
-                            userID:userID,
-                            graphName:this.chartform.graphName,
-                            graphType:this.chartform.graphType,
-                            dataSource:this.chartform.dataSource,
-                            Chart:{
-                                xType:"category",
-                                yType:"value",
-                                xArraySource:this.Chart.xArraySource,
-                                series:[{
-                                    name:this.Chart.name,
-                                    dataCol:this.Chart.yArraySource
-                                },{
-                                    name:this.Chart.name2,
-                                    dataCol:this.Chart.yArraySource2
-                                }]
-                            }
-                            }
-                        }
-                        else if(this.Chart.yNum==3) {
-                            postData={
-                            userID:userID,
-                            graphName:this.chartform.graphName,
-                            graphType:this.chartform.graphType,
-                            dataSource:this.chartform.dataSource,
-                            Chart:{
-                                xType:"category",
-                                yType:"value",
-                                xArraySource:this.Chart.xArraySource,
-                                series:[{
-                                    name:this.Chart.name,
-                                    dataCol:this.Chart.yArraySource
-                                },{
-                                    name:this.Chart.name2,
-                                    dataCol:this.Chart.yArraySource2
-                                },{
-                                    name:this.Chart.name3,
-                                    dataCol:this.Chart.yArraySource3
-                                }]
-                            }
-                            }
-                        }
+                        
                         const result = axios({
                         method: 'post',
                         url:'/addLineGraph',
