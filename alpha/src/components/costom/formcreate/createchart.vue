@@ -97,13 +97,13 @@
                             :value="opy">
                             </el-option>
                         </el-select>
-                        <el-button type="success"  @click="configLine(index)">设置</el-button>
+                        <el-button type="info"  size="mini"  @click="configLine(index)" class="el-icon-s-tools config-button" ></el-button>
                     </el-form-item>
                     <el-dialog
-                        title="提示"
+                        title="配置这条数据"
                         :visible.sync="lineConfigVis"
                         width="30%"
-                        :before-close="handleClose">
+                        >
                         <span>
                             <el-form :model="lineChart">
                                 <el-form-item label="数据名">
@@ -116,13 +116,13 @@
                         </span>
                         <span slot="footer" class="dialog-footer">
                             <el-button @click="lineConfigVis = false">取 消</el-button>
-                            <el-button type="primary" @click="lineConfigVis = false">确 定</el-button>
+                            <el-button type="primary" @click="updateLineConfig">确 定</el-button>
                         </span>
                     </el-dialog>
 
                     <br>
-                    <el-button type="success"  @click="pushyNum">+</el-button>
-                    <el-button type="danger"  @click="popyNum">-</el-button>
+                    <el-button type="success" size="small" class="el-icon-plus" @click="pushyNum"></el-button>
+                    <el-button type="danger" size="small" class="el-icon-minus" @click="popyNum"></el-button>
                     </el-form>
                 </transition>
 
@@ -360,6 +360,10 @@ export default {
             this.configingLine=index;
             this.lineConfigVis=true;
         },
+        updateLineConfig() {
+            this.lineConfigVis=false;
+            this.drawline(this.chartform.graphType)
+        },
         pushyNum() {
             if(this.yNum<this.colList.length) {
                 this.yNum++;
@@ -413,9 +417,16 @@ export default {
                         if(key==this.lineChart.yArraySource[i]) {
                             that.ylineData[i]=this.tableData[key];
                             let obj={
-                            name:this.lineChart.name,
+                            name:this.lineChart.name[i],
                             type:Type,
-                            data:this.ylineData[i]
+                            data:this.ylineData[i],
+                            itemStyle : {  
+                                normal : {  
+                                    lineStyle:{  
+                                        color:this.lineChart.color[i] 
+                                    }  
+                                }  
+                            }, 
                             }
                             series.push(obj)
                             console.log(series);
@@ -956,5 +967,8 @@ export default {
     position: absolute;
     bottom: 25%;
     right: 10%;
+}
+.config-button {
+    margin-left: 5px;
 }
 </style>
