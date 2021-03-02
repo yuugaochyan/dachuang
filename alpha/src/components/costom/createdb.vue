@@ -346,7 +346,10 @@ export default {
                     center: true,
                     type: 'success'
                 });
-                that.getDbData();
+                if(that.dbData.length==1) {
+                    this.dbCurrentChange--;
+                }
+                that.getDbData()
             }
             })
         },
@@ -419,7 +422,10 @@ export default {
                     center: true,
                     type: 'success'
                 });
-                that.getTbData();
+                if(that.tbData.length==1) {
+                    this.tbCurrentChange--;
+                }
+                that.getTbData()
             }
             })
         },
