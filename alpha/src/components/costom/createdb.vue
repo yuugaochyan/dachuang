@@ -178,7 +178,7 @@ export default {
             // console.log(this.dbSize);
             const result = axios({
                 method: 'post',
-                url:'/changePage',
+                url:'/getDBList',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
@@ -200,7 +200,7 @@ export default {
             console.log(111);
             const result = axios({
                 method: 'post',
-                url:'/changePage',
+                url:'/getDBList',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
@@ -221,7 +221,7 @@ export default {
             // console.log(this.dbSize);
             const result = axios({
                 method: 'post',
-                url:'/changePage',
+                url:'/getGraphList',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
@@ -242,7 +242,7 @@ export default {
             // console.log(this.dbSize);
             const result = axios({
                 method: 'post',
-                url:'/getDBList',
+                url:'/getGraphList',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
