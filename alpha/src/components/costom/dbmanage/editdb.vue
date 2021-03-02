@@ -191,6 +191,7 @@ export default {
             tbData:[],
             multipleTable:[],
             interval:'',
+            resizeinterval:'',
             editable:true,
             layout: [
               { x: 0, y: 0, w: 4, h: 2, i: 0 } //数据格式
@@ -546,20 +547,40 @@ export default {
                 this.savedb();
             },0)
         },30000)
+        this.resizeinterval =setInterval(()=>{
+            setTimeout(()=>{
+                this.asideResize();
+            },0)
+        },1000)
+        const loading = this.$loading({
+            lock: true,
+            text: '拼命加载中',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+        });
         this.getDbData();
         document.addEventListener('keydown',this.handleEvent)
         document.addEventListener('keydown',this.handleEvent2)
         document.addEventListener('keydown',this.handleEvent3)
         document.addEventListener('keydown',this.handleEvent4)
         // await this.asideResize();
+        setTimeout(() => {
+                loading.close();
+        }, 1000);
     },
     mounted() {
-        setTimeout(()=>{
-            this.asideResize()
-        },500)
+        // this.reload()
+        // this.forceUpdate()
+        // this.$router.go(0);
+        // setTimeout(()=>{
+            // this.$router.go(0);
+            // this.asideResize()
+        // },500)
+        
     },
     beforeDestroy() {
         clearInterval(this.interval);
+        clearInterval(this.resizeinterval);
         document.removeEventListener('keydown', this.handleEvent);
         document.removeEventListener('keydown', this.handleEvent2);
         document.removeEventListener('keydown', this.handleEvent3);
@@ -573,6 +594,7 @@ export default {
         layoutData: function(){
             this.$nextTick(function(){
                 this.reset = true;
+                // location.reload();
             })
             
         }

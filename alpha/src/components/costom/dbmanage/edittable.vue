@@ -38,7 +38,7 @@
                 </transition>
 
             <div class="bt-next">
-                <el-button type="info"  @click="laststep" v-show="active>0">{{steplabel1}}</el-button>
+                <el-button type="info"  @click="laststep">{{steplabel1}}</el-button>
                 <el-button type="warning"  @click="nextstep">{{steplabel2}}</el-button>
             </div>
 
@@ -85,7 +85,7 @@ export default {
                 label: 'eqpseasonstatistic'
             }],
             active:0,
-            steplabel1:"算了",
+            steplabel1:"放弃编辑",
             steplabel2:"保存图表",
             tableData:{},
             step1:false,
@@ -211,7 +211,7 @@ export default {
         laststep() {
             let that = this;
             
-            this.$router.push('/createtb')
+            this.$router.push('/createdb')
             
         },
         getTbData() {
@@ -242,7 +242,16 @@ export default {
         },
     },
     created() {
+        const loading = this.$loading({
+            lock: true,
+            text: '拼命加载中',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+        });
         this.getTbData();
+        setTimeout(() => {
+                loading.close();
+        }, 1000);
     },
     // mounted () {
         // this.getData();

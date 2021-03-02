@@ -7,18 +7,22 @@
 <script>
 import axios from 'axios'
 import mqtt from 'mqtt'
-var client
+var client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
 const options= {
     connectTimeout: 40000,
     clientId: 'mqtitId-Home',
     username: 'hyiot',
     password: '1234abcd',
-    clean: true
+    clean: true,
+    // clientId: Math.random*100,
+    connectTimeout: 4000, // 超时时间
+    reconnectPeriod: 4000, // 重连时间间隔
 }
 client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
 export default {
     name:'mqttline',
     props:["id","obdata"],
+    inject:['reload'],
     data(){
         return {
             
@@ -26,6 +30,7 @@ export default {
             chart:'',
             vlist:[],
             tlist:[],
+            interval:''
         }
     },
     
@@ -41,6 +46,7 @@ export default {
             type='',
         }={}){
             let that=this
+            // this.reload()
 
             //*mqtt订阅 need:tag\max\min
             client.on('connect', (e) => {
@@ -59,9 +65,9 @@ export default {
                 // this.datalist.name=msg.n;
                 // this.datalist.value=msg.v;
                 if(msg.n==tag) {
-                    console.log(msg.v);
+                    // console.log(msg.v);
                 }
-                console.log(msg.v);
+                // console.log(msg.v);
                 if(msg.v<max && msg.v>min){
                     that.vlist.push(msg.v);
                     var time = new Date(msg.t*1000)
@@ -83,6 +89,15 @@ export default {
                 // this.config.data=this.barlist;
                 this.draw(this.tlist,this.vlist,legend,tagName,type)
             })
+            client.on('reconnect', (error) => {
+                // console.log('正在重连:', error)
+            })
+            // 链接异常处理
+            client.on('error', (error) => {
+                console.log('连接失败:', error)
+            })
+            
+
         },
 
         draw(t,v,l,n,type) {
@@ -160,12 +175,22 @@ export default {
         
         
     },
-    mounted () {
+    created () {
+        let that = this;
         this.drawline(this.obdata);
+        this.interval =setInterval(()=>{
+            setTimeout(()=>{
+                // console.log(client);
+            },0)
+        },3000)
+    },
+    mounted() {
+        
     },
     beforeDestroy() {
-        
-        client.end()
+        // client.end()
+        clearInterval(this.interval);
+    
     },
     watch: {
         obdata: {

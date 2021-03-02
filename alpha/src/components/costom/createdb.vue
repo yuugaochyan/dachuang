@@ -300,6 +300,17 @@ export default {
             })
         },
         editDB(row) {
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            // location.reload();
+            setTimeout(() => {
+                loading.close();
+            }, 1000);
+            
             this.$router.push({
                 name:'editdb',
                 params: {
@@ -308,6 +319,7 @@ export default {
                     dbInfo:row.info
                 }
             })
+            
         },
         deleteDB(row) {
             let that = this;
@@ -433,6 +445,14 @@ export default {
         }
     },
     mounted() {
+        const loading = this.$loading({
+            lock: true,
+            text: '拼命加载中',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+        });
+            // this.reload()
+            
         this.getDbData();
         this.getTbData();
         // console.log(this.dbData);
@@ -446,6 +466,9 @@ export default {
                 document.documentElement.clientHeight - 110
             );
         };
+        setTimeout(() => {
+                loading.close();
+        }, 1000);
 
     },
     watch: {
