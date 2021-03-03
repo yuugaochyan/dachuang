@@ -448,19 +448,15 @@ export default {
                         center: true,
                         type: 'success'
                     });
-                    that.reload()
+                    that.getTbData()
+                    that.showAddDB = false
                 }
                 })
             })
         }
     },
     mounted() {
-        const loading = this.$loading({
-            lock: true,
-            text: '拼命加载中',
-            spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.7)'
-        });
+        
             // this.reload()
             
         this.getDbData();
@@ -476,9 +472,7 @@ export default {
                 document.documentElement.clientHeight - 110
             );
         };
-        setTimeout(() => {
-                loading.close();
-        }, 1000);
+        
 
     },
     watch: {
