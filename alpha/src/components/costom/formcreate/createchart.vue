@@ -361,6 +361,8 @@ export default {
             let that = this;
             const userID=localStorage.getItem("userID")
             let postData=this.$qs.stringify({
+                pagenum:1,
+                pagesize:1000,
                 userID:userID,
             })
             const result = axios({
@@ -781,7 +783,7 @@ export default {
                             Chart:{
                                 xType:"category",
                                 yType:"value",
-                                xArraySource:this.Chart.xArraySource,
+                                xArraySource:this.lineChart.xArraySource,
                                 series:series
                             }
                         }
