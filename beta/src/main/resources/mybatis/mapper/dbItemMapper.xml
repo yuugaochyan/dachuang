@@ -252,8 +252,8 @@
     </insert>
 <!--  添加折线图Detail  -->
     <insert id="addLineDetail" >
-        insert into linedetail(graphID,legendID,name,dataCol)
-        values(#{graphID},#{lineDetail.legendID},#{lineDetail.name},#{lineDetail.dataCol})
+        insert into linedetail(graphID,legendID,name,dataCol,color)
+        values(#{graphID},#{lineDetail.legendID},#{lineDetail.name},#{lineDetail.dataCol},#{lineDetail.color})
     </insert>
 
 <!--  添加饼图  -->
