@@ -71,10 +71,11 @@
                 <transition name="el-fade-in" >
                     <el-form :model="lineChart" 
                     v-show="step2&&chartform.graphType=='line'" 
-                    :rules="rules2" ref="chartformref2" :inline="true">
+                    :rules="rules5" ref="chartformref5" :inline="true">
                     <el-form-item label="数据来源"  prop="xArraySource" placeholder="选择x轴数据">
                         <el-select v-model="lineChart.xArraySource" 
                         placeholder="请选择x轴数据"
+                        size="small"
                         @change="changeX" >
                             <el-option
                             v-for="opx in colList"
@@ -84,12 +85,13 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    
+                    <el-divider>y轴数据来源，可在<i class="el-icon-s-tools"></i>中设置颜色等</el-divider>
                     <el-form-item prop="yArraySource" placeholder="选择y轴数据" 
                     v-for="(item,index) in colList" :key="index" v-show="index<yNum">
                         <el-select v-model="lineChart.yArraySource[index]" 
                         placeholder="请选择y轴数据"
-                        @change="changeX" >
+                        @change="changeX"
+                        size="small">
                             <el-option
                             v-for="opy in colList"
                             :key="opy"
@@ -110,7 +112,9 @@
                                     <el-input v-model="lineChart.name[configingLine]" clearable placeholder="为这个可视化问题取个名字吧"></el-input>
                                 </el-form-item>
                                 <el-form-item label="颜色">
-                                    <el-color-picker v-model="lineChart.color[configingLine]"></el-color-picker>
+                                    <el-color-picker 
+                                    v-model="lineChart.color[configingLine]"
+                                    :predefine="predefineColors"></el-color-picker>
                                 </el-form-item>
                             </el-form>
                         </span>
@@ -259,10 +263,6 @@ export default {
                 yArraySource: [
                     { required: true, message: '请选择数据来源！', trigger: 'blur' },
                 ],
-                name: [
-                    { required: true, message: '请输入该数据的名字！', trigger: 'blur' },
-                    { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
-                ],
             },
             rules3: {
                 xArraySource: [
@@ -274,6 +274,14 @@ export default {
             },
             rules4: {
                 db: [
+                    { required: true, message: '请选择数据来源！', trigger: 'blur' },
+                ],
+            },
+            rules5: {
+                xArraySource: [
+                    { required: true, message: '请选择数据来源！', trigger: 'blur' },
+                ],
+                yArraySource: [
                     { required: true, message: '请选择数据来源！', trigger: 'blur' },
                 ],
             },
@@ -336,6 +344,15 @@ export default {
             tbID:'',
             lineConfigVis:false,
             configingLine:1,
+            predefineColors:[
+                '#ff4500',
+                '#ff8c00',
+                '#ffd700',
+                '#90ee90',
+                '#00ced1',
+                '#1e90ff',
+                '#c71585',
+            ]
         }
     },
     
@@ -629,6 +646,9 @@ export default {
                 console.log(resp)
                 that.colList=resp.data.data.colList,
                 that.tableData=resp.data.data.tableData
+                // for(let key in that.colList) {
+                    // that.lineChart.yArraySource[key]=that.colList[key]
+                // }
             })
         },
 
@@ -654,12 +674,13 @@ export default {
                     }
                 }
                 else if(this.active==1) {
-                    this.$refs.chartformref2.validate((valid)=>{
-                    if(!valid) return;
+                    
                     const userID=localStorage.getItem("userID")
                     // console.log(userID);
                     //^封装数据bar
                     if(this.chartform.graphType=='bar'){
+                        this.$refs.chartformref2.validate((valid)=>{
+                    if(!valid) return;
                         postData={
                             userID:userID,
                             graphName:this.chartform.graphName,
@@ -698,9 +719,12 @@ export default {
                             },500);
                         }
                         })
+                        })
                     }
                     //^封装数据scatter
                     else if(this.chartform.graphType=='scatter'){
+                        this.$refs.chartformref2.validate((valid)=>{
+                    if(!valid) return;
                         postData={
                             userID:userID,
                             graphName:this.chartform.graphName,
@@ -734,11 +758,13 @@ export default {
                             },500);
                         }
                         })
+                        })
                     }
                     //^封装数据line
                     else if(this.chartform.graphType=='line'){
-                        
-                        var series
+                        this.$refs.chartformref5.validate((valid)=>{
+                    if(!valid) return;
+                        var series=[]
                         for(let key in this.lineChart.yArraySource) {
                             let obj= {
                                 name:this.lineChart.name[key],
@@ -783,9 +809,12 @@ export default {
                             },500);
                         }
                         })
+                        })
                     }
                     //^封装数据pie
                     else if(this.chartform.graphType=='pie'){
+                        this.$refs.chartformref2.validate((valid)=>{
+                    if(!valid) return;
                         postData={
                             userID:userID,
                             graphName:this.chartform.graphName,
@@ -819,6 +848,7 @@ export default {
                             },500);
                         }
                         })
+                        })
                     }
 
                     
@@ -826,7 +856,7 @@ export default {
                     
                     // console.log(postData);
                     
-                    })
+                    
                     
                 }
                 else if(this.active==2) {
