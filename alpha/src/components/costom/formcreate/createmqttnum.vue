@@ -172,14 +172,18 @@ export default {
             var tag='';
             let that=this
             
-            let postDta=this.$qs.stringify({
-                dataSource:that.chartform.dataSource
-            })
-            this.$axios.post("/getmqttTable",postDta)
-            .then((resp)=>{
-                tag=resp.data.tag;
-                that.tag=resp.data.tag;
-            })
+            // let postDta=this.$qs.stringify({
+                // dataSource:that.chartform.dataSource
+            // })
+            // this.$axios.post("/getmqttTable",postDta)
+            // .then((resp)=>{
+                // tag=resp.data.tag;
+                // that.tag=resp.data.tag;
+            // })
+            tag=this.chartform.dataSource
+            if(client.connected) {
+                client.end()
+            }
             client.on('connect', (e) => {
                 console.log("连接成功！！！")
                 client.subscribe(tag, { qos: 0 }, (error) => {

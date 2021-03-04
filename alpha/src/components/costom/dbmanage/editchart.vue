@@ -33,7 +33,9 @@
                 <transition name="el-fade-in" >
                     <el-form :model="Chart" 
                     v-show="step2&&chartform.graphType=='bar'" 
-                    :rules="rules2" ref="chartformref2" :inline="true">
+                    :rules="rules2" ref="chartformref2" :inline=true>
+                    <el-divider>x/y轴数据来源，可在<i class="el-icon-s-tools"></i>中设置颜色等</el-divider>
+                    <br>
                     <el-form-item label="x轴数据"  prop="xArraySource">
                         <el-select v-model="Chart.xArraySource" 
                         placeholder="请选择x轴数据"
@@ -57,25 +59,49 @@
                             :value="opy">
                             </el-option>
                         </el-select>
+                        <el-button type="info"  size="mini"  @click="barConfigVis=true" class="el-icon-s-tools config-button" ></el-button>
                     </el-form-item>
-                    <el-form-item label="y轴数据名" prop="name">
-                        <el-input v-model="Chart.name" @change="changeX"></el-input>
-                    </el-form-item>
+                    
                     <!-- <el-form-item label="预览生成图表"> -->
                         <!-- <el-button @click="drawline('bar')"></el-button> -->
                     <!-- </el-form-item> -->
+                    <el-dialog
+                        title="配置这条数据"
+                        :visible.sync="barConfigVis"
+                        width="30%"
+                        >
+                        <span>
+                            <el-form :model="Chart">
+                                <el-form-item label="数据名">
+                                    <el-input v-model="Chart.name" clearable placeholder="为这个可视化问题取个名字吧"></el-input>
+                                </el-form-item>
+                                <el-form-item label="颜色">
+                                    <el-color-picker 
+                                    v-model="Chart.color"
+                                    :predefine="predefineColors"></el-color-picker>
+                                </el-form-item>
+                            </el-form>
+                        </span>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="barConfigVis = false">取 消</el-button>
+                            <el-button type="primary" @click="updateBarConfig">确 定</el-button>
+                        </span>
+                    </el-dialog>
                     </el-form>
                 </transition>
 
-                <!-- //^第二步-折现图 -->
+                <!-- //^第二步-折线图 -->
                 <transition name="el-fade-in" >
-                    <el-form :model="Chart" 
+                    <el-form :model="lineChart" 
                     v-show="step2&&chartform.graphType=='line'" 
-                    :rules="rules2" ref="chartformref2" :inline="true">
-                    <el-form-item label="x轴数据来源"  prop="xArraySource" >
-                        <el-select v-model="Chart.xArraySource" 
+                    :rules="rules5" ref="chartformref5" :inline="true">
+                    <el-divider>x/y轴数据来源，可在<i class="el-icon-s-tools"></i>中设置颜色等</el-divider>
+                    <br>
+                    <el-form-item label="数据来源"  prop="xArraySource" placeholder="选择x轴数据">
+                        <el-select v-model="lineChart.xArraySource" 
                         placeholder="请选择x轴数据"
-                        @change="changeX">
+                        size="small"
+                        @change="changeX" >
                             <el-option
                             v-for="opx in colList"
                             :key="opx"
@@ -84,23 +110,12 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <!-- <el-form-item label="y轴数据数量"  prop="yNum" > -->
-                        <!-- <el-select v-model="Chart.yNum"  -->
-                        <!-- placeholder="请选择y轴数据量（最多叠加三条）" -->
-                        <!-- @change="changeX"> -->
-                            <!-- <el-option -->
-                            <!-- v-for="n in yNumList" -->
-                            <!-- :key="n" -->
-                            <!-- :label="n" -->
-                            <!-- :value="n"> -->
-                            <!-- </el-option> -->
-                        <!-- </el-select> -->
-                    <!-- </el-form-item> -->
-                    <!-- <el-divider></el-divider> -->
-                    <el-form-item label="y轴数据"  prop="yArraySource">
-                        <el-select v-model="Chart.yArraySource" 
+                    <el-form-item prop="yArraySource" placeholder="选择y轴数据" 
+                    v-for="(item,index) in colList" :key="index" v-show="index<yNum">
+                        <el-select v-model="lineChart.yArraySource[index]" 
                         placeholder="请选择y轴数据"
-                        @change="changeX">
+                        @change="changeX"
+                        size="small">
                             <el-option
                             v-for="opy in colList"
                             :key="opy"
@@ -108,53 +123,46 @@
                             :value="opy">
                             </el-option>
                         </el-select>
+                        <el-button type="info"  size="mini"  @click="configLine(index)" class="el-icon-s-tools config-button" ></el-button>
                     </el-form-item>
-                    <el-form-item label="数据名"  prop="name">
-                        <el-input v-model="Chart.name" @change="changeX"></el-input>
-                    </el-form-item>
-                    
-                    <!-- <el-form-item label="y轴数据"  prop="yArraySource2" v-show="Chart.yNum>=2"> -->
-                        <!-- <el-select v-model="Chart.yArraySource2"  -->
-                        <!-- placeholder="请选择y轴数据" -->
-                        <!-- @change="changeX"> -->
-                            <!-- <el-option -->
-                            <!-- v-for="opy in colList" -->
-                            <!-- :key="opy" -->
-                            <!-- :label="opy" -->
-                            <!-- :value="opy"> -->
-                            <!-- </el-option> -->
-                        <!-- </el-select> -->
-                    <!-- </el-form-item> -->
-                    <!-- <el-form-item label="数据名"  prop="name2" v-show="Chart.yNum>=2"> -->
-                        <!-- <el-input v-model="Chart.name2" @change="changeX"></el-input> -->
-                    <!-- </el-form-item> -->
-                    <!--  -->
-                    <!-- <el-form-item label="y轴数据"  prop="yArraySource3" v-show="Chart.yNum==3"> -->
-                        <!-- <el-select v-model="Chart.yArraySource3"  -->
-                        <!-- placeholder="请选择y轴数据" -->
-                        <!-- @change="changeX"> -->
-                            <!-- <el-option -->
-                            <!-- v-for="opy in colList" -->
-                            <!-- :key="opy" -->
-                            <!-- :label="opy" -->
-                            <!-- :value="opy"> -->
-                            <!-- </el-option> -->
-                        <!-- </el-select> -->
-                    <!-- </el-form-item> -->
-                    <!-- <el-form-item label="数据名"  prop="name3" v-show="Chart.yNum==3"> -->
-                        <!-- <el-input v-model="Chart.name3" @change="changeX"></el-input> -->
-                    <!-- </el-form-item> -->
-                    <!-- <el-form-item label="预览生成图表"> -->
-                        <!-- <el-button @click="drawline('line')"></el-button> -->
-                    <!-- </el-form-item> -->
+                    <el-dialog
+                        title="配置这条数据"
+                        :visible.sync="lineConfigVis"
+                        width="30%"
+                        >
+                        <span>
+                            <el-form :model="lineChart">
+                                <el-form-item label="数据名">
+                                    <el-input v-model="lineChart.name[configingLine]" clearable placeholder="为这个可视化问题取个名字吧"></el-input>
+                                </el-form-item>
+                                <el-form-item label="颜色">
+                                    <el-color-picker 
+                                    v-model="lineChart.color[configingLine]"
+                                    :predefine="predefineColors"></el-color-picker>
+                                </el-form-item>
+                            </el-form>
+                        </span>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="lineConfigVis = false">取 消</el-button>
+                            <el-button type="primary" @click="updateLineConfig">确 定</el-button>
+                        </span>
+                    </el-dialog>
+
+                    <br>
+                    <el-button type="success" size="small" class="el-icon-plus" @click="pushyNum"></el-button>
+                    <el-button type="danger" size="small" class="el-icon-minus" @click="popyNum"></el-button>
                     </el-form>
                 </transition>
+
+                
 
                 <!-- //^第二步-饼图 -->
                 <transition name="el-fade-in" >
                     <el-form :model="Chart" 
                     v-show="step2&&chartform.graphType=='pie'" 
                     :rules="rules3" ref="chartformref2" :inline="true">
+                    <el-divider>x/y轴数据来源，可在<i class="el-icon-s-tools"></i>中设置颜色等</el-divider>
+                    <br>
                     <el-form-item label="饼名来源"  prop="xArraySource">
                         <el-select v-model="Chart.xArraySource" 
                         placeholder="请选择饼名来源"
@@ -190,6 +198,8 @@
                     <el-form :model="Chart" 
                     v-show="step2&&chartform.graphType=='scatter'" 
                     :rules="rules3" ref="chartformref2" :inline="true">
+                    <el-divider>x/y轴数据来源，可在<i class="el-icon-s-tools"></i>中设置颜色等</el-divider>
+                    <br>
                     <el-form-item label="x轴数据"  prop="xArraySource">
                         <el-select v-model="Chart.xArraySource" 
                         placeholder="请选择x轴数据"
@@ -213,10 +223,33 @@
                             :value="opy">
                             </el-option>
                         </el-select>
+                        <el-button type="info"  size="mini"  @click="scaConfigVis=true" class="el-icon-s-tools config-button" ></el-button>
                     </el-form-item>
                     <!-- <el-form-item label="预览生成图表"> -->
                         <!-- <el-button @click="drawline('scatter')"></el-button> -->
                     <!-- </el-form-item> -->
+                    <el-dialog
+                        title="配置这条数据"
+                        :visible.sync="scaConfigVis"
+                        width="30%"
+                        >
+                        <span>
+                            <el-form :model="Chart">
+                                <el-form-item label="数据名">
+                                    <el-input v-model="Chart.name" clearable placeholder="为这个可视化问题取个名字吧"></el-input>
+                                </el-form-item>
+                                <el-form-item label="颜色">
+                                    <el-color-picker 
+                                    v-model="Chart.color"
+                                    :predefine="predefineColors"></el-color-picker>
+                                </el-form-item>
+                            </el-form>
+                        </span>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="scaConfigVis = false">取 消</el-button>
+                            <el-button type="primary" @click="updateScaConfig">确 定</el-button>
+                        </span>
+                    </el-dialog>
                     </el-form>
                 </transition>
 
@@ -226,7 +259,7 @@
                     <el-select v-model="dbform.db" placeholder="请选择仪表盘">
                         <el-option
                         v-for="item in dbData"
-                        :key="item.dbId"
+                        :key="item.dbID"
                         :label="item.dbName"
                         :value="item.dbID">
                         </el-option>
@@ -236,7 +269,7 @@
                 </transition>
 
             <div class="bt-next">
-                <el-button type="info"  @click="laststep">{{steplabel1}}</el-button>
+                <el-button type="info"  @click="laststep" v-show="active>0">{{steplabel1}}</el-button>
                 <el-button type="warning"  @click="nextstep">{{steplabel2}}</el-button>
             </div>
 
@@ -259,7 +292,7 @@
 <script>
 import axios from 'axios'
 export default {
-    name:'editchart',
+    name:'createchart',
     data(){
         return {
             rules: {
@@ -281,10 +314,6 @@ export default {
                 yArraySource: [
                     { required: true, message: '请选择数据来源！', trigger: 'blur' },
                 ],
-                name: [
-                    { required: true, message: '请输入该数据的名字！', trigger: 'blur' },
-                    { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
-                ],
             },
             rules3: {
                 xArraySource: [
@@ -296,6 +325,14 @@ export default {
             },
             rules4: {
                 db: [
+                    { required: true, message: '请选择数据来源！', trigger: 'blur' },
+                ],
+            },
+            rules5: {
+                xArraySource: [
+                    { required: true, message: '请选择数据来源！', trigger: 'blur' },
+                ],
+                yArraySource: [
                     { required: true, message: '请选择数据来源！', trigger: 'blur' },
                 ],
             },
@@ -329,30 +366,47 @@ export default {
                 xArraySource:'',
                 yArraySource:'',
                 name:'',
-                yNum:1,
-                yArraySource2:'',
-                yArraySource3:'',
-                name2:'',
-                name3:''
+                color:''
             },
+            lineChart:{
+                xArraySource:'',
+                yArraySource:[''],
+                name:[''],
+                color:['']
+            },
+            yName:[],
+            yNum:1,
             tableData:{},
             reset:false,
             active:0,
             steplabel2:'下一步',
-            steplabel1:'放弃编辑',
-            step1:false,
+            steplabel1:'上一步',
+            step1:true,
             step2:false,
             step3:false,
             xData:[],
             yData:[],
+            ylineData:[],
             xType:'',
             yType:'',
             dbform:{
                 db:''
             },
-            tbData:{},
+            dbData:[],
             tbID:'',
-            dbData:[]
+            lineConfigVis:false,
+            configingLine:1,
+            predefineColors:[
+                '#ff4500',
+                '#ff8c00',
+                '#ffd700',
+                '#90ee90',
+                '#00ced1',
+                '#1e90ff',
+                '#c71585',
+            ],
+            barConfigVis:false,
+            scaConfigVis:false,
         }
     },
     
@@ -361,6 +415,8 @@ export default {
             let that = this;
             const userID=localStorage.getItem("userID")
             let postData=this.$qs.stringify({
+                pagenum:1,
+                pagesize:1000,
                 userID:userID,
             })
             const result = axios({
@@ -373,12 +429,46 @@ export default {
             }
             })
         },
+        configLine(index) {
+            this.configingLine=index;
+            this.lineConfigVis=true;
+        },
+        updateLineConfig() {
+            this.lineConfigVis=false;
+            this.drawline(this.chartform.graphType)
+        },
+        pushyNum() {
+            if(this.yNum<this.colList.length) {
+                this.yNum++;
+                console.log(this.lineChart.yArraySource);
+                this.drawline(this.chartform.graphType)
+            }
+        },
+        popyNum() {
+            if(this.yNum>0) {
+                this.lineChart.yArraySource.pop();
+                console.log(this.lineChart.yArraySource);
+                this.yNum--
+                this.drawline(this.chartform.graphType)
+            }
+        },
+        updateBarConfig() {
+            this.barConfigVis=false;
+            this.drawline(this.chartform.graphType)
+        },
+        updateScaConfig() {
+            this.scaConfigVis=false;
+            this.drawline(this.chartform.graphType)
+        },
         drawline(Type){
             let that=this
             var series=[];
             var legend=[];
             var location=[];
+            // console.log(Type);
+            // console.log(this.Chart.xArraySource);
 
+            this.getData();
             if(Type=='bar'||Type=='line') {
                 this.xType='category'
                 this.yType='value'
@@ -387,7 +477,8 @@ export default {
                 this.xType='value'
                 this.yType='value'
             }
-            
+            if(Type=='bar'||Type=='scatter') {
+                // console.log(this.tableData);
             for(let key in this.tableData) {
                 if(key==that.Chart.xArraySource) {
                     that.xData=this.tableData[key]
@@ -396,43 +487,55 @@ export default {
                     that.yData=this.tableData[key]
                 }
             }
-            if(Type=='bar'||Type=='line') {
+            }
+            if(Type=='line') {
+                // console.log(this.lineChart.yArraySource);
+                for(let key in this.tableData) {
+                    if(key==that.lineChart.xArraySource) {
+                        that.xData=this.tableData[key]
+                    }
+                    for(let i in this.lineChart.yArraySource) {
+                        // console.log(this.lineChart.yArraySource[i]);
+                        // console.log(key);
+                        if(key==this.lineChart.yArraySource[i]) {
+                            that.ylineData[i]=this.tableData[key];
+                            let obj={
+                            name:this.lineChart.name[i],
+                            type:Type,
+                            data:this.ylineData[i],
+                            itemStyle : {  
+                                normal : {  
+                                    lineStyle:{  
+                                        color:this.lineChart.color[i] 
+                                    }  
+                                }  
+                            }, 
+                            }
+                            series.push(obj)
+                            console.log(series);
+                            legend.push(this.lineChart.name[i])
+                            // console.log(this.tableData[key]);
+                        }
+                        
+                    }
+                }
+                
+                
+                
+            }
+            else if(Type=='bar') {
                 let obj={
                     name:this.Chart.name,
                     type:Type,
-                    data:this.yData
+                    data:this.yData,
+                    itemStyle : {  
+                        normal : {   
+                            color:this.Chart.color 
+                        }  
+                    }, 
                 }
                 series.push(obj)
                 legend.push(this.Chart.name)
-            if(this.Chart.yNum>=2) {
-                
-                for(let key in this.tableData) {
-                    if(key==that.Chart.yArraySource2) {
-                        that.yData=this.tableData[key]
-                    }
-                }
-                let obj2={
-                    name:this.Chart.name2,
-                    type:Type,
-                    data:this.yData
-                }
-                series.push(obj2)
-                legend.push(this.Chart.name2)
-            }
-            if(this.Chart.yNum>=3) {
-                for(let key in this.tableData) {
-                    if(key==that.Chart.yArraySource3) {
-                        that.yData=this.tableData[key]
-                    }
-                }
-                let obj3={
-                    name:this.Chart.name3,
-                    type:Type,
-                    data:this.yData
-                }
-                series.push(obj3)
-                legend.push(this.Chart.name3)
-            }
             }
             else if(Type=='scatter') {
                 for(let x in this.xData) {
@@ -442,14 +545,20 @@ export default {
                 let obj={
                     name:this.Chart.name,
                     type:Type,
-                    data:location
+                    data:location,
+                    itemStyle : {  
+                        normal : {  
+                            color:this.Chart.color
+                        }  
+                    }, 
                 }
+                // console.log(obj);
                 series.push(obj)
                 legend.push(this.Chart.name)
             }
 
             let chart = this.$echarts.init(document.getElementById('chart'))
-            chart.setOption({
+            let option={
                 
                 tooltip: {
                     trigger: 'axis',
@@ -484,13 +593,6 @@ export default {
                 xAxis: [
                     {
                         type: this.xType,
-                        // boundaryGap: false,
-                        data: this.xData,
-                        axisLabel: {
-                            textStyle: {
-                                color: '#ffffff'
-                            }
-                        },
                         name:this.Chart.xArraySource,
                         nameLocation:'middle',
                         nameTextStyle:{
@@ -498,18 +600,25 @@ export default {
                             fontSize:16,  
                             padding:10
                         },
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: this.yType,
+                        // boundaryGap: false,
+                        data: this.xData,
                         axisLabel: {
                             textStyle: {
                                 color: '#ffffff'
                             }
                         },
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: this.yType,
                         name:this.Chart.yArraySource,
                         nameLocation:'middle',
+                        axisLabel: {
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
                         nameTextStyle:{
                             color:"#ffffff", 
                             fontSize:16,  
@@ -519,8 +628,9 @@ export default {
                 ],
                 series: series
                 
-            });
-            
+            }
+            chart.setOption(option);
+            chart.setOption(option,true)
             // window.onresize=that.chart.resize,
             window.addEventListener("resize", function () {
                 if(that.chart) {
@@ -528,12 +638,13 @@ export default {
                     // console.log("监听到变化");
                 }
             })
+        
         },
-        drawpie(){
+        drawpie() {
             let that=this
             var series=[];
 
-            
+            this.getData();
             for(let key in this.tableData) {
                 if(key==that.Chart.xArraySource) {
                     that.xData=this.tableData[key]
@@ -606,12 +717,15 @@ export default {
             let postDta=this.$qs.stringify({
                 dataSource:that.chartform.dataSource
             })
-            // console.log(that.chartform.dataSource);
+            console.log(that.chartform.dataSource);
             this.$axios.post("/getTableData",postDta)
             .then((resp)=>{
                 console.log(resp)
                 that.colList=resp.data.data.colList,
                 that.tableData=resp.data.data.tableData
+                // for(let key in that.colList) {
+                    // that.lineChart.yArraySource[key]=that.colList[key]
+                // }
             })
         },
 
@@ -623,10 +737,9 @@ export default {
                 
                 if(this.active==0) {
                     this.active++;
-                    this.steplabel1='上一步'
                     this.steplabel2='保存图表'
                     this.step1=false;
-                    this.getData();
+                    
                     setTimeout(function() {
                         that.step2=true;
                     },500);
@@ -638,12 +751,13 @@ export default {
                     }
                 }
                 else if(this.active==1) {
-                    this.$refs.chartformref2.validate((valid)=>{
-                    if(!valid) return;
+                    
                     const userID=localStorage.getItem("userID")
                     // console.log(userID);
                     //^封装数据bar
                     if(this.chartform.graphType=='bar'){
+                        this.$refs.chartformref2.validate((valid)=>{
+                    if(!valid) return;
                         postData={
                             userID:userID,
                             graphID:this.tbID,
@@ -667,7 +781,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.getDbData()
+                            that.tbID=resp.data.tbID;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -676,15 +790,19 @@ export default {
                                 center: true,
                                 type: 'success'
                             });
+                            that.getDbData();
                             that.step2=false;
                             setTimeout(function() {
                                 that.step3=true;
                             },500);
                         }
                         })
+                        })
                     }
                     //^封装数据scatter
                     else if(this.chartform.graphType=='scatter'){
+                        this.$refs.chartformref2.validate((valid)=>{
+                    if(!valid) return;
                         postData={
                             userID:userID,
                             graphID:this.tbID,
@@ -703,7 +821,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.getDbData()
+                            that.tbID=resp.data.tbID;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -712,16 +830,28 @@ export default {
                                 center: true,
                                 type: 'success'
                             });
+                            that.getDbData();
                             that.step2=false;
                             setTimeout(function() {
                                 that.step3=true;
                             },500);
                         }
                         })
+                        })
                     }
                     //^封装数据line
                     else if(this.chartform.graphType=='line'){
-                        if(this.Chart.yNum==1){
+                        this.$refs.chartformref5.validate((valid)=>{
+                    if(!valid) return;
+                        var series=[]
+                        for(let key in this.lineChart.yArraySource) {
+                            let obj= {
+                                name:this.lineChart.name[key],
+                                dataCol:this.lineChart.yArraySource[key],
+                                color:this.lineChart.color[key]
+                            }
+                            series.push(obj)
+                        }
                         postData={
                             userID:userID,
                             graphID:this.tbID,
@@ -731,59 +861,11 @@ export default {
                             Chart:{
                                 xType:"category",
                                 yType:"value",
-                                xArraySource:this.Chart.xArraySource,
-                                series:[{
-                                    name:this.Chart.name,
-                                    dataCol:this.Chart.yArraySource
-                                }]
+                                xArraySource:this.lineChart.xArraySource,
+                                series:series
                             }
                         }
-                        }
-                        else if(this.Chart.yNum==2) {
-                            postData={
-                            userID:userID,
-                            graphID:this.tbID,
-                            graphName:this.chartform.graphName,
-                            graphType:this.chartform.graphType,
-                            dataSource:this.chartform.dataSource,
-                            Chart:{
-                                xType:"category",
-                                yType:"value",
-                                xArraySource:this.Chart.xArraySource,
-                                series:[{
-                                    name:this.Chart.name,
-                                    dataCol:this.Chart.yArraySource
-                                },{
-                                    name:this.Chart.name2,
-                                    dataCol:this.Chart.yArraySource2
-                                }]
-                            }
-                            }
-                        }
-                        else if(this.Chart.yNum==3) {
-                            postData={
-                            userID:userID,
-                            graphID:this.tbID,
-                            graphName:this.chartform.graphName,
-                            graphType:this.chartform.graphType,
-                            dataSource:this.chartform.dataSource,
-                            Chart:{
-                                xType:"category",
-                                yType:"value",
-                                xArraySource:this.Chart.xArraySource,
-                                series:[{
-                                    name:this.Chart.name,
-                                    dataCol:this.Chart.yArraySource
-                                },{
-                                    name:this.Chart.name2,
-                                    dataCol:this.Chart.yArraySource2
-                                },{
-                                    name:this.Chart.name3,
-                                    dataCol:this.Chart.yArraySource3
-                                }]
-                            }
-                            }
-                        }
+                        
                         const result = axios({
                         method: 'post',
                         url:'/addLineGraph',
@@ -791,7 +873,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.getDbData()
+                            that.tbID=resp.data.tbID;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -800,15 +882,19 @@ export default {
                                 center: true,
                                 type: 'success'
                             });
+                            that.getDbData();
                             that.step2=false;
                             setTimeout(function() {
                                 that.step3=true;
                             },500);
                         }
                         })
+                        })
                     }
                     //^封装数据pie
                     else if(this.chartform.graphType=='pie'){
+                        this.$refs.chartformref2.validate((valid)=>{
+                    if(!valid) return;
                         postData={
                             userID:userID,
                             graphID:this.tbID,
@@ -827,7 +913,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.getDbData()
+                            // that.tbID=resp.data.tbID;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -837,19 +923,21 @@ export default {
                                 type: 'success'
                             });
                             that.step2=false;
+                            that.getDbData();
                             setTimeout(function() {
                                 that.step3=true;
                             },500);
                         }
+                        })
                         })
                     }
 
                     
 
                     
-                    console.log(postData);
+                    // console.log(postData);
                     
-                    })
+                    
                     
                 }
                 else if(this.active==2) {
@@ -880,20 +968,16 @@ export default {
                             },300)
                         }
                     })
+                    
                     })
                 }
             })
         },
         laststep() {
             let that = this;
-            if(this.active==0) {
-                this.$router.push('/createdb')
-            }
-            else {
             this.active--;
             if(this.active==0) {
                 this.steplabel2='下一步'
-                this.steplabel1='放弃编辑'
                 this.step2=false;
                 setTimeout(function() {
                     that.step1=true;
@@ -902,9 +986,9 @@ export default {
             if(this.active==1) {
                 this.$router.push('/createdb')
             }
-            }
         },
         changeX() {
+            // console.log(this.chartform.graphType);
             this.drawline(this.chartform.graphType)
         },
         changeY() {
@@ -915,7 +999,7 @@ export default {
             this.tbID = this.$route.params.tbID
             this.chartform.graphName = this.$route.params.tbName
             let postData=this.$qs.stringify({
-                tbID:that.tbID,
+                graphID:that.tbID,
             })
             const result = axios({
                 method: 'post',
@@ -928,10 +1012,38 @@ export default {
                 that.chartform.graphType=resp.data.data.Graph.graphType
                 that.chartform.dataSource=resp.data.data.Graph.dataSource
                 that.chartform.graphName=resp.data.data.Graph.graphName
-                that.Chart.name=resp.data.data.Graph.legend[0]
+                if(that.chartform.graphType=='line') {
+                    that.lineChart.name=resp.data.data.Graph.legend
+                    for(let key in resp.data.data.Graph.series) {
+                        that.lineChart.color[key]=(resp.data.data.Graph.series[key].color)
+                        that.lineChart.yArraySource[key]=(resp.data.data.Graph.series[key].dataCol)
+                        that.yNum++
+                    }
+                    // console.log(that.lineChart.yArraySource);
+                    that.yNum--
+                    that.lineChart.xArraySource=resp.data.data.Graph.xarraySource
+                }
+                else if(that.chartform.graphType=='pie') {
+                    that.Chart.xArraySource=resp.data.data.Graph.pieSource
+                    that.Chart.yArraySource=resp.data.data.Graph.valueSource
+                    that.Chart.name=resp.data.data.Graph.legend
+                }
+                else if(that.chartform.graphType=='bar') {
+                    that.Chart.xArraySource=resp.data.data.Graph.xarraySource
+                    that.Chart.yArraySource=resp.data.data.Graph.series[0].dataCol
+                    that.Chart.name=resp.data.data.Graph.legend[0]
+                    that.Chart.color='#ffffff'
+                }
+                else if(that.chartform.graphType=='scatter') {
+                    that.Chart.xArraySource=resp.data.data.Graph.xarraySource
+                    that.Chart.yArraySource=resp.data.data.Graph.yarraySource
+                    // that.Chart.name=resp.data.data.Graph.legend[0]
+                    that.Chart.color='#ffffff'
+                }
                 setTimeout(()=>{
                 that.step1=true;
                 that.drawinit(that.chartform.graphType)
+                that.getData()
                 },700)
                 }
             })
@@ -948,7 +1060,7 @@ export default {
             
 
             let chart = this.$echarts.init(document.getElementById('chart'))
-            chart.setOption({
+            let option={
                 
                 tooltip: {
                     trigger: 'axis',
@@ -1018,8 +1130,9 @@ export default {
                 ],
                 series: this.tbData.Graph.series
                 
-            });
-            
+            };
+            chart.setOption(option);
+            chart.setOption(option,true)
             // window.onresize=that.chart.resize,
             window.addEventListener("resize", function () {
                 if(that.chart) {
@@ -1137,5 +1250,8 @@ export default {
     position: absolute;
     bottom: 25%;
     right: 10%;
+}
+.config-button {
+    margin-left: 5px;
 }
 </style>

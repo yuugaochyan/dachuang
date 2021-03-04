@@ -158,10 +158,10 @@ export default {
             dbSize:5,
             dbCurrentPage:1,
             dbtotal:'',
-            //^db分页
+            //^tb分页
             tbSize:5,
             tbCurrentPage:1,
-            tbtotal:'',
+            tbtotal:0,
         }
     },
     methods: {
