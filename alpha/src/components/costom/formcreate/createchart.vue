@@ -34,6 +34,8 @@
                     <el-form :model="Chart" 
                     v-show="step2&&chartform.graphType=='bar'" 
                     :rules="rules2" ref="chartformref2" :inline=true>
+                    <el-divider>x/y轴数据来源，可在<i class="el-icon-s-tools"></i>中设置颜色等</el-divider>
+                    <br>
                     <el-form-item label="x轴数据"  prop="xArraySource">
                         <el-select v-model="Chart.xArraySource" 
                         placeholder="请选择x轴数据"
@@ -57,13 +59,34 @@
                             :value="opy">
                             </el-option>
                         </el-select>
+                        <el-button type="info"  size="mini"  @click="barConfigVis=true" class="el-icon-s-tools config-button" ></el-button>
                     </el-form-item>
-                    <el-form-item label="y轴数据名" prop="name">
-                        <el-input v-model="Chart.name" @change="changeX"></el-input>
-                    </el-form-item>
+                    
                     <!-- <el-form-item label="预览生成图表"> -->
                         <!-- <el-button @click="drawline('bar')"></el-button> -->
                     <!-- </el-form-item> -->
+                    <el-dialog
+                        title="配置这条数据"
+                        :visible.sync="barConfigVis"
+                        width="30%"
+                        >
+                        <span>
+                            <el-form :model="Chart">
+                                <el-form-item label="数据名">
+                                    <el-input v-model="Chart.name" clearable placeholder="为这个可视化问题取个名字吧"></el-input>
+                                </el-form-item>
+                                <el-form-item label="颜色">
+                                    <el-color-picker 
+                                    v-model="Chart.color"
+                                    :predefine="predefineColors"></el-color-picker>
+                                </el-form-item>
+                            </el-form>
+                        </span>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="barConfigVis = false">取 消</el-button>
+                            <el-button type="primary" @click="updateBarConfig">确 定</el-button>
+                        </span>
+                    </el-dialog>
                     </el-form>
                 </transition>
 
@@ -72,6 +95,8 @@
                     <el-form :model="lineChart" 
                     v-show="step2&&chartform.graphType=='line'" 
                     :rules="rules5" ref="chartformref5" :inline="true">
+                    <el-divider>x/y轴数据来源，可在<i class="el-icon-s-tools"></i>中设置颜色等</el-divider>
+                    <br>
                     <el-form-item label="数据来源"  prop="xArraySource" placeholder="选择x轴数据">
                         <el-select v-model="lineChart.xArraySource" 
                         placeholder="请选择x轴数据"
@@ -85,7 +110,7 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-divider>y轴数据来源，可在<i class="el-icon-s-tools"></i>中设置颜色等</el-divider>
+                    <!-- <el-divider>y轴数据来源，可在<i class="el-icon-s-tools"></i>中设置颜色等</el-divider> -->
                     <el-form-item prop="yArraySource" placeholder="选择y轴数据" 
                     v-for="(item,index) in colList" :key="index" v-show="index<yNum">
                         <el-select v-model="lineChart.yArraySource[index]" 
@@ -137,6 +162,8 @@
                     <el-form :model="Chart" 
                     v-show="step2&&chartform.graphType=='pie'" 
                     :rules="rules3" ref="chartformref2" :inline="true">
+                    <el-divider>x/y轴数据来源，可在<i class="el-icon-s-tools"></i>中设置颜色等</el-divider>
+                    <br>
                     <el-form-item label="饼名来源"  prop="xArraySource">
                         <el-select v-model="Chart.xArraySource" 
                         placeholder="请选择饼名来源"
@@ -172,6 +199,8 @@
                     <el-form :model="Chart" 
                     v-show="step2&&chartform.graphType=='scatter'" 
                     :rules="rules3" ref="chartformref2" :inline="true">
+                    <el-divider>x/y轴数据来源，可在<i class="el-icon-s-tools"></i>中设置颜色等</el-divider>
+                    <br>
                     <el-form-item label="x轴数据"  prop="xArraySource">
                         <el-select v-model="Chart.xArraySource" 
                         placeholder="请选择x轴数据"
@@ -195,10 +224,33 @@
                             :value="opy">
                             </el-option>
                         </el-select>
+                        <el-button type="info"  size="mini"  @click="scaConfigVis=true" class="el-icon-s-tools config-button" ></el-button>
                     </el-form-item>
                     <!-- <el-form-item label="预览生成图表"> -->
                         <!-- <el-button @click="drawline('scatter')"></el-button> -->
                     <!-- </el-form-item> -->
+                    <el-dialog
+                        title="配置这条数据"
+                        :visible.sync="scaConfigVis"
+                        width="30%"
+                        >
+                        <span>
+                            <el-form :model="Chart">
+                                <el-form-item label="数据名">
+                                    <el-input v-model="Chart.name" clearable placeholder="为这个可视化问题取个名字吧"></el-input>
+                                </el-form-item>
+                                <el-form-item label="颜色">
+                                    <el-color-picker 
+                                    v-model="Chart.color"
+                                    :predefine="predefineColors"></el-color-picker>
+                                </el-form-item>
+                            </el-form>
+                        </span>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="scaConfigVis = false">取 消</el-button>
+                            <el-button type="primary" @click="updateScaConfig">确 定</el-button>
+                        </span>
+                    </el-dialog>
                     </el-form>
                 </transition>
 
@@ -315,6 +367,7 @@ export default {
                 xArraySource:'',
                 yArraySource:'',
                 name:'',
+                color:''
             },
             lineChart:{
                 xArraySource:'',
@@ -352,7 +405,9 @@ export default {
                 '#00ced1',
                 '#1e90ff',
                 '#c71585',
-            ]
+            ],
+            barConfigVis:false,
+            scaConfigVis:false,
         }
     },
     
@@ -361,6 +416,8 @@ export default {
             let that = this;
             const userID=localStorage.getItem("userID")
             let postData=this.$qs.stringify({
+                pagenum:1,
+                pagesize:1000,
                 userID:userID,
             })
             const result = axios({
@@ -395,6 +452,14 @@ export default {
                 this.yNum--
                 this.drawline(this.chartform.graphType)
             }
+        },
+        updateBarConfig() {
+            this.barConfigVis=false;
+            this.drawline(this.chartform.graphType)
+        },
+        updateScaConfig() {
+            this.scaConfigVis=false;
+            this.drawline(this.chartform.graphType)
         },
         drawline(Type){
             let that=this
@@ -461,7 +526,12 @@ export default {
                 let obj={
                     name:this.Chart.name,
                     type:Type,
-                    data:this.yData
+                    data:this.yData,
+                    itemStyle : {  
+                        normal : {   
+                            color:this.Chart.color 
+                        }  
+                    }, 
                 }
                 series.push(obj)
                 legend.push(this.Chart.name)
@@ -474,8 +544,14 @@ export default {
                 let obj={
                     name:this.Chart.name,
                     type:Type,
-                    data:location
+                    data:location,
+                    itemStyle : {  
+                        normal : {  
+                            color:this.Chart.color
+                        }  
+                    }, 
                 }
+                // console.log(obj);
                 series.push(obj)
                 legend.push(this.Chart.name)
             }
@@ -683,6 +759,7 @@ export default {
                     if(!valid) return;
                         postData={
                             userID:userID,
+                            graphID:0,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -727,6 +804,7 @@ export default {
                     if(!valid) return;
                         postData={
                             userID:userID,
+                            graphID:0,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
@@ -775,13 +853,14 @@ export default {
                         }
                         postData={
                             userID:userID,
+                            graphID:0,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,
                             Chart:{
                                 xType:"category",
                                 yType:"value",
-                                xArraySource:this.Chart.xArraySource,
+                                xArraySource:this.lineChart.xArraySource,
                                 series:series
                             }
                         }
@@ -817,6 +896,7 @@ export default {
                     if(!valid) return;
                         postData={
                             userID:userID,
+                            graphID:0,
                             graphName:this.chartform.graphName,
                             graphType:this.chartform.graphType,
                             dataSource:this.chartform.dataSource,

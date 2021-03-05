@@ -122,6 +122,16 @@
                         </el-table-column>
                         
                     </el-table>
+                    <el-pagination
+                            background
+                            @size-change="tbSizeChange"
+                            @current-change="tbCurrentChange"
+                            :current-page="tbCurrentPage"
+                            :page-sizes="[5, 10, 15, 20]"
+                            :page-size="tbSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="tbtotal">
+                        </el-pagination>
                     <div slot="footer" class="dialog-footer">
                         <el-button @click="addTable = false">取 消</el-button>
                         <el-button type="primary" @click="editAdd">确 定</el-button>
@@ -212,6 +222,9 @@ export default {
             msg2:'',
             msg3:'',
             msg4:'',
+            tbtotal:0,
+            tbSize:5,
+            tbCurrentPage:1,
         }
     },
     methods: {
@@ -407,12 +420,56 @@ export default {
                 })
             })
         },
+        tbSizeChange(val) {
+            this.tbSize=val;
+            let that = this;
+            const userID=localStorage.getItem("userID")
+            let postData=this.$qs.stringify({
+                userID:userID,
+                pagenum:that.tbCurrentPage,
+                pagesize:that.tbSize
+            })
+            // console.log(this.dbCurrentPage);
+            // console.log(this.dbSize);
+            const result = axios({
+                method: 'post',
+                url:'/getGraphList',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.tbData=resp.data.data.list
+            }
+            })
+        },
+        tbCurrentChange(val) {
+            let that = this;
+            const userID=localStorage.getItem("userID")
+            this.tbCurrentPage=val;
+            let postData=this.$qs.stringify({
+                userID:userID,
+                pagenum:that.tbCurrentPage,
+                pagesize:that.tbSize
+            })
+            // console.log(this.dbCurrentPage);
+            // console.log(this.dbSize);
+            const result = axios({
+                method: 'post',
+                url:'/getGraphList',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.tbData=resp.data.data.list
+            }
+            })
+        },
         add() {
             this.addTable=true;
             let that = this;
             const userID=localStorage.getItem("userID")
             let postData=this.$qs.stringify({
                 userID:userID,
+                pagenum:that.tbCurrentPage,
+                pagesize:that.tbSize
             })
             const result = axios({
                 method: 'post',
@@ -420,7 +477,8 @@ export default {
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
-                that.tbData=resp.data.data
+                that.tbData=resp.data.data.list
+                that.tbtotal=resp.data.data.total
             }
             })
         },

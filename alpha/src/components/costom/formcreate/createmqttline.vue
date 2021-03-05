@@ -195,6 +195,9 @@ export default {
                 // tag=resp.data.tag;
                 // that.tag=resp.data.tag;
             // })
+            if(client.connected) {
+                client.end()
+            }
             client.on('connect', (e) => {
                 console.log("连接成功！！！")
                 client.subscribe(tag, { qos: 0 }, (error) => {

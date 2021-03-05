@@ -173,14 +173,19 @@ export default {
             var tag='';
             let that=this
             
-            let postDta=this.$qs.stringify({
-                dataSource:that.chartform.dataSource
-            })
-            this.$axios.post("/getmqttTable",postDta)
-            .then((resp)=>{
-                tag=resp.data.tag;
-                that.tag=resp.data.tag;
-            })
+            // let postDta=this.$qs.stringify({
+                // dataSource:that.chartform.dataSource
+            // })
+            // this.$axios.post("/getmqttTable",postDta)
+            // .then((resp)=>{
+                // tag=resp.data.tag;
+                // that.tag=resp.data.tag;
+            // })
+            tag=this.chartform.dataSource
+            console.log(client.connected);
+            if(client.connected) {
+                client.end()
+            }
             client.on('connect', (e) => {
                 console.log("连接成功！！！")
                 client.subscribe(tag, { qos: 0 }, (error) => {
@@ -354,10 +359,11 @@ export default {
                 if(resp.data.status==200) {
                 that.tbData=resp.data.data
                 // console.log(that.tbData);
-                that.chartform.graphType=resp.data.data.Graph.graphType
-                that.chartform.dataSource=resp.data.data.Graph.dataSource
                 that.chartform.graphName=resp.data.data.Graph.graphName
-                that.Chart.name=resp.data.data.Graph.legend[0]
+                that.chartform.dataSource=resp.data.data.Graph.tag
+                that.chartform.name=resp.data.data.Graph.tagName
+                that.chartform.max=resp.data.data.Graph.max
+                that.chartform.min=resp.data.data.Graph.min
                 }
             })
             setTimeout(()=>{
