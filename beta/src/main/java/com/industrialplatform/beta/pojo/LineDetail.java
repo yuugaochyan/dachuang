@@ -10,4 +10,6 @@ public class LineDetail {
     private String dataCol;
     private String color;
     private int[] data;
+
+    private Object itemStyle;
 }

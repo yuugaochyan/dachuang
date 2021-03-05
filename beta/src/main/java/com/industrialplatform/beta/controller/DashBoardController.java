@@ -117,7 +117,7 @@ public class DashBoardController {
         Map<String,Object> map=new HashMap<>();
         Map<String,Object> DATA=new HashMap<>();
         DATA.put("type",dbItemMapper.getGraphTypeByGraphID(graphID));
-        DATA.put("Graph",dashBoardService.getGraphByID(graphID));
+        DATA.put("Graph",dashBoardService.getGraphInfo(graphID));
         map.put("status",200);
         map.put("msg","图表信息获取成功！");
         map.put("data",DATA);
@@ -156,13 +156,19 @@ public class DashBoardController {
         return map;
     }
 
-//    存储柱状图
+//    存储/编辑柱状图
     @RequestMapping(value = "/addBarGraph",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> addBarGraph(@RequestBody Graph<BarChart> barGraph){
         System.out.println(barGraph);
         Map<String,Object> map=new HashMap<>();
-        int ID=dashBoardService.addBarGraph(barGraph.getUserID(),barGraph);
+        int ID=-1;
+        if(barGraph.getGraphID()==0){
+            ID=dashBoardService.addBarGraph(barGraph.getUserID(),barGraph);
+        }else{
+            dashBoardService.deleteGraph(barGraph.getGraphID());
+            ID=dashBoardService.addBarGraph(barGraph.getUserID(),barGraph);
+        }
         if(ID!=-1){
             map.put("status",200);
             map.put("msg","柱状图添加成功!");
@@ -175,13 +181,19 @@ public class DashBoardController {
         return map;
     }
 
-    //    存储折线图
+    //    存储/编辑折线图
     @RequestMapping(value = "/addLineGraph",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> addLineGraph(@RequestBody Graph<LineChart> lineGraph){
         System.out.println(lineGraph);
         Map<String,Object> map=new HashMap<>();
-        int ID=dashBoardService.addLineGraph(lineGraph.getUserID(), lineGraph);
+        int ID=-1;
+        if(lineGraph.getGraphID()==0) {
+            ID = dashBoardService.addLineGraph(lineGraph.getUserID(), lineGraph);
+        }else{
+            dashBoardService.deleteGraph(lineGraph.getGraphID());
+            ID = dashBoardService.addLineGraph(lineGraph.getUserID(), lineGraph);
+        }
         if(ID!=-1){
             map.put("status",200);
             map.put("msg","柱状图添加成功!");
@@ -194,13 +206,19 @@ public class DashBoardController {
         return map;
     }
 
-    //    存储饼图
+    //    存储/编辑饼图
     @RequestMapping(value = "/addPieGraph",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> addPieGraph(@RequestBody Graph<PieChart> pieGraph){
         System.out.println(pieGraph);
         Map<String,Object> map=new HashMap<>();
-        int ID=dashBoardService.addPieGraph(pieGraph.getUserID(),pieGraph);
+        int ID=-1;
+        if(pieGraph.getGraphID()==0) {
+            ID = dashBoardService.addPieGraph(pieGraph.getUserID(), pieGraph);
+        }else{
+            dashBoardService.deleteGraph(pieGraph.getGraphID());
+            ID = dashBoardService.addPieGraph(pieGraph.getUserID(), pieGraph);
+        }
         if(ID!=-1){
             map.put("status",200);
             map.put("msg","饼图添加成功!");
@@ -213,7 +231,7 @@ public class DashBoardController {
         return map;
     }
 
-    //    存储散点图
+    //    存储/编辑散点图
     @RequestMapping(value = "/addScatterGraph",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> addScatterGraph(@RequestBody Graph<ScatterChart> scatterGraph){
@@ -222,7 +240,13 @@ public class DashBoardController {
         System.out.println(scatterGraph);
 //        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
-        int ID=dashBoardService.addScatterGraph(scatterGraph.getUserID(),scatterGraph);
+        int ID=-1;
+        if(scatterGraph.getGraphID()==0) {
+            ID = dashBoardService.addScatterGraph(scatterGraph.getUserID(), scatterGraph);
+        }else{
+            dashBoardService.deleteGraph(scatterGraph.getGraphID());
+            ID = dashBoardService.addScatterGraph(scatterGraph.getUserID(), scatterGraph);
+        }
         if(ID!=-1){
             map.put("status",200);
             map.put("msg","散点图添加成功!");
@@ -235,14 +259,20 @@ public class DashBoardController {
         return map;
     }
 
-//    存储table
+//    存储/编辑table
     @RequestMapping(value = "/addTable",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> addTable(@RequestBody Table table){
         System.out.println(table);
 //        System.out.println(userID);
         Map<String,Object> map=new HashMap<>();
-        int ID=dashBoardService.addTable(table);
+        int ID=-1;
+        if(table.getTableID()==0) {
+            ID = dashBoardService.addTable(table);
+        }else{
+            dashBoardService.deleteGraph(table.getTableID());
+            ID = dashBoardService.addTable(table);
+        }
         if(ID!=-1){
             map.put("status",200);
             map.put("msg","table添加成功!");
@@ -255,13 +285,19 @@ public class DashBoardController {
         return map;
     }
 
-//    存储mqtt
+//    存储/编辑mqtt
     @RequestMapping(value = "/addMQTT",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> addMQTT(@RequestBody mqttGraph mqttGraph){
         System.out.println(mqttGraph);
         Map<String,Object> map=new HashMap<>();
-        int ID=dashBoardService.addMQTTGraph(mqttGraph);
+        int ID=-1;
+        if(mqttGraph.getMqttID()==0) {
+            ID = dashBoardService.addMQTTGraph(mqttGraph);
+        }else{
+            dashBoardService.deleteGraph(mqttGraph.getMqttID());
+            ID = dashBoardService.addMQTTGraph(mqttGraph);
+        }
         if(ID!=-1){
             map.put("status",200);
             map.put("msg","mqtt添加成功!");

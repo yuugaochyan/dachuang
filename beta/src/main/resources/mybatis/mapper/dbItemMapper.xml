@@ -18,36 +18,50 @@
         <id property="graphID" column="b_graphID"/>
         <result property="graphName" column="b_graphName"/>
         <result property="graphType" column="b_graphType"/>
+        <result property="dataSource" column="b_dataSource"/>
     </resultMap>
 
 <!--  柱状图map  -->
     <resultMap id="BarChartMap" type="BarChart"  >
         <result property="xType" column="c_xType"/>
         <result property="yType" column="c_yType"/>
+        <result property="xArraySource" column="c_xArraySource"/>
         <collection property="series" resultMap="BarDetailMap"/>
     </resultMap>
 <!--  柱状图detailMap  -->
     <resultMap id="BarDetailMap" type="BarDetail" >
         <id property="legendID" column="d_legendID"/>
         <result property="name" column="d_name"/>
+        <result property="dataCol" column="d_dataCol"/>
     </resultMap>
 
 <!--  折线图map  -->
     <resultMap id="LineChartMap" type="LineChart"  >
         <result property="xType" column="c_xType"/>
         <result property="yType" column="c_yType"/>
+        <result property="xArraySource" column="c_xArraySource"/>
         <collection property="series" resultMap="LineDetailMap"/>
     </resultMap>
 <!--  折线图detailMap  -->
     <resultMap id="LineDetailMap" type="LineDetail" >
         <id property="legendID" column="d_legendID"/>
         <result property="name" column="d_name"/>
+        <result property="color" column="d_color"/>
+        <result property="dataCol" column="d_dataCol"/>
     </resultMap>
 
- <!--  散点图map  -->
+<!--  散点图map  -->
+    <resultMap id="PieChartMap" type="PieChart"  >
+        <result property="pieSource" column="c_pieSource"/>
+        <result property="valueSource" column="c_valueSource"/>
+    </resultMap>
+
+<!--  散点图map  -->
     <resultMap id="ScatterChartMap" type="ScatterChart"  >
         <result property="xType" column="c_xType"/>
         <result property="yType" column="c_yType"/>
+        <result property="xArraySource" column="c_xArraySource"/>
+        <result property="yArraySource" column="c_yArraySource"/>
     </resultMap>
 
 <!--  创建仪表盘  -->
@@ -198,15 +212,16 @@
     </insert>
 <!--  注册图表  -->
     <insert id="registGraph" >
-        insert into graphmasterinfo(ID,userID,type,graphName)
-        values(#{ID},#{userID},#{type},#{graphName})
+        insert into graphmasterinfo(ID,userID,type,graphName,dataSource)
+        values(#{ID},#{userID},#{type},#{graphName},#{dataSource})
     </insert>
 
 <!--  获取图表基本信息  -->
     <select id="getGraphByGraphID" parameterType="int" resultMap="itemObjectMap">
         select b.graphID as b_graphID,
                b.graphName as b_graphName,
-               b.graphType as b_graphType
+               b.graphType as b_graphType,
+               b.dataSource as b_dataSource
         from graph b
         where b.graphID=#{id}
     </select>
@@ -220,8 +235,10 @@
     <select id="getBarChartByGraphID" parameterType="int" resultMap="BarChartMap">
         select c.xType as c_xType,
                c.yType as c_yType,
+               c.xArraySource as c_xArraySource,
                d.legendID as d_legendID,
-               d.name as d_name
+               d.name as d_name,
+               d.dataCol as d_dataCol
         from barchart c,bardetail d
         where c.graphID=#{graphid} and d.graphID=c.graphID
     </select>
@@ -240,8 +257,11 @@
     <select id="getLineChartByGraphID" parameterType="int" resultMap="LineChartMap">
         select c.xType as c_xType,
                c.yType as c_yType,
+               c.xArraySource as c_xArraySource,
                d.legendID as d_legendID,
-               d.name as d_name
+               d.name as d_name,
+               d.color as d_color,
+               d.dataCol as d_dataCol
         from linechart c,linedetail d
         where c.graphID=#{graphid} and d.graphID=c.graphID
     </select>
@@ -261,11 +281,21 @@
         insert into piechart(graphID,pieSource,valueSource)
         values(#{graphID},#{pieChart.pieSource},#{pieChart.valueSource})
     </insert>
+<!--  获取饼图基本信息  -->
+    <select id="getPieChartByGraphID" parameterType="int" resultMap="PieChartMap">
+        select c.pieSource as c_pieSource,
+               c.valueSource as c_valueSource
+        from piechart c
+        where c.graphID=#{graphid}
+    </select>
+
 
 <!--  获取散点图基本信息  -->
     <select id="getScatterChartByGraphID" parameterType="int" resultMap="ScatterChartMap">
         select c.xType as c_xType,
-               c.yType as c_yType
+               c.yType as c_yType,
+               c.xArraySource as c_xArraySource,
+               c.yArraySource as c_yArraySource
         from scatterchart c
         where c.graphID=#{graphid}
     </select>

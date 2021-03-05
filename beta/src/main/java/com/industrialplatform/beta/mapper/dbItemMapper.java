@@ -43,6 +43,7 @@ public interface dbItemMapper {
 //    获取chart信息
     BarChart getBarChartByGraphID(int graphid);
     LineChart getLineChartByGraphID(int graphid);
+    PieChart getPieChartByGraphID(int graphid);
     ScatterChart getScatterChartByGraphID(int graphid);
 
     List<String> getBarChartXArrayData(int graphID);

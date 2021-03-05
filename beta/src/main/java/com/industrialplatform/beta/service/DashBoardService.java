@@ -4,7 +4,6 @@ import com.industrialplatform.beta.mapper.dataBaseMapper;
 import com.industrialplatform.beta.mapper.dbItemMapper;
 import com.industrialplatform.beta.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.embedded.undertow.UndertowWebServer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -123,6 +122,7 @@ public class DashBoardService {
         ObjectMap.put("mqttline",2);
         ObjectMap.put("mqttnum",2);
         ObjectMap.put("table",3);
+//        System.out.println(type);
         switch (ObjectMap.get(type))
         {
             case 1:
@@ -201,7 +201,7 @@ public class DashBoardService {
         chartMap.put("line",2);
         chartMap.put("pie",3);
         chartMap.put("scatter",4);
-        System.out.println(type);
+//        System.out.println(type);
         switch(chartMap.get(type))
         {
             case 1:
@@ -216,6 +216,7 @@ public class DashBoardService {
                     barGraph.getLegend().add(serie.getName());
                 }
                 barGraph.setSeries(barChart.getSeries());
+                barGraph.setXArraySource(barChart.getXArraySource());
                 barGraph.setXType(barChart.getXType());
                 barGraph.setYType(barChart.getYType());
                 barGraph.setXarray(barChart.getXArray());
@@ -228,13 +229,22 @@ public class DashBoardService {
                 lineGraph.setChart(lineChart);
                 lineGraph.setLegend(new ArrayList<>());
                 lineGraph.getChart().setXArray(dbItemMapper.getLineChartXArrayData(graphID));
+//                line样式格式控制
                 for(LineDetail serie:lineGraph.getChart().getSeries()){
                     serie.setData(dbItemMapper.getLineData(graphID,serie.getLegendID()));
                     serie.setType("line");
+                    serie.setItemStyle(new HashMap<String,Object>(){{
+                        put("normal",new HashMap<String,Object>(){{
+                            put("lineStyle",new HashMap<String,Object>(){{
+                                put("color",serie.getColor());
+                            }});
+                        }});
+                    }});
                     lineGraph.getLegend().add(serie.getName());
                 }
                 lineGraph.setXType(lineChart.getXType());
                 lineGraph.setYType(lineChart.getYType());
+                lineGraph.setXArraySource(lineChart.getXArraySource());
                 lineGraph.setXarray(lineChart.getXArray());
                 lineGraph.setSeries(lineChart.getSeries());
                 lineGraph.setChart(null);
@@ -242,6 +252,7 @@ public class DashBoardService {
                 return lineGraph;
             case 3:
                 Graph<PieChart> pieGraph=dbItemMapper.getGraphByGraphID(graphID);
+                PieChart pieChart=dbItemMapper.getPieChartByGraphID(graphID);
                 List<String> pieCol=dbItemMapper.getPieColumn(graphID);
                 int[] pieValue=dbItemMapper.getPieValue(graphID);
                 pieGraph.setChart(new PieChart());
@@ -260,6 +271,8 @@ public class DashBoardService {
                     pieGraph.getLegend().add(piecol);
                 }
                 pieDetail.setType("pie");
+                pieGraph.setPieSource(pieChart.getPieSource());
+                pieGraph.setValueSource(pieChart.getValueSource());
                 pieGraph.getChart().getSeries().add(pieDetail);
                 pieGraph.setSeries(pieGraph.getChart().getSeries());
                 pieGraph.setChart(null);
@@ -283,6 +296,8 @@ public class DashBoardService {
                 scatterDetail.setType("scatter");
                 scatterChart.getSeries().add(scatterDetail);
                 scatterGraph.setSeries(scatterChart.getSeries());
+                scatterGraph.setXArraySource(scatterChart.getXArraySource());
+                scatterGraph.setYArraySource(scatterChart.getYArraySource());
                 scatterGraph.setXType(scatterChart.getXType());
                 scatterGraph.setYType(scatterChart.getYType());
                 return scatterGraph;
@@ -355,9 +370,11 @@ public class DashBoardService {
 //    添加柱状图
     @Transactional(propagation = Propagation.SUPPORTS)
     public int addBarGraph(int userID,Graph<BarChart> barGraph){
-        int graphID=0;
-        if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
-        else graphID= dbItemMapper.getCurrentGrpahID()+1;
+        int graphID=barGraph.getGraphID();
+        if(graphID==0){
+            if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
+            else graphID= dbItemMapper.getCurrentGrpahID()+1;
+        }
         dbItemMapper.registGraph(graphID,userID,"chart",barGraph.getGraphName());
         barGraph.setGraphID(graphID);
         dbItemMapper.addGraph(barGraph);
@@ -378,9 +395,11 @@ public class DashBoardService {
 //    添加折线图
     @Transactional(propagation = Propagation.SUPPORTS)
     public int addLineGraph(int userID,Graph<LineChart> lineGraph){
-        int graphID=0;
-        if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
-        else graphID= dbItemMapper.getCurrentGrpahID()+1;
+        int graphID=lineGraph.getGraphID();
+        if(graphID==0){
+            if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
+            else graphID= dbItemMapper.getCurrentGrpahID()+1;
+        }
         dbItemMapper.registGraph(graphID,userID,"chart",lineGraph.getGraphName());
         lineGraph.setGraphID(graphID);
         dbItemMapper.addGraph(lineGraph);
@@ -401,9 +420,11 @@ public class DashBoardService {
 //    添加饼图
     @Transactional(propagation = Propagation.SUPPORTS)
     public int addPieGraph(int userID,Graph<PieChart> pieGraph){
-        int graphID=0;
-        if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
-        else graphID= dbItemMapper.getCurrentGrpahID()+1;
+        int graphID=pieGraph.getGraphID();
+        if(graphID==0){
+            if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
+            else graphID= dbItemMapper.getCurrentGrpahID()+1;
+        }
         dbItemMapper.registGraph(graphID,userID,"chart",pieGraph.getGraphName());
         pieGraph.setGraphID(graphID);
         dbItemMapper.addGraph(pieGraph);
@@ -416,9 +437,11 @@ public class DashBoardService {
 //    添加散点图
     @Transactional(propagation = Propagation.SUPPORTS)
     public int addScatterGraph(int userID,Graph<ScatterChart> scatterGraph){
-        int graphID=0;
-        if(dbItemMapper.getCurrentGraphNum()==0) graphID=10001;
-        else graphID=dbItemMapper.getCurrentGrpahID()+1;
+        int graphID=scatterGraph.getGraphID();
+        if(graphID==0) {
+            if (dbItemMapper.getCurrentGraphNum() == 0) graphID = 10001;
+            else graphID = dbItemMapper.getCurrentGrpahID() + 1;
+        }
         dbItemMapper.registGraph(graphID,userID,"chart",scatterGraph.getGraphName());
         scatterGraph.setGraphID(graphID);
         dbItemMapper.addGraph(scatterGraph);
@@ -431,9 +454,11 @@ public class DashBoardService {
 //    添加MQTTgraph
     @Transactional(propagation = Propagation.SUPPORTS)
     public int addMQTTGraph(mqttGraph mqttGraph){
-        int mqttID=0;
-        if(dbItemMapper.getCurrentGraphNum()==0) mqttID=10001;
-        else mqttID=dbItemMapper.getCurrentGrpahID()+1;
+        int mqttID=mqttGraph.getMqttID();
+        if(mqttID==0){
+            if(dbItemMapper.getCurrentGraphNum()==0) mqttID=10001;
+            else mqttID=dbItemMapper.getCurrentGrpahID()+1;
+        }
         if(mqttGraph.getType()!=null)
             dbItemMapper.registGraph(mqttID,mqttGraph.getUserID(),"mqttline",mqttGraph.getGraphName());
         else
@@ -447,9 +472,11 @@ public class DashBoardService {
 //    添加table
     @Transactional(propagation = Propagation.SUPPORTS)
     public int addTable(Table table){
-        int tableID=0;
-        if(dbItemMapper.getCurrentGraphNum()==0) tableID=10001;
-        else tableID=dbItemMapper.getCurrentGrpahID()+1;
+        int tableID=table.getTableID();
+        if(tableID==0) {
+            if (dbItemMapper.getCurrentGraphNum() == 0) tableID = 10001;
+            else tableID = dbItemMapper.getCurrentGrpahID() + 1;
+        }
         dbItemMapper.registGraph(tableID,table.getUserID(),"table",table.getGraphName());
         table.setTableID(tableID);
         dbItemMapper.addTable(table);

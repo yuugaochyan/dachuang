@@ -12,17 +12,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@JsonTypeInfo(
-//        use = JsonTypeInfo.Id.NAME,
-//        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-//        property = "graphType",
-//        visible = true)
-//@JsonSubTypes({
-//        @JsonSubTypes.Type(value = BarChart.class, name = "bar"),
-//        @JsonSubTypes.Type(value = LineChart.class, name = "line"),
-//        @JsonSubTypes.Type(value = PieChart.class, name = "pie"),
-//        @JsonSubTypes.Type(value = ScatterChart.class, name = "scatter"),
-//})
 public class Graph<T> {
     private int userID;
     private int graphID;
@@ -35,6 +24,10 @@ public class Graph<T> {
 
     private Object series;
     private Object xarray;
+    private Object xArraySource;
+    private Object yArraySource;
     private Object xType;
     private Object yType;
+    private Object pieSource;
+    private Object valueSource;
 }

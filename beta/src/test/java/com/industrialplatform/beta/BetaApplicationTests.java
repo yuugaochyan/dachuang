@@ -32,9 +32,10 @@ class BetaApplicationTests {
 //        调取数据测试
 //        dataBaseService.getTableData("equipmentrepair");
 //        dashBoardService.getdbItemByItemID(1007);
-        dashBoardService.getdbItemBydbID(1);
+//        dashBoardService.getdbItemBydbID(1);
 //        int a[]={10001,10002};
 //        dashBoardService.addGraphsToDashBoard(a,3);
+        System.out.println(dashBoardService.getGraphInfo(10005));
 
 
 
