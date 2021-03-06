@@ -445,7 +445,7 @@ export default {
             this.tbID = this.$route.params.tbID
             this.chartform.graphName = this.$route.params.tbName
             let postData=this.$qs.stringify({
-                tbID:that.tbID,
+                graphID:that.tbID,
             })
             const result = axios({
                 method: 'post',

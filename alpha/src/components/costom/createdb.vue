@@ -403,7 +403,7 @@ export default {
             const userID=localStorage.getItem("userID")
             let postData=this.$qs.stringify({
                 userID:userID,
-                tbID:row.graphID,
+                graphID:row.graphID,
             })
             const result = axios({
                 method: 'post',

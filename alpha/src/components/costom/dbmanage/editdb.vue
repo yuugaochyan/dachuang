@@ -239,11 +239,11 @@ export default {
             console.log(tbID);
             let that = this;
             let postData=this.$qs.stringify({
-                fraphID:tbID
+                graphID:tbID
             })
             const result = axios({
                 method: 'post',
-                url:'/deleteGraph',
+                url:'/removeGraph',
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {

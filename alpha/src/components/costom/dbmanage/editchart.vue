@@ -415,9 +415,10 @@ export default {
             let that = this;
             const userID=localStorage.getItem("userID")
             let postData=this.$qs.stringify({
+                
+                userID:userID,
                 pagenum:1,
                 pagesize:1000,
-                userID:userID,
             })
             const result = axios({
                 method: 'post',
@@ -770,7 +771,8 @@ export default {
                                 xArraySource:this.Chart.xArraySource,
                                 series:[{
                                     name:this.Chart.name,
-                                    dataCol:this.Chart.yArraySource
+                                    dataCol:this.Chart.yArraySource,
+                                    color:this.Chart.color
                                 }]
                             }
                         }
@@ -811,7 +813,9 @@ export default {
                             dataSource:this.chartform.dataSource,
                             Chart:{
                                 xArraySource:this.Chart.xArraySource,
-                                yArraySource:this.Chart.yArraySource
+                                yArraySource:this.Chart.yArraySource,
+                                name:this.Chart.name,
+                                color:this.Chart.color
                             }
                         }
                         const result = axios({
@@ -1203,6 +1207,7 @@ export default {
             background: 'rgba(0, 0, 0, 0.7)'
         });
         this.getTbData();
+        this.getDbData();
         setTimeout(() => {
                 loading.close();
         }, 1000);
