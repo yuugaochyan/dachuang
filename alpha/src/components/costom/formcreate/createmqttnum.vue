@@ -264,7 +264,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.tbID=resp.data.tbID;
+                            that.tbID=resp.data.ID;
                             that.getDbData();
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
