@@ -347,7 +347,7 @@ export default {
                     type: 'success'
                 });
                 if(that.dbData.length==1) {
-                    this.dbCurrentChange--;
+                    that.dbCurrentChange--;
                 }
                 that.getDbData()
             }
@@ -423,7 +423,7 @@ export default {
                     type: 'success'
                 });
                 if(that.tbData.length==1) {
-                    this.tbCurrentChange--;
+                    that.tbCurrentChange--;
                 }
                 that.getTbData()
             }
