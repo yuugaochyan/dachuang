@@ -38,7 +38,7 @@
             
             
                 <div class="title">
-                    {{item.title}}
+                    {{item.objectData.graphName}}
                     <div class="tool-bt">
                     <el-tooltip  effect="dark" content="删除这个可视化" placement="bottom-start" v-if="editable">
                         <el-button size="mini" @click="deleteTB(item.i)" circle type="info" icon="iconfont icon-delete" ></el-button>
@@ -215,8 +215,8 @@ export default {
             },
             minW:2,
             minH:2,
-            maxW:6,
-            maxH:3,
+            maxW:10,
+            maxH:10,
             reset:false,
             msg1:'',
             msg2:'',
@@ -264,7 +264,7 @@ export default {
                 this.$router.push({
                     name:'editchart',
                     params: {
-                        tbID:tb.i,
+                        tbID:tb.objectData.graphID,
                         tbName:tb.title
                     }
                 })
@@ -273,7 +273,7 @@ export default {
                 this.$router.push({
                     name:'edittable',
                     params: {
-                        tbID:tb.i,
+                        tbID:tb.objectData.graphID,
                         tbName:tb.title
                     }
                 })
@@ -282,7 +282,7 @@ export default {
                 this.$router.push({
                     name:'editmqttline',
                     params: {
-                        tbID:tb.i,
+                        tbID:tb.objectData.graphID,
                         tbName:tb.title
                     }
                 })
@@ -291,7 +291,7 @@ export default {
                 this.$router.push({
                     name:'editmqttnum',
                     params: {
-                        tbID:tb.i,
+                        tbID:tb.objectData.graphID,
                         tbName:tb.title
                     }
                 })
@@ -702,7 +702,7 @@ export default {
   
 }
 .tb {
-    height: 87%;
+    height: 82%;
     width: 97%;
     background-color: #5b5b5f;
     margin: 0 auto;
@@ -712,7 +712,7 @@ export default {
     // text-align: center;
     padding-left: 7%;
     color: white;
-    height: 12%;
+    height: 17%;
     font-size: 170%;
     // padding-right: 1%;
     // padding-top: 2%;

@@ -397,6 +397,7 @@ export default {
             background: 'rgba(0, 0, 0, 0.7)'
         });
         this.getTbData();
+        this.getDbData()
         this.gettag();
         setTimeout(() => {
                 loading.close();

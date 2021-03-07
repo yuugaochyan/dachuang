@@ -347,6 +347,7 @@ export default {
     },
     mounted () {
         this.gettag();
+        this.getDbData()
     },
     // mounted () {
         // this.getData();

@@ -253,9 +253,9 @@ export default {
                 loading.close();
         }, 1000);
     },
-    // mounted () {
-        // this.getData();
-    // },
+    mounted () {
+        this.getDbData()
+    },
     // watch: {
     //     tableData: {
     //         handler() {

@@ -214,7 +214,9 @@ export default {
             
         },
     },
-    
+    mounted () {
+        this.getDbData()
+    },
     // mounted () {
         // this.getData();
     // },
