@@ -74,7 +74,19 @@ public class DashBoardService {
 //    删除图表
     @Transactional(propagation = Propagation.SUPPORTS)
     public  boolean deleteGraph(int graphID){
+        int[] itemIDs=dbItemMapper.getItemIDListByGraphID(graphID);
         dbItemMapper.deleteGraph(graphID);
+        for(int itemID:itemIDs){
+            dbItemMapper.deleteItem(itemID);
+        }
+        return true;
+    }
+
+
+//    从仪表盘中移除图表
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public  boolean removeGraph(int itemID){
+        dbItemMapper.deleteItem(itemID);
         return true;
     }
 
@@ -375,7 +387,7 @@ public class DashBoardService {
             if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
             else graphID= dbItemMapper.getCurrentGrpahID()+1;
         }
-        dbItemMapper.registGraph(graphID,userID,"chart",barGraph.getGraphName());
+        dbItemMapper.registGraph(graphID,userID,"chart",barGraph.getGraphName(),barGraph.getDataSource());
         barGraph.setGraphID(graphID);
         dbItemMapper.addGraph(barGraph);
         BarChart barChart=barGraph.getChart();
@@ -400,7 +412,7 @@ public class DashBoardService {
             if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
             else graphID= dbItemMapper.getCurrentGrpahID()+1;
         }
-        dbItemMapper.registGraph(graphID,userID,"chart",lineGraph.getGraphName());
+        dbItemMapper.registGraph(graphID,userID,"chart",lineGraph.getGraphName(),lineGraph.getDataSource());
         lineGraph.setGraphID(graphID);
         dbItemMapper.addGraph(lineGraph);
         LineChart lineChart=lineGraph.getChart();
@@ -425,7 +437,7 @@ public class DashBoardService {
             if(dbItemMapper.getCurrentGraphNum()==0)graphID=10001;
             else graphID= dbItemMapper.getCurrentGrpahID()+1;
         }
-        dbItemMapper.registGraph(graphID,userID,"chart",pieGraph.getGraphName());
+        dbItemMapper.registGraph(graphID,userID,"chart",pieGraph.getGraphName(),pieGraph.getDataSource());
         pieGraph.setGraphID(graphID);
         dbItemMapper.addGraph(pieGraph);
         PieChart pieChart=pieGraph.getChart();
@@ -442,7 +454,7 @@ public class DashBoardService {
             if (dbItemMapper.getCurrentGraphNum() == 0) graphID = 10001;
             else graphID = dbItemMapper.getCurrentGrpahID() + 1;
         }
-        dbItemMapper.registGraph(graphID,userID,"chart",scatterGraph.getGraphName());
+        dbItemMapper.registGraph(graphID,userID,"chart",scatterGraph.getGraphName(),scatterGraph.getDataSource());
         scatterGraph.setGraphID(graphID);
         dbItemMapper.addGraph(scatterGraph);
         ScatterChart scatterChart=scatterGraph.getChart();
@@ -460,9 +472,9 @@ public class DashBoardService {
             else mqttID=dbItemMapper.getCurrentGrpahID()+1;
         }
         if(mqttGraph.getType()!=null)
-            dbItemMapper.registGraph(mqttID,mqttGraph.getUserID(),"mqttline",mqttGraph.getGraphName());
+            dbItemMapper.registGraph(mqttID,mqttGraph.getUserID(),"mqttline",mqttGraph.getGraphName(),null);
         else
-            dbItemMapper.registGraph(mqttID,mqttGraph.getUserID(),"mqttnum",mqttGraph.getGraphName());
+            dbItemMapper.registGraph(mqttID,mqttGraph.getUserID(),"mqttnum",mqttGraph.getGraphName(),null);
         mqttGraph.setMqttID(mqttID);
         dbItemMapper.addMQTTGraph(mqttGraph);
         if (mqttID!=0) return mqttID;
@@ -477,7 +489,7 @@ public class DashBoardService {
             if (dbItemMapper.getCurrentGraphNum() == 0) tableID = 10001;
             else tableID = dbItemMapper.getCurrentGrpahID() + 1;
         }
-        dbItemMapper.registGraph(tableID,table.getUserID(),"table",table.getGraphName());
+        dbItemMapper.registGraph(tableID,table.getUserID(),"table",table.getGraphName(),table.getTableName());
         table.setTableID(tableID);
         dbItemMapper.addTable(table);
         if(tableID!=0) return tableID;

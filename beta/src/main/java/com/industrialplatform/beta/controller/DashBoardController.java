@@ -110,6 +110,22 @@ public class DashBoardController {
     }
 
 
+//    从仪表盘中移除图表
+    @RequestMapping(value = "/removeGraph",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> removeGraph(int itemID){
+        Map<String,Object> map=new HashMap<>();
+        if(dashBoardService.removeGraph(itemID)) {
+            map.put("status",200);
+            map.put("msg","删除成功!");
+        }else{
+            map.put("status",404);
+            map.put("msg","删除失败!");
+        }
+        return map;
+    }
+
+
 //    获取图表信息
     @RequestMapping(value = "/getGraphInfo",method = RequestMethod.POST)
     @ResponseBody

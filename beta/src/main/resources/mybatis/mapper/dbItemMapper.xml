@@ -93,6 +93,11 @@
         delete from graphmasterinfo
         where ID=#{graphID}
     </delete>
+<!--  删除Item  -->
+    <delete id="deleteItem" parameterType="int">
+        delete from dbitem
+        where itemID=#{itemID}
+    </delete>
 
 <!--  获取db所有的ItemID  -->
     <select id="getdbItemIDList" parameterType="int" resultType="int">
@@ -210,6 +215,12 @@
         insert into dbitembind(itemID,graphID)
         values(#{itemID},#{graphID})
     </insert>
+<!--  获取与该图表ID绑定的所有itemID  -->
+    <select id="getItemIDListByGraphID" resultType="int">
+        select itemID
+        from dbitembind
+        where graphID=#{graphID}
+    </select>
 <!--  注册图表  -->
     <insert id="registGraph" >
         insert into graphmasterinfo(ID,userID,type,graphName,dataSource)
