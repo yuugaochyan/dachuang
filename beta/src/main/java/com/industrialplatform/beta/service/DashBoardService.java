@@ -43,6 +43,7 @@ public class DashBoardService {
         }
         map.put("list",target);
         map.put("total",total);
+//        System.out.println(target);
         return map;
     }
 
@@ -374,7 +375,7 @@ public class DashBoardService {
         }
         table.setData(data);
         table.setAlign("center");
-        table.setIndex(true);
+        table.setIndex(false);
 //        System.out.println(table);
         return table;
     }

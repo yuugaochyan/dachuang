@@ -427,7 +427,7 @@ export default {
                 data:postData
             }).then(function(resp){
                 if(resp.data.status==200) {
-                that.dbData=resp.data.data
+                that.dbData=resp.data.data.list
             }
             })
         },
@@ -782,7 +782,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.tbID=resp.data.tbID;
+                            that.tbID=resp.data.ID;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -824,7 +824,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.tbID=resp.data.tbID;
+                            that.tbID=resp.data.ID;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -876,7 +876,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.tbID=resp.data.tbID;
+                            that.tbID=resp.data.ID;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
@@ -916,7 +916,7 @@ export default {
                         }).then(function(resp){
                             if(resp.data.status==200) {
                             that.active++;
-                            that.tbID=resp.data.tbID;
+                            that.tbID=resp.data.ID;
                             that.steplabel2='放入仪表盘',
                             that.steplabel1='算了'
                             that.$message({

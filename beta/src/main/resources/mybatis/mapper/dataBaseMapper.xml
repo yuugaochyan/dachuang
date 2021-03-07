@@ -22,9 +22,8 @@
         CALL getColData(#{tableName},#{colName})
     </select>
 <!--  获取行数据  -->
-    <select id="getRowData" resultType="Map">
-        select *
-        from equipmentrepair
+    <select id="getRowData" resultType="Map" statementType="CALLABLE">
+        CALL getRowData(#{tableName})
     </select>
 
 

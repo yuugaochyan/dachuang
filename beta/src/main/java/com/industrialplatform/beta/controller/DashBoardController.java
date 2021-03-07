@@ -55,7 +55,7 @@ public class DashBoardController {
     public Map<String,Object> getDBList(@RequestParam("userID") int userID,
                                         @RequestParam("pagenum") int pagenum,
                                         @RequestParam("pagesize") int pagesize){
-        System.out.println(pagenum);
+//        System.out.println(pagenum);
         Map<String,Object> map=new HashMap<>();
             map.put("status",200);
             map.put("msg","仪表盘列表获取成功！");
@@ -159,10 +159,10 @@ public class DashBoardController {
 //    增添图表至仪表盘中
     @RequestMapping(value = "/addGraphToDB",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> addGraphToDB(int dbID,int[] tbList){
-        System.out.println(tbList[0]);
+    public Map<String,Object> addGraphToDB(int dbID,int[] tblist){
+        System.out.println("addGraphToDB");
         Map<String,Object> map=new HashMap<>();
-        if(dashBoardService.addGraphsToDashBoard(tbList,dbID)){
+        if(dashBoardService.addGraphsToDashBoard(tblist,dbID)){
             map.put("status",200);
             map.put("msg","图表添加成功！");
         }else{

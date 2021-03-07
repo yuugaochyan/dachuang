@@ -239,7 +239,7 @@ export default {
             console.log(tbID);
             let that = this;
             let postData=this.$qs.stringify({
-                graphID:tbID
+                itemID:tbID
             })
             const result = axios({
                 method: 'post',
@@ -498,7 +498,7 @@ export default {
                 
                 let postData=this.$qs.stringify({
                     dbID: this.dbID,
-                    tbList: tbIDList
+                    tblist: tbIDList
                 },{
                     indices:false
                 })
