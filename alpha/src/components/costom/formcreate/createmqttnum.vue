@@ -155,6 +155,8 @@ export default {
             const userID=localStorage.getItem("userID")
             let postData=this.$qs.stringify({
                 userID:userID,
+                pagenum:1,
+                pagesize:1000,
             })
             const result = axios({
                 method: 'post',
