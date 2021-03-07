@@ -453,7 +453,7 @@ export default {
                         center: true,
                         type: 'success'
                     });
-                    that.getTbData()
+                    that.getDbData()
                     that.showAddDB = false
                 }
                 })
