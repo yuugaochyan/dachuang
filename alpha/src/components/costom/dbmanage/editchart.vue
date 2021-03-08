@@ -793,14 +793,16 @@ export default {
                                 center: true,
                                 type: 'success'
                             });
-                            that.getDbData();
+                            // that.getDbData();
                             that.step2=false;
                             setTimeout(function() {
                                 that.step3=true;
+                                this.$router.go(-1);
                             },500);
                         }
                         })
                         })
+                        
                     }
                     //^封装数据scatter
                     else if(this.chartform.graphType=='scatter'){
@@ -835,10 +837,11 @@ export default {
                                 center: true,
                                 type: 'success'
                             });
-                            that.getDbData();
+                            // that.getDbData();
                             that.step2=false;
                             setTimeout(function() {
                                 that.step3=true;
+                                this.$router.go(-1);
                             },500);
                         }
                         })
@@ -887,10 +890,11 @@ export default {
                                 center: true,
                                 type: 'success'
                             });
-                            that.getDbData();
+                            // that.getDbData();
                             that.step2=false;
                             setTimeout(function() {
                                 that.step3=true;
+                                this.$router.go(-1);
                             },500);
                         }
                         })
@@ -928,9 +932,10 @@ export default {
                                 type: 'success'
                             });
                             that.step2=false;
-                            that.getDbData();
+                            // that.getDbData();
                             setTimeout(function() {
                                 that.step3=true;
+                                this.$router.go(-1);
                             },500);
                         }
                         })
@@ -943,7 +948,7 @@ export default {
                     // console.log(postData);
                     
                     
-                    this.$router.go(-1);
+                    
                 }
                 else if(this.active==2) {
                     // this.$refs.chartformref3.validate((valid)=>{
@@ -1024,7 +1029,7 @@ export default {
                 if(that.chartform.graphType=='line') {
                     that.lineChart.name=resp.data.data.Graph.legend
                     for(let key in resp.data.data.Graph.series) {
-                        that.lineChart.color[key]=resp.data.data.Graph.series.itemStyle.normal.lineStyle.color
+                        that.lineChart.color[key]=resp.data.data.Graph.series[key].itemStyle.normal.lineStyle.color
                         that.lineChart.yArraySource[key]=(resp.data.data.Graph.series[key].dataCol)
                         that.yNum++
                     }
@@ -1041,13 +1046,13 @@ export default {
                     that.Chart.xArraySource=resp.data.data.Graph.xarraySource
                     that.Chart.yArraySource=resp.data.data.Graph.series[0].dataCol
                     that.Chart.name=resp.data.data.Graph.legend[0]
-                    that.Chart.color=resp.data.data.Graph.series.itemStyle.normal.color
+                    that.Chart.color=resp.data.data.Graph.series[0].itemStyle.normal.color
                 }
                 else if(that.chartform.graphType=='scatter') {
                     that.Chart.xArraySource=resp.data.data.Graph.xarraySource
                     that.Chart.yArraySource=resp.data.data.Graph.yarraySource
                     // that.Chart.name=resp.data.data.Graph.legend[0]
-                    that.Chart.color=resp.data.data.Graph.series.itemStyle.normal.color
+                    that.Chart.color=resp.data.data.Graph.series[0].itemStyle.normal.color
                 }
                 setTimeout(()=>{
                 that.step1=true;
