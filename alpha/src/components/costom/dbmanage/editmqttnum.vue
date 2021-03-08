@@ -64,8 +64,8 @@
 
             <el-steps :active="active" finish-status="success" class="bt-step" align-center>
                 <el-step title="第一步" description="命名这个问题并选择数据源"></el-step>
-                <el-step title="第二步" description="配置警告值上下限，将问题存入你的库里"></el-step>
-                <el-step title="第三步" description="放进仪表盘看看吧？"></el-step>
+                <el-step title="第二步" description="配置警告值上下限，保存修改"></el-step>
+                <!-- <el-step title="第三步" description="进入仪表盘看看吧？"></el-step> -->
             </el-steps>
             </div>
             <div class="right">
@@ -233,7 +233,7 @@ export default {
                 
                 if(this.active==0) {
                     this.active++;
-                    this.steplabel2='保存图表'
+                    this.steplabel2='保存图表并返回'
                     this.steplabel1='上一步'
                     this.step1=false;
                     setTimeout(function() {
@@ -289,7 +289,7 @@ export default {
 
                     
                     console.log(postData);
-                    
+                    this.$router.go(-1)
                     })
                     
                 }
@@ -328,7 +328,7 @@ export default {
         laststep() {
             let that = this;
             if(this.active==0) {
-            this.$router.push('/createdb')
+            this.$router.go(-1)
             client.end()
             }
             else {

@@ -269,15 +269,15 @@
                 </transition>
 
             <div class="bt-next">
-                <el-button type="info"  @click="laststep" v-show="active>0">{{steplabel1}}</el-button>
+                <el-button type="info"  @click="laststep" >{{steplabel1}}</el-button>
                 <el-button type="warning"  @click="nextstep">{{steplabel2}}</el-button>
             </div>
 
 
             <el-steps :active="active" finish-status="success" class="bt-step" align-center>
                 <el-step title="第一步" description="命名这个问题并选择图表类型和数据源"></el-step>
-                <el-step title="第二步" description="配置x-y轴和数据，将问题存入你的库里"></el-step>
-                <el-step title="第三步" description="放进仪表盘看看吧？"></el-step>
+                <el-step title="第二步" description="配置x-y轴和数据，保存修改"></el-step>
+                <!-- <el-step title="第三步" description="去仪表盘看看吧"></el-step> -->
             </el-steps>
             </div>
             <div class="right">
@@ -380,7 +380,7 @@ export default {
             reset:false,
             active:0,
             steplabel2:'下一步',
-            steplabel1:'上一步',
+            steplabel1:'返回',
             step1:true,
             step2:false,
             step3:false,
@@ -738,7 +738,8 @@ export default {
                 
                 if(this.active==0) {
                     this.active++;
-                    this.steplabel2='保存图表'
+                    this.steplabel1='上一步'
+                    this.steplabel2='保存图表并返回'
                     this.step1=false;
                     
                     setTimeout(function() {
@@ -784,7 +785,7 @@ export default {
                             if(resp.data.status==200) {
                             that.active++;
                             that.tbID=resp.data.tbID;
-                            that.steplabel2='放入仪表盘',
+                            that.steplabel2='进入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
                                 showClose: true,
@@ -826,7 +827,7 @@ export default {
                             if(resp.data.status==200) {
                             that.active++;
                             that.tbID=resp.data.tbID;
-                            that.steplabel2='放入仪表盘',
+                            that.steplabel2='进入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
                                 showClose: true,
@@ -878,7 +879,7 @@ export default {
                             if(resp.data.status==200) {
                             that.active++;
                             that.tbID=resp.data.tbID;
-                            that.steplabel2='放入仪表盘',
+                            that.steplabel2='进入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
                                 showClose: true,
@@ -918,7 +919,7 @@ export default {
                             if(resp.data.status==200) {
                             that.active++;
                             // that.tbID=resp.data.tbID;
-                            that.steplabel2='放入仪表盘',
+                            that.steplabel2='进入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
                                 showClose: true,
@@ -942,43 +943,47 @@ export default {
                     // console.log(postData);
                     
                     
-                    
+                    this.$router.go(-1);
                 }
                 else if(this.active==2) {
-                    this.$refs.chartformref3.validate((valid)=>{
-                    if(!valid) return;
-                    let postData=this.$qs.stringify({
-                        dbID:this.dbform.db,
-                        tblist:[this.tbID]
-                    },{
-                        indices:false
-                    })
-                    const result = axios({
-                        method: 'post',
-                        url:'/addGraphToDB',
-                        data:postData,
-                        indices:false
-                        }).then(function(resp){
-                            if(resp.data.status==200) {
-                            that.active++;
-                            that.$message({
-                                showClose: true,
-                                message: '已经放入仪表盘！前往仪表盘管理看看吧？',
-                                center: true,
-                                type: 'success'
-                            });
-                            setTimeout(function() {
-                                that.$router.push('/createdb')
-                            },300)
-                        }
-                    })
-                    
-                    })
+                    // this.$refs.chartformref3.validate((valid)=>{
+                    // if(!valid) return;
+                    // let postData=this.$qs.stringify({
+                        // dbID:this.dbform.db,
+                        // tblist:[this.tbID]
+                    // },{
+                        // indices:false
+                    // })
+                    // const result = axios({
+                        // method: 'post',
+                        // url:'/addGraphToDB',
+                        // data:postData,
+                        // indices:false
+                        // }).then(function(resp){
+                            // if(resp.data.status==200) {
+                            // that.active++;
+                            // that.$message({
+                                // showClose: true,
+                                // message: '已经放入仪表盘！前往仪表盘管理看看吧？',
+                                // center: true,
+                                // type: 'success'
+                            // });
+                            // setTimeout(function() {
+                                // that.$router.push('/createdb')
+                            // },300)
+                        // }
+                    // })
+                    // 
+                    // })
+                    this.$router.go(-1);
                 }
             })
         },
         laststep() {
             let that = this;
+            if(this.active==0) {
+                this.$router.go(-1);
+            }
             this.active--;
             if(this.active==0) {
                 this.steplabel2='下一步'
@@ -988,7 +993,7 @@ export default {
                 },500)
             }
             if(this.active==1) {
-                this.$router.push('/createdb')
+                this.$router.go(-1);
             }
         },
         changeX() {

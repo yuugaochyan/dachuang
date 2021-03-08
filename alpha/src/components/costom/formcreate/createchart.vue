@@ -270,7 +270,7 @@
                 </transition>
 
             <div class="bt-next">
-                <el-button type="info"  @click="laststep" v-show="active>0">{{steplabel1}}</el-button>
+                <el-button type="info"  @click="laststep" >{{steplabel1}}</el-button>
                 <el-button type="warning"  @click="nextstep">{{steplabel2}}</el-button>
             </div>
 
@@ -381,7 +381,7 @@ export default {
             reset:false,
             active:0,
             steplabel2:'下一步',
-            steplabel1:'上一步',
+            steplabel1:'返回',
             step1:true,
             step2:false,
             step3:false,
@@ -738,6 +738,7 @@ export default {
                 if(this.active==0) {
                     this.active++;
                     this.steplabel2='保存图表'
+                    this.steplabel1='上一步'
                     this.step1=false;
                     this.getData();
                     setTimeout(function() {
@@ -978,6 +979,9 @@ export default {
         },
         laststep() {
             let that = this;
+            if(this.active==0) {
+                this.$router.go(-1)
+            }
             this.active--;
             if(this.active==0) {
                 this.steplabel2='下一步'

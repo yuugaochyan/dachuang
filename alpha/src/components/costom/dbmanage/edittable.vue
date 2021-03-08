@@ -45,7 +45,7 @@
 
             <el-steps :active="active" finish-status="success" class="bt-step" align-center>
                 <el-step title="第一步" description="命名这个问题并选择数据源"></el-step>
-                <el-step title="第二步" description="放进仪表盘看看吧？"></el-step>
+                <el-step title="第二步" description="保存并返回"></el-step>
             </el-steps>
             </div>
             <div class="right">
@@ -162,7 +162,7 @@ export default {
                             if(resp.data.status==200) {
                             that.active++;
                             that.getDbData;
-                            that.steplabel2='放入仪表盘',
+                            that.steplabel2='进入仪表盘',
                             that.steplabel1='算了'
                             that.$message({
                                 showClose: true,
@@ -176,6 +176,7 @@ export default {
                             },500);
                         }
                         })
+                        this.$router.go(-1)
                 }
                 else if(this.active==1) {
                     this.$refs.chartformref2.validate((valid)=>{
@@ -213,7 +214,7 @@ export default {
         laststep() {
             let that = this;
             
-            this.$router.push('/createdb')
+            this.$router.go(-1)
             
         },
         getTbData() {

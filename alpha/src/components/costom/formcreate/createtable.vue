@@ -38,7 +38,7 @@
                 </transition>
 
             <div class="bt-next">
-                <el-button type="info"  @click="laststep" v-show="active>0">{{steplabel1}}</el-button>
+                <el-button type="info"  @click="laststep" >{{steplabel1}}</el-button>
                 <el-button type="warning"  @click="nextstep">{{steplabel2}}</el-button>
             </div>
 
@@ -85,7 +85,7 @@ export default {
                 label: 'eqpseasonstatistic'
             }],
             active:0,
-            steplabel1:"算了",
+            steplabel1:"返回",
             steplabel2:"保存图表",
             tableData:{},
             step1:true,
