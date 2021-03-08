@@ -797,7 +797,7 @@ export default {
                             that.step2=false;
                             setTimeout(function() {
                                 that.step3=true;
-                                this.$router.go(-1);
+                                that.$router.go(-1);
                             },500);
                         }
                         })
@@ -841,7 +841,7 @@ export default {
                             that.step2=false;
                             setTimeout(function() {
                                 that.step3=true;
-                                this.$router.go(-1);
+                                that.$router.go(-1);
                             },500);
                         }
                         })
@@ -894,7 +894,7 @@ export default {
                             that.step2=false;
                             setTimeout(function() {
                                 that.step3=true;
-                                this.$router.go(-1);
+                                that.$router.go(-1);
                             },500);
                         }
                         })
@@ -935,7 +935,7 @@ export default {
                             // that.getDbData();
                             setTimeout(function() {
                                 that.step3=true;
-                                this.$router.go(-1);
+                                that.$router.go(-1);
                             },500);
                         }
                         })
