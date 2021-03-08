@@ -87,7 +87,7 @@ export default {
                                 color: '#ffffff'
                             }
                         },
-                        name:series[0].dataCol,
+                        // name:series[0].dataCol,
                         nameLocation:'middle',
                         nameTextStyle:{
                             color:"#ffffff", 

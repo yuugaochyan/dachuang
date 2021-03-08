@@ -110,6 +110,7 @@ export default {
                     // window.sessionStorage.setItem('token',resp.data.token);
                     that.$store.commit("setToken",resp.data.token);
                     that.$store.commit("setuserID",resp.data.userID);
+                    that.$store.commit("setShowHint",true);
                     that.$router.push('/homepage')
                 }
                 else{

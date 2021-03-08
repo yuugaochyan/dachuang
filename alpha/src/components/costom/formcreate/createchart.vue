@@ -612,7 +612,7 @@ export default {
                 yAxis: [
                     {
                         type: this.yType,
-                        name:this.Chart.yArraySource,
+                        // name:this.Chart.yArraySource,
                         nameLocation:'middle',
                         axisLabel: {
                             textStyle: {

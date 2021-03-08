@@ -220,6 +220,7 @@ export default {
         getTbData() {
             let that = this;
             this.tbID = this.$route.params.tbID
+            console.log(this.tbID);
             this.chartform.graphName = this.$route.params.tbName
             let postData=this.$qs.stringify({
                 graphID:that.tbID,
@@ -233,7 +234,7 @@ export default {
                 that.tbData=resp.data.data
                 // console.log(that.tbData);
                 // that.chartform.graphType=resp.data.data.Graph.graphType
-                that.chartform.dataSource=resp.data.data.Graph.dataSource
+                that.chartform.dataSource=resp.data.data.Graph.tableName
                 that.chartform.graphName=resp.data.data.Graph.graphName
                 // that.Chart.name=resp.data.data.Graph.legend[0]
                 }

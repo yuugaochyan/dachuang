@@ -613,7 +613,7 @@ export default {
                 yAxis: [
                     {
                         type: this.yType,
-                        name:this.Chart.yArraySource,
+                        // name:this.Chart.yArraySource,
                         nameLocation:'middle',
                         axisLabel: {
                             textStyle: {
@@ -1024,7 +1024,7 @@ export default {
                 if(that.chartform.graphType=='line') {
                     that.lineChart.name=resp.data.data.Graph.legend
                     for(let key in resp.data.data.Graph.series) {
-                        that.lineChart.color[key]=(resp.data.data.Graph.series[key].color)
+                        that.lineChart.color[key]=resp.data.data.Graph.series.itemStyle.normal.lineStyle.color
                         that.lineChart.yArraySource[key]=(resp.data.data.Graph.series[key].dataCol)
                         that.yNum++
                     }
@@ -1041,13 +1041,13 @@ export default {
                     that.Chart.xArraySource=resp.data.data.Graph.xarraySource
                     that.Chart.yArraySource=resp.data.data.Graph.series[0].dataCol
                     that.Chart.name=resp.data.data.Graph.legend[0]
-                    that.Chart.color='#ffffff'
+                    that.Chart.color=resp.data.data.Graph.series.itemStyle.normal.color
                 }
                 else if(that.chartform.graphType=='scatter') {
                     that.Chart.xArraySource=resp.data.data.Graph.xarraySource
                     that.Chart.yArraySource=resp.data.data.Graph.yarraySource
                     // that.Chart.name=resp.data.data.Graph.legend[0]
-                    that.Chart.color='#ffffff'
+                    that.Chart.color=resp.data.data.Graph.series.itemStyle.normal.color
                 }
                 setTimeout(()=>{
                 that.step1=true;

@@ -91,6 +91,19 @@
                         </el-tooltip>
                         <br>
                         <el-divider></el-divider>
+                        <el-tooltip class="item" effect="dark" content="关闭/打开提示" placement="bottom-end">
+                            <el-switch
+                                style="display: block"
+                                v-model="isShowHint"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                                active-text="打开"
+                                inactive-text="关闭"
+                                @change="changeShowHint">
+                            </el-switch>
+                        </el-tooltip>
+                        <br>
+                        <el-divider></el-divider>
                         <el-tooltip class="item" effect="dark" content="返回仪表盘管理页面" placement="bottom-end">
                             <el-button @click="goback" type="warning"  plain>返回列表</el-button>
                         </el-tooltip>
@@ -225,9 +238,13 @@ export default {
             tbtotal:0,
             tbSize:5,
             tbCurrentPage:1,
+            isShowHint:'',
         }
     },
     methods: {
+        changeShowHint() {
+            this.$store.commit("setShowHint",this.isShowHint);
+        },
         asideResize(){
             let myEvent = new Event('resize'); // resize是指resize事件
             window.dispatchEvent(myEvent); // 触发window的resize事件
@@ -311,7 +328,7 @@ export default {
         getDbData() {
             let that = this;
             this.dbID = this.$route.params.dbID
-            // console.log(this.dbID);
+            console.log(this.dbID);
             this.form.name = this.$route.params.dbName
             this.form.info = this.$route.params.dbInfo
             // console.log(this.form.name);
@@ -328,10 +345,14 @@ export default {
                 // }
             // })
             this.init();
+            // let showhint=localStorage.getItem('showHint')
+            this.isShowHint=localStorage.getItem("showHint")
+            console.log(this.isShowHint);
+            if(this.isShowHint==true) {
             setTimeout(()=>{
                 this.msg1=this.$notify({
                         showClose: true,
-                        message: '双击屏幕可打开工具箱→',
+                        message: '双击屏幕可打开工具箱，可在工具箱中关闭提示→',
                         type: 'info',
                         offset: 100,
                         duration:0
@@ -363,6 +384,7 @@ export default {
                     duration:0
                 });
             },1200)
+            }
         },
         init() {
         
@@ -621,6 +643,7 @@ export default {
         document.addEventListener('keydown',this.handleEvent2)
         document.addEventListener('keydown',this.handleEvent3)
         document.addEventListener('keydown',this.handleEvent4)
+        
         // await this.asideResize();
         setTimeout(() => {
                 loading.close();
@@ -634,6 +657,8 @@ export default {
             // this.$router.go(0);
             // this.asideResize()
         // },500)
+        // console.log(localStorage.getItem("showHint"));
+        
         
     },
     beforeDestroy() {
