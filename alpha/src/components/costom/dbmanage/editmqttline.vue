@@ -183,7 +183,7 @@ export default {
             var tag=this.chartform.dataSource;
             let that=this
             let obj=JSON.parse(localStorage.getItem('client'))
-            console.log(obj);
+            // console.log(obj);
             for(let key in obj) {
                 // console.log(obj[key]);
                 if(obj[key].n==tag) {
@@ -303,22 +303,16 @@ export default {
                     this.$refs.chartformref2.validate((valid)=>{
                     if(!valid) return;
                     const userID=localStorage.getItem("userID")
-                    for(let key in this.tagList) {
-                        // console.log(key);
-                        // console.log(that.tagList[key]);
-                        if(that.tagList[key].value==that.chartform.dataSource) {
-                            tagName=that.tagList[key].label
-                        }
-                    }
+                    
                         postData={
                             userID:userID,
                             graphID:this.tbID,
                             graphName:this.chartform.graphName,
                             tag:this.chartform.dataSource,
-                            tagName:tagName,
+                            // tagName:tagName,
                             max:this.chartform.max,
                             min:this.chartform.min,
-                            lengs:this.chartform.lens,
+                            lengs:this.chartform.lengs,
                             type:this.chartform.graphType,
                         }
                         const result = axios({
@@ -389,7 +383,7 @@ export default {
             let that = this;
             if(this.active==0) {
             this.$router.go(-1)
-            client.end()
+            // client.end()
             }
             else {
                 this.active--;
@@ -481,7 +475,7 @@ export default {
         },5000)
     },
     beforeDestroy() {
-        client.end()
+        // client.end()
         clearInterval(this.interval)
     },
     
