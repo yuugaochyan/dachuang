@@ -1,11 +1,17 @@
 <template>
     <div id="app" v-if="reset">
-        <div class="maincontain" @dblclick="drawer = true">
+        <div class="maincontain">
             
 
                 <!-- <el-tooltip class="item" effect="dark" content="隐藏调整按钮" placement="bottom-start"> -->
                     <!-- <el-button @click="drawer = true" circle type="warning" icon="iconfont icon-preview" style="margin-left: 16px;"></el-button> -->
                 <!-- </el-tooltip> -->
+        <!-- <div class="cover-nav"></div> -->
+        <header class="drawer-bt" @mouseover="drawer=true" id="bt" v-if="drawBtVis">
+            <!-- <el-divider> -->
+                <i class="el-icon-d-arrow-right"  v-show="drawBtVis"></i>
+            <!-- </el-divider> -->
+        </header>
 
         <div class="vueGridLayout">
         <grid-layout
@@ -58,10 +64,12 @@
                 
                 
                 <el-drawer
-                    
                     :visible.sync="drawer"
                     :direction="direction"
-                    size=180>
+                    :modal=false
+                    size=180
+                    @close="closeDrawer"
+                    @open="openDrawer">
                     <span slot="title" class="tool-banner"><i class="el-icon-s-tools"></i>工具箱</span>
                     <div class="toolbar">
                         <el-tooltip class="item" effect="dark" content="调整图表位置（alt+R）" placement="bottom-end">
@@ -74,9 +82,15 @@
                         </el-tooltip>
                         <br>
                         <el-divider></el-divider>
+                        <el-tooltip class="item" effect="dark" content="隐藏左侧工具栏的呼出按钮（下次仍会显示）" placement="bottom-end">
+                            <el-button @click="hideBt" type="warning"  plain>隐藏按钮</el-button>
+                        </el-tooltip>
+                        <br>
+                        <el-divider></el-divider>
                         <el-tooltip class="item" effect="dark" content="返回仪表盘管理页面" placement="bottom-end">
                             <el-button @click="goback" type="warning"  plain>返回列表</el-button>
                         </el-tooltip>
+                        
                     </div>
                 </el-drawer>
 
@@ -111,7 +125,7 @@ export default {
             dbInfo:'',
             // reset:false,
             drawer:false,
-            direction: 'rtl',
+            direction: 'ltr',
             editable:false,
             layout: [
               { x: 0, y: 0, w: 4, h: 2, i: 0 } //数据格式
@@ -131,9 +145,24 @@ export default {
             msg1:'',
             msg2:'',
             msg3:'',
+            drawBtVis:true,
         }
     },
     methods: {
+        hideBt() {
+            this.drawer=false
+            this.drawBtVis=false
+        },
+        openDrawer() {
+
+                let bt =document.getElementById('bt')
+                bt.style.cssText="margin-left:125px"
+        },
+        closeDrawer() {
+            console.log(true);
+            let bt =document.getElementById('bt')
+            bt.style.cssText=""
+        },
         getDbData() {
             let that = this;
             this.dbID = this.$route.params.dbID
@@ -152,36 +181,37 @@ export default {
                 // }
             // })
             this.init();
-            setTimeout(()=>{
-                this.msg1=this.$notify({
-                        showClose: true,
-                        message: '双击屏幕可打开工具箱→',
-                        type: 'info',
-                        offset: 100,
-                        duration:0
-                });
-            },300)
-            setTimeout(()=>{
-                this.msg2=this.$notify({
-                    showClose: true,
-                    message: '如遇数据显示不全请尝试刷新Σ(⊙▽⊙"a',
-                    offset: 100,
-                    type: 'warning',
-                    duration:0
-                });
-            },600)
-            setTimeout(()=>{
-                this.msg3=this.$notify({
-                    message: '尝试使用快捷键！如alt+R来进行适应调整(*^▽^*)',
-                    offset: 100,
-                    type: 'info',
-                    duration:0
-                });
-            },900)
+            // setTimeout(()=>{
+                // this.msg1=this.$notify({
+                        // showClose: true,
+                        // message: '双击屏幕可打开工具箱→',
+                        // type: 'info',
+                        // offset: 100,
+                        // duration:0
+                // });
+            // },300)
+            // setTimeout(()=>{
+                // this.msg2=this.$notify({
+                    // showClose: true,
+                    // message: '如遇数据显示不全请尝试刷新Σ(⊙▽⊙"a',
+                    // offset: 100,
+                    // type: 'warning',
+                    // duration:0
+                // });
+            // },600)
+            // setTimeout(()=>{
+                // this.msg3=this.$notify({
+                    // message: '尝试使用快捷键！如alt+R来进行适应调整(*^▽^*)',
+                    // offset: 100,
+                    // type: 'info',
+                    // duration:0
+                // });
+            // },900)
         },
         asideResize(){
             let myEvent = new Event('resize'); // resize是指resize事件
             window.dispatchEvent(myEvent); // 触发window的resize事件
+            
         },
         gotoedit() {
             this.$router.push({
@@ -211,9 +241,14 @@ export default {
             if(resp.data.status==200) {
                 that.layoutData = resp.data.data;
                 localStorage.setItem('pandectDisplace', JSON.stringify(that.layoutData));
+                
+                // that.asideResize();
+            
+        
             }
         })
-        
+        // window.dispatchEvent(myEvent);
+        // that.asideResize();
         },
         handleEvent(e){
             var that = this;
@@ -243,33 +278,41 @@ export default {
             background: 'rgba(0, 0, 0, 0.7)'
         });
         this.getDbData();
+
         document.addEventListener('keydown',this.handleEvent)
         document.addEventListener('keydown',this.handleEvent2)
-        this.resizeinterval =setInterval(()=>{
-            setTimeout(()=>{
-                this.asideResize();
-            },0)
-        },1000)
+        // this.resizeinterval =setInterval(()=>{
+            // setTimeout(()=>{
+                // this.asideResize();
+            // },0)
+        // },1000)
+        // window.dispatchEvent(myEvent);
+        let that = this
         setTimeout(() => {
-                loading.close();
+            that.asideResize()
+            loading.close();
         }, 1000);
+        
     },
     mounted() {
-        setTimeout(()=>{
-            this.asideResize()
-        },500)
+        // setTimeout(()=>{
+            // this.asideResize()
+        // },0)
+        
     },
     beforeDestroy() {
         document.removeEventListener('keydown', this.handleEvent);
         document.removeEventListener('keydown', this.handleEvent2);
-        this.msg1.close()
-        this.msg2.close()
-        this.msg3.close()
+        
+        // this.msg1.close()
+        // this.msg2.close()
+        // this.msg3.close()
     },
     watch: {
         layoutData: function(){
             this.$nextTick(function(){
                 this.reset = true;
+                // this.asideResize()
             })
             
         }
@@ -314,4 +357,31 @@ export default {
 .el-drawer:focus {
     outline: none;
 }
+.maincontain {
+    background-color: #333;
+}
+.cover-nav {
+    height: 67px;
+    width: 100%;
+}
+.drawer-bt {
+    width: 30px;
+    height: 100%;
+    background-color: rgba(51, 51, 51, 0);
+    color: #ddbb80;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    padding-top: 300px;
+    // padding-bottom: 120px;
+    // text-align: center;
+    font-size: 30px;
+    position: absolute;
+    left: 0;
+    transition: 300ms 0ms;
+}
+.drawer-bt:hover {
+    cursor:pointer
+}
+
 </style>

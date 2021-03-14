@@ -11,15 +11,6 @@
 <script>
 import axios from 'axios'
 import mqtt from 'mqtt'
-var client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
-const options= {
-    connectTimeout: 40000,
-    clientId: 'mqtitId-Home',
-    username: 'hyiot',
-    password: '1234abcd',
-    clean: true
-}
-client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
 export default {
     name:'mqttnum',
     props:["id","obdata"],
@@ -56,64 +47,49 @@ export default {
             
             
 
-            //*mqtt订阅 need:tag\max\min
-            client.on('connect', (e) => {
-                console.log("连接成功！！！")
-                client.subscribe(tag, { qos: 0 }, (error) => {
-                if (!error) {
-                    // console.log('订阅成功')
-                } else {
-                    console.log('订阅失败')
-                }
-                })
-            })
-        // 接收消息处理
-            client.on('message', (topic, message) => {
-                let msg = JSON.parse(message.toString())
-                // this.datalist.name=msg.n;
-                // this.datalist.value=msg.v;
-                // console.log(msg.v);
-                that.config.number[0]=parseInt(msg.v)
-                // console.log(that.config.number[0]);
-                if(msg.v>max){
+            let obj=JSON.parse(localStorage.getItem('client'))
+            // console.log(obj);
+            for(let key in obj) {
+                // console.log(obj[key]);
+                if(obj[key].n==tag) {
+                    that.config.number[0]=parseInt(obj[key].v)  
+                    if(obj[key].v>max){
                     that.config.style.fill='red'
+                    }
+                    else if(obj[key].v<min){
+                        that.config.style.fill='white'
+                    }
+                    else {
+                        that.config.style.fill='#3de7c9'
+                    }
+                    
+                    this.config = { ...this.config }
                 }
-                else if(msg.v<min){
-                    that.config.style.fill='white'
-                }
-                else {
-                    that.config.style.fill='#3de7c9'
-                }
-                
-                this.config = { ...this.config }
+            }
+            
                 // console.log(this.datalist);
                 // this.drawBar(this.tmplist,this.timelist,this.linename);
                 // console.log(this.tmplist);
                 // console.log(this.barlist);
                 // this.config.data=this.barlist;
                 
-            })
-            client.on('reconnect', (error) => {
-                // console.log('正在重连:', error)
-            })
-            // 链接异常处理
-            client.on('error', (error) => {
-                console.log('连接失败:', error)
-            })
+            
         },
 
         
         
         
     },
-    created () {
+    mounted() {
         let that = this;
         this.drawline(this.obdata);
         this.interval =setInterval(()=>{
             setTimeout(()=>{
-                
-            },0)
-        },30000)
+                // console.log(client);
+                // console.log(that.obdata);
+                that.drawline(that.obdata);
+            },300)
+        },5000)
     },
     beforeDestroy() {
         clearInterval(this.interval);

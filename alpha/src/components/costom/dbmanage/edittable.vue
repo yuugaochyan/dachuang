@@ -290,6 +290,7 @@ export default {
 .right {
     flex:3;
     padding: 100px;
+    background-color: #333;
 }
 .bt-step {
     position: absolute;

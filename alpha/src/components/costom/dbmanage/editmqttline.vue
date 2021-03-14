@@ -90,15 +90,7 @@
 <script>
 import axios from 'axios'
 import mqtt from 'mqtt'
-var client
-const options= {
-    connectTimeout: 40000,
-    clientId: 'mqtitId-Home',
-    username: 'hyiot',
-    password: '1234abcd',
-    clean: true
-}
-client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
+
 export default {
     name:'editmqttline',
     data(){
@@ -160,7 +152,10 @@ export default {
             tag:'',
             tbData:{},
             tbID:'',
-            dbData:[]
+            dbData:[],
+            tlist:[],
+            vlist:[],
+            interval:''
         }
     },
     
@@ -184,64 +179,33 @@ export default {
             })
         },
         drawline(Type){
-            var vlist=[];
-            var tlist=[];
             
-            var tag='';
+            var tag=this.chartform.dataSource;
             let that=this
-            
-            // let postDta=this.$qs.stringify({
-                // dataSource:that.chartform.dataSource
-            // })
-            // this.$axios.post("/getmqttTable",postDta)
-            // .then((resp)=>{
-                // tag=resp.data.tag;
-                // that.tag=resp.data.tag;
-            // })
-            console.log(client.connected);
-            if(client.connected) {
-                client.end()
+            let obj=JSON.parse(localStorage.getItem('client'))
+            console.log(obj);
+            for(let key in obj) {
+                // console.log(obj[key]);
+                if(obj[key].n==tag) {
+                    if(obj[key].v<that.chartform.max && obj[key].v>that.chartform.min){
+                        that.vlist.push(obj[key].v);
+                        that.tlist.push(obj[key].t);
+                        // console.log(this.tmplist.length);
+                        if(that.tlist.length>that.chartform.lengs) {
+                            that.vlist.shift();
+                            that.tlist.shift();
+                        }
+                    }    
+                }
             }
-            client.on('connect', (e) => {
-                console.log("连接成功！！！")
-                client.subscribe(tag, { qos: 0 }, (error) => {
-                if (!error) {
-                    console.log('订阅成功')
-                } else {
-                    console.log('订阅失败')
-                }
-                })
-            })
-        // 接收消息处理
-            client.on('message', (topic, message) => {
-                let msg = JSON.parse(message.toString())
-                // this.datalist.name=msg.n;
-                // this.datalist.value=msg.v;
-                // console.log(msg.v);
-                var lengs=this.chartform.lengs;
-                var max=this.chartform.max;
-                var min=this.chartform.min;
-                if(msg.v<max && msg.v>min){
-                    vlist.push(msg.v);
-                    var time = new Date(msg.t)
-                    var formatTime = time.toTimeString().substr(0,8)
-                    tlist.push(formatTime);
-
-                    // console.log(tlist.length);
-                    // console.log(lengs);
-                    if(tlist.length>lengs) {
-                        vlist.shift();
-                        tlist.shift();
-                    }
-                }
                 // console.log(this.datalist);
                 // this.drawBar(this.tmplist,this.timelist,this.linename);
                 // console.log(this.tmplist);
                 // console.log(this.barlist);
                 // this.config.data=this.barlist;
-                this.draw(tlist,vlist,this.chartform.name,Type)
+                this.draw(this.tlist,this.vlist,this.chartform.name,Type)
                 
-            })
+            
         },
         draw(t,v,n,type) {
             let that=this
@@ -331,6 +295,8 @@ export default {
                     setTimeout(function() {
                         that.step2=true;
                     },500);
+                    this.tlist=[]
+                    this.vlist=[]
                     this.drawline(this.chartform.graphType)
                 }
                 else if(this.active==1) {
@@ -488,6 +454,7 @@ export default {
         }
     },
     created() {
+        let that = this
         const loading = this.$loading({
             lock: true,
             text: '拼命加载中',
@@ -495,15 +462,27 @@ export default {
             background: 'rgba(0, 0, 0, 0.7)'
         });
         this.getTbData();
-        this.gettag()
+        this.gettag();
+        
         setTimeout(() => {
                 loading.close();
         }, 1000);
-        
-        
+    },
+    mounted() {
+        let that = this
+        this.interval =setInterval(()=>{
+            setTimeout(()=>{
+                // console.log(client);
+                if(that.active<=1) {
+                    // console.log(that.chartform.graphType);
+                    that.drawline(that.chartform.graphType)
+                }
+            },300)
+        },5000)
     },
     beforeDestroy() {
         client.end()
+        clearInterval(this.interval)
     },
     
     // mounted () {
@@ -539,6 +518,7 @@ export default {
 .right {
     flex:3;
     padding: 25px;
+    background-color: #333;
 }
 .bt-step {
     position: absolute;

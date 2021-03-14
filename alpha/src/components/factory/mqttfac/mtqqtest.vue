@@ -18,15 +18,17 @@ import mqtt from 'mqtt';
 // const barchart = document.getElementById('barchart')
 
 // const bar = new Charts(barchart)
-var client
-const options = {
+const options= {
     connectTimeout: 40000,
     clientId: 'mqtitId-Home',
-    username: 'hyiot',
-    password: '1234abcd',
-    clean: true
+    username: 'cxd110',
+    password: 'LEFT1105500hp',
+    clean: true,
+    // clientId: Math.random*100,
+    connectTimeout: 4000, // 超时时间
+    reconnectPeriod: 4000, // 重连时间间隔
 }
-client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
+const client = mqtt.connect('ws://182.254.214.162:1883/mqtt', options)
 export default {
     name:'mtqqtest',
     

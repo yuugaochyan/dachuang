@@ -11,8 +11,8 @@
 }
 
 html {
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
+    /* overflow-y: auto; */
     height: 100%;
     width: 100%;
     margin: 0;

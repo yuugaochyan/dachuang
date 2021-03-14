@@ -1,11 +1,17 @@
 <template>
     <div id="app" v-if="reset">
-        <div class="maincontain" @dblclick="drawer = true">
+        <div class="maincontain">
             
 
                 <!-- <el-tooltip class="item" effect="dark" content="隐藏调整按钮" placement="bottom-start"> -->
                     <!-- <el-button @click="drawer = true" circle type="warning" icon="iconfont icon-preview" style="margin-left: 16px;"></el-button> -->
                 <!-- </el-tooltip> -->
+        <!-- <div class="cover-nav"></div> -->
+        <header class="drawer-bt" @mouseover="drawer=true" id="bt">
+            <!-- <el-divider> -->
+                <i class="el-icon-d-arrow-right"></i>
+            <!-- </el-divider> -->
+        </header>
 
         <div class="vueGridLayout">
         <grid-layout
@@ -66,10 +72,12 @@
                 
                 
                 <el-drawer
-                    
                     :visible.sync="drawer"
                     :direction="direction"
-                    size=180>
+                    :modal=false
+                    size=180
+                    @close="closeDrawer"
+                    @open="openDrawer">
                     <span slot="title" class="tool-banner"><i class="el-icon-s-tools"></i>工具箱</span>
                     <div class="toolbar">
                         <el-tooltip class="item" effect="dark" content="调整图表位置（alt+R）" placement="bottom-end">
@@ -79,31 +87,24 @@
                         <el-divider></el-divider>
                         <el-tooltip class="item" effect="dark" content="编辑仪表盘信息（alt+E）" placement="bottom-end">
                             <el-button @click="editTable=true" type="warning"  plain>编辑问题</el-button>
-                        </el-tooltip><br>
+                        </el-tooltip>
+                        <br>
                         <el-divider></el-divider>
                         <el-tooltip class="item" effect="dark" content="新增可视化到仪表盘（alt+A)" placement="bottom-end">
                             <el-button @click="add" type="warning"  plain>新增图表</el-button>
                         </el-tooltip>
                         <br>
                         <el-divider></el-divider>
+                        <el-tooltip class="item" effect="dark" content="推送到导航栏" placement="bottom-end">
+                            <el-button @click="pushNav=true" type="warning"  plain>添加到导航</el-button>
+                        </el-tooltip>
+                        <el-divider></el-divider>
                         <el-tooltip class="item" effect="dark" content="保存这个仪表盘（alt+S）" placement="bottom-end">
                             <el-button @click="savedb" type="warning"  plain>保存问题</el-button>
                         </el-tooltip>
                         <br>
                         <el-divider></el-divider>
-                        <el-tooltip class="item" effect="dark" content="关闭/打开提示" placement="bottom-end">
-                            <el-switch
-                                style="display: block"
-                                v-model="isShowHint"
-                                active-color="#13ce66"
-                                inactive-color="#ff4949"
-                                active-text="打开"
-                                inactive-text="关闭"
-                                @change="changeShowHint">
-                            </el-switch>
-                        </el-tooltip>
-                        <br>
-                        <el-divider></el-divider>
+                        
                         <el-tooltip class="item" effect="dark" content="返回仪表盘管理页面" placement="bottom-end">
                             <el-button @click="goback" type="warning"  plain>返回列表</el-button>
                         </el-tooltip>
@@ -167,6 +168,21 @@
                     </div>
                 </el-dialog>
 
+                <el-dialog title="导航栏中的名字" :visible.sync="pushNav">
+                    <!-- <el-form :model="form" :rules="rules" ref="chartformref" > -->
+                        <!-- <el-form-item label="仪表盘名称" :label-width="formLabelWidth" prop="name"> -->
+                            <el-input v-model="NavName" autocomplete="off" ></el-input>
+                        <!-- </el-form-item> -->
+                        <!-- <el-form-item label="仪表盘摘要" :label-width="formLabelWidth"> -->
+                            <!-- <el-input v-model="form.info" autocomplete="off"></el-input> -->
+                        <!-- </el-form-item> -->
+                    <!-- </el-form> -->
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="pushNav = false">取 消</el-button>
+                        <el-button type="primary" @click="pushToNav">确 定</el-button>
+                    </div>
+                </el-dialog>
+
         </div>
     </div>
 </template>
@@ -203,7 +219,7 @@ export default {
             dbID:'',
             // reset:false,
             drawer:false,
-            direction: 'rtl',
+            direction: 'ltr',
             editTable:false,
             addTable:false,
             form: {
@@ -239,9 +255,43 @@ export default {
             tbSize:5,
             tbCurrentPage:1,
             isShowHint:'',
+            preURL:'',
+            pushNav:false,
+            NavName:''
         }
     },
+    
     methods: {
+        pushToNav() {
+            let that=this
+            const userID=localStorage.getItem("userID")
+            let postDta=this.$qs.stringify({
+                dbID:this.dbID,
+                userID:userID,
+                naviName:this.NavName
+            })
+            console.log(this.dbID);
+            const result = axios({
+                method: 'post',
+                url:'/getDBItemInfo',
+                data:postDta
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                    that.reload()
+                }
+            })
+        },
+        openDrawer() {
+
+                let bt =document.getElementById('bt')
+                bt.style.cssText="margin-left:125px"
+
+        },
+        closeDrawer() {
+            console.log(true);
+            let bt =document.getElementById('bt')
+            bt.style.cssText=""
+        },
         changeShowHint() {
             this.$store.commit("setShowHint",this.isShowHint);
         },
@@ -328,7 +378,7 @@ export default {
         getDbData() {
             let that = this;
             this.dbID = this.$route.params.dbID
-            console.log(this.dbID);
+            // console.log(this.dbID);
             this.form.name = this.$route.params.dbName
             this.form.info = this.$route.params.dbInfo
             // console.log(this.form.name);
@@ -348,43 +398,43 @@ export default {
             // let showhint=localStorage.getItem('showHint')
             this.isShowHint=localStorage.getItem("showHint")
             console.log(this.isShowHint);
-            if(this.isShowHint==true) {
-            setTimeout(()=>{
-                this.msg1=this.$notify({
-                        showClose: true,
-                        message: '双击屏幕可打开工具箱，可在工具箱中关闭提示→',
-                        type: 'info',
-                        offset: 100,
-                        duration:0
-                });
-            },300)
-            setTimeout(()=>{
-                this.msg2=this.$notify({
-                    showClose: true,
-                    message: '仪表盘将会每隔30秒进行自动保存(✧◡✧)',
-                    type: 'warning',
-                    offset: 100,
-                    duration:0
-                });
-            },600)
-            setTimeout(()=>{
-                this.msg3=this.$notify({
-                    showClose: true,
-                    message: '如遇数据显示不全请尝试刷新Σ(⊙▽⊙"a',
-                    offset: 100,
-                    type: 'warning',
-                    duration:0
-                });
-            },900)
-            setTimeout(()=>{
-                this.msg4=this.$notify({
-                    message: '尝试使用快捷键！如alt+R来进行适应调整(*^▽^*)',
-                    offset: 100,
-                    type: 'info',
-                    duration:0
-                });
-            },1200)
-            }
+            // if(this.isShowHint=='true') {
+            // setTimeout(()=>{
+                // this.msg1=this.$notify({
+                        // showClose: true,
+                        // message: '双击屏幕可打开工具箱，可在工具箱中关闭提示→',
+                        // type: 'info',
+                        // offset: 100,
+                        // duration:0
+                // });
+            // },300)
+            // setTimeout(()=>{
+                // this.msg2=this.$notify({
+                    // showClose: true,
+                    // message: '仪表盘将会每隔30秒进行自动保存(✧◡✧)',
+                    // type: 'warning',
+                    // offset: 100,
+                    // duration:0
+                // });
+            // },600)
+            // setTimeout(()=>{
+                // this.msg3=this.$notify({
+                    // showClose: true,
+                    // message: '如遇数据显示不全请尝试刷新Σ(⊙▽⊙"a',
+                    // offset: 100,
+                    // type: 'warning',
+                    // duration:0
+                // });
+            // },900)
+            // setTimeout(()=>{
+                // this.msg4=this.$notify({
+                    // message: '尝试使用快捷键！如alt+R来进行适应调整(*^▽^*)',
+                    // offset: 100,
+                    // type: 'info',
+                    // duration:0
+                // });
+            // },1200)
+            // }
         },
         init() {
         
@@ -404,7 +454,7 @@ export default {
                 // that.asideResize();
             }
         })
-        
+        that.asideResize()
         },
         
         goback() {
@@ -421,14 +471,13 @@ export default {
                 let postData=this.$qs.stringify({
                     userID:userID,
                     dbID:this.dbID,
-                    db:{
-                        name:this.form.name,
-                        info:this.form.info
-                    }
+                    dbName:this.form.name,
+                    info:this.form.info
+                    
                 })
                 const result = axios({
                     method: 'post',
-                    url:'/addDB',
+                    url:'/updateDB',
                     data:postData
                 }).then(function(resp){
                     if(resp.data.status==200) {
@@ -626,12 +675,12 @@ export default {
             setTimeout(()=>{
                 this.savedb();
             },0)
-        },30000)
-        this.resizeinterval =setInterval(()=>{
-            setTimeout(()=>{
-                this.asideResize();
-            },0)
-        },1000)
+        },60000)
+        // this.resizeinterval =setInterval(()=>{
+            // setTimeout(()=>{
+                // this.asideResize();
+            // },0)
+        // },3000)
         const loading = this.$loading({
             lock: true,
             text: '拼命加载中',
@@ -645,8 +694,10 @@ export default {
         document.addEventListener('keydown',this.handleEvent4)
         
         // await this.asideResize();
+        let that = this
         setTimeout(() => {
-                loading.close();
+            that.asideResize()
+            loading.close();
         }, 1000);
     },
     mounted() {
@@ -668,10 +719,10 @@ export default {
         document.removeEventListener('keydown', this.handleEvent2);
         document.removeEventListener('keydown', this.handleEvent3);
         document.removeEventListener('keydown', this.handleEvent4);
-        this.msg1.close()
-        this.msg2.close()
-        this.msg3.close()
-        this.msg4.close()
+        // this.msg1.close()
+        // this.msg2.close()
+        // this.msg3.close()
+        // this.msg4.close()
     },
     watch: {
         layoutData: function(){
@@ -698,6 +749,7 @@ export default {
     width: 100%;
     height: calc(93.6vh);
     background-color: #333;
+    min-height: 100%;
 }
 .tool-banner {
     // background-color: #ddbb80;
@@ -743,15 +795,47 @@ export default {
     // padding-top: 2%;
 }
 .vueGridLayout {
-  margin: 0 auto;
-  height: calc(93.6vh);
-  width: 100%;
+//   margin: 0 auto;
+    // margin-left: 160px;
+//   height: calc(93.6vh);
+    width: 100%;
+    
 }
 .tool-bt {
     float: right;
     margin-right: 5px;
     margin-top: 2px;
 }
+.cover-nav {
+    // height: 67px;
+    width: 100%;
+    // position: absolute;
+    // top: 0;
+}
+.drawer-bt {
+    width: 30px;
+    height: 100%;
+    background-color: rgba(51, 51, 51, 0);
+    color: #ddbb80;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    padding-top: 300px;
+    // padding-bottom: 120px;
+    // text-align: center;
+    font-size: 30px;
+    position: absolute;
+    left: 0;
+    border-left:solid 3px #ddbb80;
+    z-index:9
+}
+.drawer-bt:hover {
+    cursor:pointer
+}
 
+html,
+body {
+    background-color: #333;
+}
 
 </style>

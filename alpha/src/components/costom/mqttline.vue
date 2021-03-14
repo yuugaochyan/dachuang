@@ -7,18 +7,7 @@
 <script>
 import axios from 'axios'
 import mqtt from 'mqtt'
-var client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
-const options= {
-    connectTimeout: 40000,
-    clientId: 'mqtitId-Home',
-    username: 'hyiot',
-    password: '1234abcd',
-    clean: true,
-    // clientId: Math.random*100,
-    connectTimeout: 4000, // 超时时间
-    reconnectPeriod: 4000, // 重连时间间隔
-}
-client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
+
 export default {
     name:'mqttline',
     props:["id","obdata"],
@@ -46,56 +35,26 @@ export default {
             type='',
         }={}){
             let that=this
+            let obj=JSON.parse(localStorage.getItem('client'))
+            // console.log(obj);
+            for(let key in obj) {
+                // console.log(obj[key]);
+                if(obj[key].n==tag) {
+                    if(obj[key].v<max && obj[key].v>min){
+                        that.vlist.push(obj[key].v);
+                        that.tlist.push(obj[key].t);
+                        // console.log(this.tmplist.length);
+                        if(that.tlist.length>lengs) {
+                            that.vlist.shift();
+                            that.tlist.shift();
+                        }
+                    }    
+                }
+            }
+            // console.log(this.tlist);
+            // console.log(this.vlist);
             // this.reload()
-
-            //*mqtt订阅 need:tag\max\min
-            client.on('connect', (e) => {
-                // console.log("连接成功！！！")
-                client.subscribe(tag, { qos: 0 }, (error) => {
-                if (!error) {
-                    // console.log('订阅成功')
-                } else {
-                    console.log('订阅失败')
-                }
-                })
-            })
-        // 接收消息处理
-            client.on('message', (topic, message) => {
-                let msg = JSON.parse(message.toString())
-                // this.datalist.name=msg.n;
-                // this.datalist.value=msg.v;
-                if(msg.n==tag) {
-                    // console.log(msg.v);
-                }
-                // console.log(msg.v);
-                if(msg.v<max && msg.v>min){
-                    that.vlist.push(msg.v);
-                    var time = new Date(msg.t*1000)
-                    // console.log(msg.t);
-                    var formatTime = time.toTimeString().substr(0,8)
-                    // console.log(formatTime);
-                    that.tlist.push(formatTime);
-
-                    // console.log(this.tmplist.length);
-                    if(that.tlist.length>lengs) {
-                        that.vlist.shift();
-                        that.tlist.shift();
-                    }
-                }
-                // console.log(this.datalist);
-                // this.drawBar(this.tmplist,this.timelist,this.linename);
-                // console.log(this.tmplist);
-                // console.log(this.barlist);
-                // this.config.data=this.barlist;
-                this.draw(this.tlist,this.vlist,legend,tagName,type)
-            })
-            client.on('reconnect', (error) => {
-                // console.log('正在重连:', error)
-            })
-            // 链接异常处理
-            client.on('error', (error) => {
-                console.log('连接失败:', error)
-            })
+            this.draw(this.tlist,this.vlist,legend,tagName,type)
             
 
         },
@@ -103,7 +62,7 @@ export default {
         draw(t,v,l,n,type) {
             let that=this
             this.chart = this.$echarts.init(document.getElementById(this.id))
-            this.chart.setOption({
+            let option={
                 
                 tooltip: {
                     trigger: 'axis',
@@ -162,8 +121,8 @@ export default {
                     name:n,
                 }]
                 
-            });
-            
+            };
+            this.chart.setOption(option)
             // window.onresize=that.chart.resize,
             window.addEventListener("resize", function () {
                 if(that.chart) {
@@ -176,16 +135,19 @@ export default {
         
     },
     created () {
+        
+        
+    },
+    mounted() {
         let that = this;
         this.drawline(this.obdata);
         this.interval =setInterval(()=>{
             setTimeout(()=>{
                 // console.log(client);
-            },0)
-        },3000)
-    },
-    mounted() {
-        
+                // console.log(that.obdata);
+                that.drawline(that.obdata);
+            },300)
+        },5000)
     },
     beforeDestroy() {
         // client.end()

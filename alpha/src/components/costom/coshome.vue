@@ -1,13 +1,12 @@
 <template>
 <div id="app" v-if="reset">
-    <div class="container">
+    <div class="cos-container">
         <div class="nav">
         <el-button size="small" type="warning" icon="iconfont icon-more" circle @click="isC" class="bt"></el-button>
             <!-- <i class="iconfont icon-preview bt" @click="isC" ></i> -->
             <el-menu 
             :default-active='$route.path'
             class="el-menu-vertical"  
-            :collapse="isCollapse"
             background-color="#333"
             text-color="#fff"
             active-text-color="#ffd04b"
@@ -28,7 +27,7 @@
             </el-menu>
         </div>
     
-        <div class="main">
+        <div class="cos-main">
             
                 <router-view></router-view>
             
@@ -79,10 +78,12 @@ export default {
     margin-left: 10px;
 }
 
-.container {
-    height: 100%;
+.cos-container {
+    height: 12.25rem;
     width: 100%;
     background-color: #333;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .iconfont {
@@ -92,26 +93,28 @@ export default {
 
 .el-menu-vertical {
     border-right: 0;
-    height: 100%;
+    // height: 100%;
 }
 .el-menu-vertical:not(.el-menu--collapse) {
     width: 150px;
     border-right: 0;
     background-color: #333;
-    height: 100%;
+    // height: 100%;
 }
 .nav {
     // float: left;
     display: inline-block;
     background-color: #333;
-    height: 100%;
+    // height: 90%;
     vertical-align:top;
     // text-align: center;
 }
-.main {
+.cos-main {
     // float: left;
+    overflow-x: hidden;
+    overflow-y: hidden;
     display: inline-block;
-    height: 100%;
+    // height: 90%;
     width: calc(100% - 151px);
     vertical-align:top;
 }

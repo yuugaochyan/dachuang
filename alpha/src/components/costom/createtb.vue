@@ -15,7 +15,7 @@
                     <transition name="el-zoom-in-top" :appear="true">
                     <div class="con" v-if="stmo" @click="staf">
                         
-                        <h1>静态数据</h1>
+                        <h1>历史数据</h1>
                         <div>
                             <i class="iconfont icon-jurassic_data"></i>
                         </div>
@@ -47,7 +47,7 @@
                 <div class="but">
                     <transition name="el-zoom-in-top" :appear="true">
                     <div class="con" v-if="stmo" @click="movf">
-                        <h1>动态数据</h1>
+                        <h1>实时数据</h1>
                         <i class="iconfont icon-yun1"></i>
                     </div>
                     </transition>

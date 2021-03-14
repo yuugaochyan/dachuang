@@ -80,15 +80,7 @@
 <script>
 import axios from 'axios'
 import mqtt from 'mqtt'
-var client
-const options= {
-    connectTimeout: 40000,
-    clientId: 'mqtitId-Home',
-    username: 'hyiot',
-    password: '1234abcd',
-    clean: true
-}
-client = mqtt.connect('ws://39.100.250.145:8006/mqtt', options)
+
 export default {
     name:'editmqttnum',
     data(){
@@ -172,7 +164,7 @@ export default {
         drawline(){
 
             
-            var tag='';
+            var tag=this.chartform.dataSource;
             let that=this
             
             // let postDta=this.$qs.stringify({
@@ -183,44 +175,26 @@ export default {
                 // tag=resp.data.tag;
                 // that.tag=resp.data.tag;
             // })
-            tag=this.chartform.dataSource
-            console.log(client.connected);
-            if(client.connected) {
-                client.end()
-            }
-            client.on('connect', (e) => {
-                console.log("连接成功！！！")
-                client.subscribe(tag, { qos: 0 }, (error) => {
-                if (!error) {
-                    console.log('订阅成功')
-                } else {
-                    console.log('订阅失败')
-                }
-                })
-            })
-        // 接收消息处理
-            client.on('message', (topic, message) => {
-                let msg = JSON.parse(message.toString())
-                // this.datalist.name=msg.n;
-                // this.datalist.value=msg.v;
-                console.log(msg.v);
-                that.config.number[0]=parseInt(msg.v)
-                var max=that.chartform.max;
-                var min=that.chartform.min;
-                // console.log(that.config.number[0]);
-                if(msg.v>max){
+            
+            let obj=JSON.parse(localStorage.getItem('client'))
+            console.log(obj);
+            for(let key in obj) {
+                // console.log(obj[key]);
+                if(obj[key].n==tag) {
+                    that.config.number[0]=parseInt(obj[key].v)  
+                    if(obj[key].v>that.chartform.max){
                     that.config.style.fill='red'
+                    }
+                    else if(obj[key].v<that.chartform.min){
+                        that.config.style.fill='white'
+                    }
+                    else {
+                        that.config.style.fill='#3de7c9'
+                    }
+                    
+                    this.config = { ...this.config }
                 }
-                else if(msg.v<min){
-                    that.config.style.fill='white'
-                }
-                else {
-                    that.config.style.fill='#3de7c9'
-                }
-                that.config.content=that.chartform.graphName+': {nt}'
-                this.config = { ...this.config }
-                
-            })
+            }
         },
         
 
@@ -404,7 +378,15 @@ export default {
         setTimeout(() => {
                 loading.close();
         }, 700);
-        
+        this.interval =setInterval(()=>{
+            setTimeout(()=>{
+                // console.log(client);
+                if(that.active==1) {
+                    // console.log(that.chartform.graphType);
+                    that.drawline(e)
+                }
+            },300)
+        },5000)
     },
     beforeDestroy() {
         client.end()
@@ -443,6 +425,7 @@ export default {
 .right {
     flex:3;
     padding: 25px;
+    background-color: #333;
 }
 .bt-step {
     position: absolute;

@@ -9,6 +9,7 @@ export default new Vuex.Store({
     token:JSON.parse(localStorage.getItem("token")),
     clientHeight:JSON.parse(localStorage.getItem("clientHeight")),
     showHint:JSON.parse(localStorage.getItem("showHint")),
+    client:JSON.parse(localStorage.getItem("client")),
   },
   mutations: {
     setuserID(state,v) {
@@ -26,6 +27,10 @@ export default new Vuex.Store({
     setShowHint(state,v) {
       localStorage.setItem('showHint',JSON.stringify(v));
       state.showHint = v;
+    },
+    setClient(state,v) {
+      localStorage.setItem('client',JSON.stringify(v));
+      state.client = v;
     }
   },
   actions: {

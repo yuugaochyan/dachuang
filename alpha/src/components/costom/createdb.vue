@@ -1,9 +1,7 @@
 <template>
     <div id="app" v-if="reset">
         <div class="maindb">
-            <div class="dbcol1"></div>
-            <div class="dbcol2">
-                <div class="banner"></div>
+            <div class="db-main" id="tb_main">
                 <el-tabs type="border-card">
                     <el-tab-pane>
                         <span slot="label"><i class="iconfont icon-zidingyi"></i>仪表盘管理</span>
@@ -57,56 +55,7 @@
                         </el-pagination>
                     </el-tab-pane>
 
-                    <el-tab-pane >
-                        <span slot="label"><i class="iconfont icon-keshihua"></i>可视化管理</span>
-                        <div class="banner2">
-                            <el-button @click="gotoAddTB"  type="warning" icon="iconfont icon-add">创建可视化</el-button>
-                        </div>
-                        <el-table
-                        :data="tbData"
-                        :height="clientHeight"
-                        :max-height="clientHeight"
-                        border
-                        style="width: 100%">
-                            <el-table-column
-                                prop="graphName"
-                                label="可视化名字"
-                                width="180">
-                            </el-table-column>
-                            <el-table-column
-                                prop="graphType"
-                                label="可视化类型"
-                                width="580">
-                            </el-table-column>
-                            <el-table-column
-                                label="操作"
-                                width="180">
-                                <template slot-scope="scope">
-                                    <el-tooltip class="item" effect="dark" content="查看这个可视化" placement="bottom-end">
-                                        <el-button @click="viewTB(scope.row)" circle type="primary" icon="iconfont icon-more"></el-button>
-                                    </el-tooltip>
-                                    <el-tooltip class="item" effect="dark" content="编辑这个可视化" placement="bottom">
-                                        <el-button @click="editTB(scope.row)" circle type="warning" icon="iconfont icon-edit"></el-button>
-                                    </el-tooltip>
-                                    <el-tooltip class="item" effect="dark" content="删除这个可视化" placement="bottom-start">
-                                        <el-button @click="deleteTB(scope.row)" circle type="danger" icon="iconfont icon-delete"></el-button>
-                                    </el-tooltip>
-                                </template>
-                                
-                            </el-table-column>
-                        </el-table>
-                        <!-- //&分页 -->
-                        <el-pagination
-                            background
-                            @size-change="tbSizeChange"
-                            @current-change="tbCurrentChange"
-                            :current-page="tbCurrentPage"
-                            :page-sizes="[5, 10, 15, 20]"
-                            :page-size="tbSize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="tbtotal">
-                        </el-pagination>
-                    </el-tab-pane>
+                    
                     
                 </el-tabs>
             </div>
@@ -144,7 +93,6 @@ export default {
                 ],
             },
             dbData:[],
-            tbData:[],
             reset:false,
             newDB:{
                 name:'',
@@ -158,10 +106,6 @@ export default {
             dbSize:5,
             dbCurrentPage:1,
             dbtotal:'',
-            //^tb分页
-            tbSize:5,
-            tbCurrentPage:1,
-            tbtotal:0,
         }
     },
     methods: {
@@ -195,9 +139,9 @@ export default {
                 pagenum:that.dbCurrentPage,
                 pagesize:that.dbSize
             })
-            console.log(this.dbCurrentPage);
-            console.log(this.dbSize);
-            console.log(111);
+            // console.log(this.dbCurrentPage);
+            // console.log(this.dbSize);
+            // console.log(111);
             const result = axios({
                 method: 'post',
                 url:'/getDBList',
@@ -208,51 +152,7 @@ export default {
             }
             })
         },
-        tbSizeChange(val) {
-            this.tbSize=val;
-            let that = this;
-            const userID=localStorage.getItem("userID")
-            let postData=this.$qs.stringify({
-                userID:userID,
-                pagenum:that.tbCurrentPage,
-                pagesize:that.tbSize
-            })
-            // console.log(this.dbCurrentPage);
-            // console.log(this.dbSize);
-            const result = axios({
-                method: 'post',
-                url:'/getGraphList',
-                data:postData
-            }).then(function(resp){
-                if(resp.data.status==200) {
-                that.tbData=resp.data.data.list
-            }
-            })
-        },
-        tbCurrentChange(val) {
-            let that = this;
-            const userID=localStorage.getItem("userID")
-            this.tbCurrentPage=val;
-            let postData=this.$qs.stringify({
-                userID:userID,
-                pagenum:that.tbCurrentPage,
-                pagesize:that.tbSize
-            })
-            // console.log(this.dbCurrentPage);
-            // console.log(this.dbSize);
-            const result = axios({
-                method: 'post',
-                url:'/getGraphList',
-                data:postData
-            }).then(function(resp){
-                if(resp.data.status==200) {
-                that.tbData=resp.data.data.list
-            }
-            })
-        },
-        gotoAddTB() {
-            this.$router.push('/createtb')
-        },
+        
         getDbData() {
             let that = this;
             const userID=localStorage.getItem("userID")
@@ -261,10 +161,10 @@ export default {
                 pagenum:that.dbCurrentPage,
                 pagesize:that.dbSize
             })
-            console.log(111)
-            console.log(that.dbCurrentPage)
-            console.log(that.dbSize)
-           console.log(userID)
+            // console.log(111)
+            // console.log(that.dbCurrentPage)
+            // console.log(that.dbSize)
+            // console.log(userID)
             const result = axios({
                 method: 'post',
                 url:'/getDBList',
@@ -273,25 +173,6 @@ export default {
                 if(resp.data.status==200) {
                 that.dbData=resp.data.data.list
                 that.dbtotal=resp.data.data.total
-            }
-            })
-        },
-        getTbData() {
-            let that = this;
-            const userID=localStorage.getItem("userID")
-            let postData=this.$qs.stringify({
-                userID:userID,
-                pagenum:that.tbCurrentPage,
-                pagesize:that.tbSize
-            })
-            const result = axios({
-                method: 'post',
-                url:'/getGraphList',
-                data:postData
-            }).then(function(resp){
-                if(resp.data.status==200) {
-                that.tbData=resp.data.data.list
-                that.tbtotal=resp.data.data.total
             }
             })
         },
@@ -353,82 +234,6 @@ export default {
             }
             })
         },
-        viewTB(row) {
-            // console.log(row.dbID);
-            this.$router.push({
-                name:'viewtb',
-                params: {
-                    tbID:row.graphID,
-                    tbName:row.graphName
-                }
-            })
-        },
-        editTB(row) {
-            // console.log(row.dbID);
-            console.log(row.graphType);
-            if(row.graphType=='chart') {
-                this.$router.push({
-                    name:'editchart',
-                    params: {
-                        tbID:row.graphID,
-                        tbName:row.graphName
-                    }
-                })
-            }
-            else if(row.graphType=='table') {
-                this.$router.push({
-                    name:'edittable',
-                    params: {
-                        tbID:row.graphID,
-                        tbName:row.graphName
-                    }
-                })
-            }
-            else if(row.graphType=='mqttline') {
-                this.$router.push({
-                    name:'editmqttline',
-                    params: {
-                        tbID:row.graphID,
-                        tbName:row.graphName
-                    }
-                })
-            }
-            else if(row.graphType=='mqttnum') {
-                this.$router.push({
-                    name:'editmqttnum',
-                    params: {
-                        tbID:row.graphID,
-                        tbName:row.graphName
-                    }
-                })
-            }
-        },
-        deleteTB(row) {
-            let that = this;
-            const userID=localStorage.getItem("userID")
-            let postData=this.$qs.stringify({
-                userID:userID,
-                graphID:row.graphID,
-            })
-            const result = axios({
-                method: 'post',
-                url:'/deleteGraph',
-                data:postData
-            }).then(function(resp){
-                if(resp.data.status==200) {
-                that.$message({
-                    showClose: true,
-                    message: resp.data.msg,
-                    center: true,
-                    type: 'success'
-                });
-                if(that.tbData.length==1) {
-                    that.tbCurrentPage--;
-                }
-                that.getTbData()
-            }
-            })
-        },
         addDB() {
             let that = this;
             this.$refs.chartformref.validate((valid)=>{
@@ -465,12 +270,11 @@ export default {
             // this.reload()
             
         this.getDbData();
-        this.getTbData();
         // console.log(this.dbData);
         // console.log(this.dbData);
         const that = this;
         this.clientHeight=localStorage.getItem('clientHeight')-150
-        console.log(this.clientHeight);
+        // console.log(this.clientHeight);
         window.onresize = function temp() {
             that.$store.commit(
                 "setHeight",
@@ -493,25 +297,21 @@ export default {
 <style lang="less" scope>
 .maindb {
     width: 100%;
-    height: calc(93.6vh);
-    background-color: #fff;
+    // height: 150%;
+    background-color: #333;
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.dbcol1 {
-    flex:2;
-    // margin-right: 40PX;
-    background-color:  #ddbb80;
-    height: 100%;
+.db-main {
+    width: 80%;
+    margin-top: 22PX;
+    margin-bottom: 21px;
+    box-shadow: 0 2px 5px #ddbb80ef;
+    // border-radius: 0px
+    // height: 80%;
 }
-.dbcol2 {
-    flex: 9;
-    height: 100%;
-    background-color: #fff;
-    padding-right: 40px;
-}
-.banner {
-    height: 5%;
-}
+
 
 .iconfont {
     // margin-right: 5px;

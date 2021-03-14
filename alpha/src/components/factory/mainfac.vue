@@ -39,21 +39,13 @@
                                     <div class="linetitle">
                                         <dv-decoration-1 style="width:200px;height:50px;" />
                                     </div>
-                                    <linechart class="lchart"></linechart>
+                                    
                                     <div class="cut">
                                         <dv-decoration-2 :reverse="true" style="width:5px;height:250px;" dur:15 :color="['rgb(13, 231, 194)','rgb(24, 30, 39)']" />
                                     </div>
                                 </dv-border-box-4>
                             </div>
-                            <div class="bar">
-                                <dv-border-box-4 :reverse="true" :color="['rgb(26, 39, 43)','rgb(24, 30, 39)']" >
-                                    <barchart class="bchart"></barchart>
-                                    <div class="bartitle">
-                                        <dv-decoration-1 style="width:200px;height:50px;" />
-                                    </div>
-                                    
-                                </dv-border-box-4>
-                            </div>
+                            
                             <div class="num">
                                 <!-- 'rgb(26, 39, 43)' -->
                                 <!-- rgb(24, 30, 39) -->
@@ -85,12 +77,7 @@
                                     </dv-border-box-13>
                                 </div>
                             </div>
-                            <div class="all">
-                                <dv-border-box-3 :color="['rgb(26, 39, 43)','rgb(24, 30, 39)']">
-                                    <allchart></allchart>
-                                    <!-- <router-view name="allchart"></router-view> -->
-                                </dv-border-box-3>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -107,9 +94,6 @@ import news1 from '@/components/factory/mainchart/news1'
 import news2 from '@/components/factory/mainchart/news2'
 import piechart from '@/components/factory/mainchart/piechart'
 import rollchart from '@/components/factory/mainchart/rollchart'
-import barchart from '@/components/factory/mainchart/barchart'
-import linechart from '@/components/factory/mainchart/linechart'
-import allchart from '@/components/factory/mainchart/allchart'
 import axios from 'axios'
 export default {
     name:"mainfac",
@@ -119,9 +103,6 @@ export default {
         }
     },
     components: {
-        allchart,
-        linechart,
-        barchart,
         rollchart,
         news1,
         news2,

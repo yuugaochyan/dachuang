@@ -7,9 +7,6 @@ import welcome from '@/components/welcome'
 import introduct from '@/components/inroduct/introduct'
 import aboutus from '@/components/aboutus/aboutus'
 import mainfac from '@/components/factory/mainfac'
-import coshome from '@/components/costom/coshome'
-import dashboard from '@/components/costom/dashboard'
-import griddemo from '@/components/costom/griddemo'
 import createdb from '@/components/costom/createdb'
 import createtb from '@/components/costom/createtb'
 import createchart from '@/components/costom/formcreate/createchart'
@@ -23,6 +20,9 @@ import editchart from '@/components/costom/dbmanage/editchart'
 import edittable from '@/components/costom/dbmanage/edittable'
 import editmqttline from '@/components/costom/dbmanage/editmqttline'
 import editmqttnum from '@/components/costom/dbmanage/editmqttnum'
+import tbmanage from '@/components/costom/tbmanage'
+import staticdata from '@/components/costom/datamanage/staticdata'
+import dynamicdata from '@/components/costom/datamanage/dynamicdata'
 Vue.use(VueRouter)
 
 const routes = [
@@ -42,15 +42,11 @@ const routes = [
     {path:'/welcome', component: welcome},
     {path:'/intro', component: introduct},
     {path:'/aboutus', component: aboutus},
-    {path:'/coshome', 
-    component: coshome,
-    name:"coshome",
-    redirect:'/createdb',
-    children:[
+    
+    
       {path:'/createdb', component: createdb,name:"createdb"},
+      {path:'/tbmanage', component: tbmanage,name:"tbmanage"},
       {path:'/createtb', component: createtb,name:"createtb"},
-      {path:'/griddemo', component: griddemo,name:"griddemo"},
-      {path:'/dashboard/:dbID', component: dashboard,name:"dashboard"},
       {path:'/createchart', component: createchart,name:"createchart"},
       {path:'/createtable', component: createtable,name:"createtable"},
       {path:'/createmqttline', component: createmqttline,name:"createmqttline"},
@@ -62,7 +58,9 @@ const routes = [
       {path:'/edittable/:tbID', component: edittable,name:"edittable"},
       {path:'/editmqttline/:tbID', component: editmqttline,name:"editmqttline"},
       {path:'/editmqttnum/:tbID', component: editmqttnum,name:"editmqttnum"},
-    ]},
+      {path:'/datamanage/:tableID', component: staticdata,name:"staticdata"},
+      {path:'/dynamicdata', component: dynamicdata,name:"dynamicdata"},
+    ,
     
     // {path:'/mainfac', component: mainfac,},
   ] },

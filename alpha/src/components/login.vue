@@ -38,6 +38,7 @@
 
                     <!-- 提交按钮 -->
                     <el-form-item class="btns">
+                        
                         <el-button type="primary" @click="onSubmit" class="btns2">马上开始</el-button>
                         <el-button type="info" @click="onSubmit2">新用户</el-button>
                     </el-form-item>
