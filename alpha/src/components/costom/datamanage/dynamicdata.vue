@@ -209,9 +209,11 @@ export default {
                 }
                 console.log(dataOb);
                 let postData={
-                    tableID:this.tableID,
-                    rowIndex:this.datacol[0],
-                    row:dataOb
+                    // tableID:this.tableID,
+                    // rowIndex:this.datacol[0],
+                    // row:dataOb
+                    tagID:dataOb.tagID,
+                    tagName:dataOb.tagName
                 }
                 // console.log(postData);
                 const result = axios({
