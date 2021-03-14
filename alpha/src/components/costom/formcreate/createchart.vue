@@ -1,6 +1,6 @@
 <template>
         
-        <div  class="con">
+        <div  class="con" v-if="reset">
             <div class="left">
                 
                 <transition name="el-fade-in" >
@@ -408,6 +408,7 @@ export default {
             ],
             barConfigVis:false,
             scaConfigVis:false,
+            reset:false
         }
     },
     
@@ -1001,20 +1002,37 @@ export default {
         changeY() {
             this.drawpie()
         },
-        
+        gettbList() {
+            let that = this;
+            // const userID=localStorage.getItem("userID")
+            // 
+            const result = axios({
+                method: 'post',
+                url:'/getDBList',
+                // data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.options=resp.data.data
+            }
+            })
+        },
     },
     
     mounted () {
         this.getDbData();
+        this.gettbList()
     },
-    // watch: {
-        // formdata: {
-            // handler(value) {
-                // this.drawline(value)
-            // }
-        // },
-        // deep:true //深度监听
-    // }
+    // mounted () {
+        // this.getData();
+    // },
+    watch: {
+        options: function(){
+            this.$nextTick(function(){
+                this.reset = true;
+            })
+        },
+    //     deep:true //深度监听
+    }
 
 }
 </script>
