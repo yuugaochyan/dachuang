@@ -208,17 +208,17 @@ export default {
                     dataOb[this.datacol[0]]=-1
                 }
                 console.log(dataOb);
-                let postData={
+                let postData=this.$qs.stringify({
                     // tableID:this.tableID,
                     // rowIndex:this.datacol[0],
                     // row:dataOb
                     tagID:dataOb.tagID,
                     tagName:dataOb.tagName
-                }
+                })
                 // console.log(postData);
                 const result = axios({
                     method: 'post',
-                    url:'/saveData',
+                    url:'/updateMqttTag',
                     data:postData
                 }).then(function(resp){
                     if(resp.data.status==200) {

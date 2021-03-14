@@ -281,7 +281,11 @@ export default {
                     center: true,
                     type: 'success'
                 });
-            }
+                if(that.tableData.length==1) {
+                    that.CurrentPage--;
+                }
+                that.getData()
+                }
             })
         },
         addRec() {
