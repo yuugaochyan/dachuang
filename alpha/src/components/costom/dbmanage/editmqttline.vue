@@ -423,7 +423,7 @@ export default {
                 // console.log(that.tbData);
                 that.chartform.graphType=resp.data.data.Graph.type
                 that.chartform.dataSource=resp.data.data.Graph.tag
-                that.chartform.graphName=resp.data.data.Graph.tagName
+                that.chartform.graphName=resp.data.data.Graph.graphName
                 that.chartform.name=resp.data.data.Graph.legend[0]
                 that.chartform.lengs=resp.data.data.Graph.lengs
                 that.chartform.max=resp.data.data.Graph.max

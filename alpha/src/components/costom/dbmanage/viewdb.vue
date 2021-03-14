@@ -43,7 +43,7 @@
             
             
                 <div class="title">
-                    {{item.title}}
+                    {{item.objectData.graphName}}
                     <el-tooltip class="item" effect="dark" content="删除这个可视化" placement="bottom-start" v-if="editable">
                         <el-button size="mini" @click="deleteTB(item.i)" circle type="del" icon="iconfont icon-delete" class="toolbt"></el-button>
                     </el-tooltip>

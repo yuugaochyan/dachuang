@@ -244,8 +244,8 @@ export default {
             },
             minW:2,
             minH:2,
-            maxW:10,
-            maxH:10,
+            maxW:12,
+            maxH:12,
             reset:false,
             msg1:'',
             msg2:'',
@@ -267,13 +267,14 @@ export default {
             const userID=localStorage.getItem("userID")
             let postDta=this.$qs.stringify({
                 dbID:this.dbID,
-                userID:userID,
-                naviName:this.NavName
+                // userID:userID,
+                naviName:this.NavName,
+                naviStatus:1,
             })
             console.log(this.dbID);
             const result = axios({
                 method: 'post',
-                url:'/getDBItemInfo',
+                url:'/updateDB',
                 data:postDta
             }).then(function(resp){
                 if(resp.data.status==200) {

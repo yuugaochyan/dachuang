@@ -5,18 +5,20 @@
                 
                 <transition name="el-zoom-in-top" >
                     <div class="view-msg" v-if=showinfo>
-                        <el-divider direction="vertical"></el-divider>
-                        <h1>你的可视化：</h1><br>
+                        <!-- <el-divider direction="vertical"></el-divider> -->
+                        <h2>你的可视化：</h2><br>
                         <span class="view-t1">{{tbData.Graph.graphName}}</span>
-                        <el-divider direction="vertical"></el-divider>
-                        <el-divider direction="vertical"></el-divider>
+                        <el-divider ></el-divider>
+                        <!-- <br> -->
+                        <!-- <el-divider direction="vertical"></el-divider> -->
                         <h3>可视化类型：</h3><br>
                         <span class="view-t2">{{tbData.type}}</span>
-                        <el-divider direction="vertical"></el-divider>
-                        <el-divider direction="vertical"></el-divider>
+                        <el-divider ></el-divider>
+                        <!-- <br> -->
+                        <!-- <el-divider direction="vertical"></el-divider> -->
                         <h3>数据源：</h3><br>
-                        <span class="view-t2">{{tbData.Graph.dataSource}}</span>
-                        <el-divider direction="vertical"></el-divider>
+                        <span class="view-t2">{{dataSource}}</span>
+                        <el-divider ></el-divider>
                     </div>
                 </transition>
                 
@@ -55,7 +57,8 @@ export default {
             tbID:'',
             tbName:'',
             reset:false,
-            showinfo:false
+            showinfo:false,
+            dataSource:''
         }
     },
     components: {
@@ -79,7 +82,16 @@ export default {
             }).then(function(resp){
                 if(resp.data.status==200) {
                 that.tbData=resp.data.data
-                console.log(that.tbData);
+                // console.log(that.tbData);
+                if(that.tbData.type=='mqttline'||that.tbData.type=='mqttnum') {
+                    that.dataSource=that.tbData.Graph.tagName
+                }
+                else if(that.tbData.type=='table') {
+                    that.dataSource=that.tbData.Graph.tableName
+                }
+                else {
+                    that.dataSource=that.tbData.Graph.dataSource
+                }
                 }
             })
             setTimeout(()=>{
@@ -146,21 +158,25 @@ export default {
     right: 10%;
 }
 .view-msg {
-    >h1 {
+    >h2 {
         color: rgb(117, 117, 117);
-        display: inline;
+        border-left: solid 2px rgb(117, 117, 117);
+        padding-left: 5px;
+        // display: inline-block;
     }
     >h3 {
         color: rgb(117, 117, 117);
-        display: inline;
+        border-left: solid 2px rgb(117, 117, 117);
+        padding-left: 3px;
+        // display: inline-block;
     }
     >.view-t1 {
-        font-size: 35px;
-        padding-left: 35px;
+        font-size: 30px;
+        // padding-left: 35px;
     }
     >.view-t2 {
         font-size: 25px;
-        padding-left: 35px;
+        // padding-left: 35px;
     }
 }
 </style>

@@ -4,9 +4,9 @@
             <div class="dy-main" id="dy_main">
                 <el-tabs type="border-card">
                     <el-tab-pane>
-                        <span slot="label"><i class="iconfont icon-zidingyi"></i>静态数据管理</span>
+                        <span slot="label"><i class="iconfont icon-zidingyi"></i>实时数据管理</span>
                         <div class="banner2">
-                            <h1>{{tableName}}</h1>
+                            <h1>MQTT标签管理</h1>
                             <!-- <el-button @click="showAddDB=true"  type="warning" icon="iconfont icon-add">创建仪表盘</el-button> -->
                         </div>
                         <el-table
