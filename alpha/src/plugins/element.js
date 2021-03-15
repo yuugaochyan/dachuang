@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Form, FormItem, Input, Message, Container, Header, Aside,Main, Footer,Menu ,MenuItem,MenuItemGroup,Submenu,Carousel,CarouselItem,PageHeader,link,Backtop,Row,Col,Card,MessageBox,Tabs,TabPane,RadioButton,RadioGroup,Dialog,Tooltip,Radio,Select,Option,Step,Steps,Divider,Table,TableColumn,Breadcrumb,BreadcrumbItem,Drawer,Tree,Notification,Pagination,Loading,ColorPicker,Switch} from 'element-ui'
+import { Button, Form, FormItem, Input, Message, Container, Header, Aside,Main, Footer,Menu ,MenuItem,MenuItemGroup,Submenu,Carousel,CarouselItem,PageHeader,link,Backtop,Row,Col,Card,MessageBox,Tabs,TabPane,RadioButton,RadioGroup,Dialog,Tooltip,Radio,Select,Option,Step,Steps,Divider,Table,TableColumn,Breadcrumb,BreadcrumbItem,Drawer,Tree,Notification,Pagination,Loading,ColorPicker,Switch,} from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Form)
@@ -46,4 +46,6 @@ Vue.use(ColorPicker)
 Vue.use(Switch)
 Vue.prototype.$message = Message
 Vue.prototype.$messagebox = MessageBox
+// Vue.prototype.$confirm = Confirm
+// Vue.prototype.$confirm = Confirm
 Vue.prototype.$notify = Notification

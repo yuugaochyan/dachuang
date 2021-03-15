@@ -169,12 +169,9 @@
                 </el-dialog>
 
                 <el-dialog title="导航栏中的名字" :visible.sync="pushNav">
-                    <!-- <el-form :model="form" :rules="rules" ref="chartformref" > -->
+                    <!-- <el-form :model="nav" :rules="rule2" ref="chartformref2" > -->
                         <!-- <el-form-item label="仪表盘名称" :label-width="formLabelWidth" prop="name"> -->
-                            <el-input v-model="NavName" autocomplete="off" ></el-input>
-                        <!-- </el-form-item> -->
-                        <!-- <el-form-item label="仪表盘摘要" :label-width="formLabelWidth"> -->
-                            <!-- <el-input v-model="form.info" autocomplete="off"></el-input> -->
+                            <el-input v-model="NavName" autocomplete="off" id="navInput"></el-input>
                         <!-- </el-form-item> -->
                     <!-- </el-form> -->
                     <div slot="footer" class="dialog-footer">
@@ -264,6 +261,15 @@ export default {
     methods: {
         pushToNav() {
             let that=this
+            if(this.NavName=='') {
+                let box=document.getElementById('navInput')
+                box.style.cssText="border:solid 0.5px #FF0000"
+                return
+            }
+            else {
+                let box=document.getElementById('navInput')
+                box.style.cssText=""
+            }
             const userID=localStorage.getItem("userID")
             let postDta=this.$qs.stringify({
                 dbID:this.dbID,

@@ -44,6 +44,11 @@ export default {
               v:'',
               t:''
             },
+            RSSI:{
+              n:'/Kael/RSSI',
+              v:'',
+              t:''
+            },
           }
     }
   },
@@ -83,7 +88,7 @@ export default {
               var formatTime = time.toTimeString().substr(0,8)
               that.obj.temp.t=formatTime
           }
-          if(msg.n=='humi') {
+          else if(msg.n=='humi') {
               // console.log(msg.v);
               that.obj.humi.v=msg.v;
               var time = new Date(msg.t*1000)
@@ -91,9 +96,17 @@ export default {
               var formatTime = time.toTimeString().substr(0,8)
               that.obj.humi.t=formatTime
           }
-          if(msg.n=='key') {
+          else if(msg.n=='key') {
               // console.log(msg.v);
               that.obj.key.v=msg.v;
+              var time = new Date(msg.t*1000)
+              // console.log(msg.t);
+              var formatTime = time.toTimeString().substr(0,8)
+              that.obj.key.t=formatTime
+          }
+          else if(msg.n=='RSSI') {
+              // console.log(msg.v);
+              that.obj.RSSI.v=msg.v;
               var time = new Date(msg.t*1000)
               // console.log(msg.t);
               var formatTime = time.toTimeString().substr(0,8)

@@ -23,7 +23,12 @@
                             <el-table-column
                                 prop="info"
                                 label="描述"
-                                width="580">
+                                width="380">
+                            </el-table-column>
+                            <el-table-column
+                                prop="naviName"
+                                label="导航名称"
+                                width="180">
                             </el-table-column>
                             <el-table-column
                                 label="操作"
@@ -38,6 +43,15 @@
                                     <el-tooltip class="item" effect="dark" content="删除这个仪表盘" placement="bottom-start">
                                         <el-button @click="deleteDB(scope.row)" circle type="danger" icon="iconfont icon-delete"></el-button>
                                     </el-tooltip>
+                                </template>
+                                
+                            </el-table-column>
+                            <el-table-column
+                                label="是否推送到导航"
+                                width="180">
+                                <template slot-scope="scope">
+                                    <el-switch v-model="scope.row.naviStatus" active-color="#13ce66" 
+                                    :active-value=1 :inactive-value=0 @change="changNavi(scope)"></el-switch>
                                 </template>
                                 
                             </el-table-column>
@@ -74,6 +88,19 @@
                         <el-button type="primary" @click="addDB">确 定</el-button>
                     </div>
                 </el-dialog>
+
+                <el-dialog title="导航栏中的名字" :visible.sync="pushToNavVis">
+                    <!-- <el-form :model="nav" :rules="rule2" ref="chartformref2" > -->
+                        <!-- <el-form-item label="仪表盘名称" :label-width="formLabelWidth" prop="name"> -->
+                            <el-input v-model="NavName" autocomplete="off" id="navInput"></el-input>
+                        <!-- </el-form-item> -->
+                    <!-- </el-form> -->
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="expush">取 消</el-button>
+                        <el-button type="primary" @click="pushToNav">确 定</el-button>
+                    </div>
+                </el-dialog>
+
         </div>
     </div>
 </template>
@@ -106,9 +133,92 @@ export default {
             dbSize:5,
             dbCurrentPage:1,
             dbtotal:'',
+            pushToNavVis:false,
+            NavName:'',
+            dbID:''
         }
     },
     methods: {
+        expush() {
+            this.pushToNavVis=false
+            for(let key in this.dbData) {
+                // console.log(this.dbData[key]);
+                if(this.dbData[key].dbID==this.dbID) {
+                    this.dbData[key].naviStatus=0
+                }
+            }
+        },
+        changNavi(scope) {
+            // console.log(scope.row.naviStatus==1);
+            if(scope.row.naviStatus==1) {
+            this.pushToNavVis=true
+            this.NavName=scope.row.naviName
+            this.dbID=scope.row.dbID
+            }
+            else {
+                this.$messagebox.confirm('要取消推送到导航吗', '确认', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let postDta=this.$qs.stringify({
+                        dbID:scope.row.dbID,
+                        // userID:userID,
+                        naviName:scope.row.naviName,
+                        naviStatus:0,
+                        })
+                        console.log(postDta);
+                        const result = axios({
+                            method: 'post',
+                            url:'/updateDB',
+                            data:postDta
+                        }).then(function(resp){
+                            if(resp.data.status==200) {
+                                that.reload()
+                            }
+                        })
+                }).catch(() => {
+                    this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                    });
+                    scope.row.naviStatus=1
+                });
+                
+                        
+                    
+                
+            }
+        },
+        pushToNav() {
+            let that=this
+            if(this.NavName=='') {
+                let box=document.getElementById('navInput')
+                box.style.cssText="border:solid 0.5px #FF0000"
+                return
+            }
+            else {
+                let box=document.getElementById('navInput')
+                box.style.cssText=""
+            }
+            const userID=localStorage.getItem("userID")
+            let postDta=this.$qs.stringify({
+                dbID:this.dbID,
+                // userID:userID,
+                naviName:this.NavName,
+                naviStatus:1,
+            })
+            console.log(this.dbID);
+            const result = axios({
+                method: 'post',
+                url:'/updateDB',
+                data:postDta
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                    that.reload()
+                }
+            })
+        },
         dbSizeChange(val) {
             this.dbSize=val;
             let that = this;
