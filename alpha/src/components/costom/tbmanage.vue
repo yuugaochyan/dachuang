@@ -81,7 +81,7 @@ export default {
             tableHeight:null,
             clientHeight:'',
             //^tb分页
-            tbSize:5,
+            tbSize:10,
             tbCurrentPage:1,
             tbtotal:0,
         }

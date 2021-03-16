@@ -130,7 +130,7 @@ export default {
             tableHeight:null,
             clientHeight:'',
             //^db分页
-            dbSize:5,
+            dbSize:10,
             dbCurrentPage:1,
             dbtotal:'',
             pushToNavVis:false,

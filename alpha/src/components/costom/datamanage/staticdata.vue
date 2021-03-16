@@ -100,7 +100,7 @@ export default {
             tableHeight:null,
             clientHeight:'',
             //^分页
-            Size:5,
+            Size:10,
             CurrentPage:1,
             total:'',
             editable:[]
