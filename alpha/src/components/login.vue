@@ -109,9 +109,10 @@ export default {
                     });
                     // window.sessionStorage.setItem('token',"testtoken");
                     // window.sessionStorage.setItem('token',resp.data.token);
-                    that.$store.commit("setToken",resp.data.token);
-                    that.$store.commit("setuserID",resp.data.userID);
-                    that.$store.commit("setShowHint",true);
+                    // that.$store.commit("setToken",resp.data.token);
+                    // that.$store.commit("setuserID",resp.data.userID);
+                    // that.$store.commit("setShowHint",true);
+                    localStorage.setItem('userID',resp.data.userID)
                     that.$router.push('/homepage')
                 }
                 else{

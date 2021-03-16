@@ -72,11 +72,7 @@
                     @open="openDrawer">
                     <span slot="title" class="tool-banner"><i class="el-icon-s-tools"></i>工具箱</span>
                     <div class="toolbar">
-                        <el-tooltip class="item" effect="dark" content="调整图表位置（alt+R）" placement="bottom-end">
-                            <el-button @click="asideResize" type="warning"  plain>适应调整</el-button>
-                        </el-tooltip>
-                        <br>
-                        <el-divider></el-divider>
+                        
                         <el-tooltip class="item" effect="dark" content="前往编辑界面(alt+G）" placement="bottom-end">
                             <el-button @click="gotoedit" type="warning"  plain>前往编辑</el-button>
                         </el-tooltip>
@@ -84,6 +80,11 @@
                         <el-divider></el-divider>
                         <el-tooltip class="item" effect="dark" content="隐藏左侧工具栏的呼出按钮（下次仍会显示）" placement="bottom-end">
                             <el-button @click="hideBt" type="warning"  plain>隐藏按钮</el-button>
+                        </el-tooltip>
+                        <br>
+                        <el-divider></el-divider>
+                        <el-tooltip class="item" effect="dark" content="调整图表位置（alt+R）" placement="bottom-end">
+                            <el-button @click="asideResize" type="warning"  plain>适应调整</el-button>
                         </el-tooltip>
                         <br>
                         <el-divider></el-divider>

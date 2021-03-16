@@ -26,7 +26,7 @@ import dynamicdata from '@/components/costom/datamanage/dynamicdata'
 Vue.use(VueRouter)
 
 const routes = [
-  {path:'/', redirect:'/homepage'},
+  {path:'/', redirect:'/login'},
   {path:'/login', component: login },
 
   
@@ -78,11 +78,11 @@ const router = new VueRouter({
 router.beforeEach((to,from,next)=>{
   if(to.path === '/login') return next();
   if(to.path === '/register') return next();
-  if(to.path === '/welcome') return next();
-  if(to.path === '/mainfac') return next();
-  if(to.path === '/aboutus') return next();
-  const tokenstr=window.localStorage.getItem('token');
-  if(!tokenstr) return next('/login')
+  // if(to.path === '/welcome') return next();
+  // if(to.path === '/mainfac') return next();
+  // if(to.path === '/aboutus') return next();
+  const userID=window.localStorage.getItem('userID');
+  if(!userID) return next('/login')
   next()
   
 })

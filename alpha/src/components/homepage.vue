@@ -107,11 +107,11 @@ export default {
         logout(){
             window.localStorage.clear();
             // this.$store.commit('setuserInfo','');
-            localStorage.setItem('token','')
+            // localStorage.setItem('token','')
             // this.$store.commit('setToken','');
-            this.changeisshow();
+            // this.changeisshow();
             // this.reload()
-            // this.$router.push('/homepage')
+            this.$router.push('/login')
         },
         getStaticList() {
             const userID=localStorage.getItem("userID")
