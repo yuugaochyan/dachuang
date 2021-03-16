@@ -124,6 +124,8 @@ export default{
     height: calc(93.6vh);
     background-color: #333;
     display: flex;
+    justify-content: center;
+    align-items: center;
 
 }
 .col {

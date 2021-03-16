@@ -150,6 +150,7 @@ export default {
         },
         changNavi(scope) {
             // console.log(scope.row.naviStatus==1);
+            let that = this
             if(scope.row.naviStatus==1) {
             this.pushToNavVis=true
             this.NavName=scope.row.naviName
@@ -167,7 +168,7 @@ export default {
                         naviName:scope.row.naviName,
                         naviStatus:0,
                         })
-                        console.log(postDta);
+                        // console.log(postDta);
                         const result = axios({
                             method: 'post',
                             url:'/updateDB',
