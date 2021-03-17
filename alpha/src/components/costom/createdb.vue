@@ -4,7 +4,7 @@
             <div class="db-main" id="tb_main">
                 <el-tabs type="border-card">
                     <el-tab-pane>
-                        <span slot="label"><i class="iconfont icon-zidingyi"></i>仪表盘管理</span>
+                        <span slot="label"><i class="el-icon-s-tools"></i>仪表盘管理</span>
                         <div class="banner2">
                             <el-button @click="showAddDB=true"  type="warning" icon="iconfont icon-add">创建仪表盘</el-button>
                         </div>
@@ -341,7 +341,7 @@ export default {
                 if(that.dbData.length==1) {
                     that.dbCurrentPage--;
                 }
-                that.getDbData()
+                that.reload()
             }
             })
         },

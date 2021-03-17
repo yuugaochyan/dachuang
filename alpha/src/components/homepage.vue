@@ -13,37 +13,39 @@
     text-color="#fff"
     active-text-color="#ffd04b"
     router>
-        <el-menu-item class="iconfont icon-zhuye" index="/welcome">主页</el-menu-item>
-        <el-menu-item class="iconfont icon-keshihua" index="/mainfac">示例数据</el-menu-item>
+        <el-menu-item  index="/welcome"><i class="iconfont icon-zhuye"></i>主页</el-menu-item>
+        <!-- <el-menu-item  index="/mainfac"><i class="iconfont icon-keshihua"></i>示例数据</el-menu-item> -->
         <!-- <el-menu-item index="/coshome"  -->
         <!-- :disabled="isshow" -->
         <!-- >自定义大屏</el-menu-item> -->
         <!-- @click.native="judgetoken" -->
-        <el-submenu index="/coshome">
-            <template slot="title"><i class="iconfont icon-zidingyi"></i>大屏配置</template>
-            <el-menu-item index="/createdb">仪表盘管理</el-menu-item>
-            <el-menu-item index="/tbmanage">可视化管理</el-menu-item>
-        </el-submenu>
-
         <el-submenu index="/homepage">
-            <template slot="title"><i class="iconfont icon-zidingyi"></i>数据管理</template>
-            <el-menu-item index="/dynamicdata">实时数据</el-menu-item>
+            <template slot="title"><i class="el-icon-s-management"></i>数据管理</template>
+            <el-menu-item index="/dynamicdata"><i class="iconfont icon-yun1"></i>实时数据</el-menu-item>
             <el-submenu index="/datamanage">
-                <template slot="title"><i class="iconfont icon-zidingyi"></i>历史数据</template>
+                <template slot="title"><i class="iconfont icon-jurassic_data"></i>历史数据</template>
                 <el-menu-item 
                     v-for="item in staticList"
                     :key=item.index
-                    :index="item.index">{{item.naviName}}</el-menu-item>
+                    :index="item.index"><i class="iconfont icon-biaoge"></i>{{item.naviName}}</el-menu-item>
             </el-submenu>
             
         </el-submenu>
+        
+        <el-submenu index="/coshome">
+            <template slot="title"><i class="iconfont icon-zidingyi"></i>大屏配置</template>
+            <el-menu-item index="/createdb"><i class="iconfont icon-zhexiantu "></i>仪表盘管理</el-menu-item>
+            <el-menu-item index="/tbmanage"><i class="el-icon-s-data"></i>可视化管理</el-menu-item>
+        </el-submenu>
+
+        
 
         <el-submenu index="/viewdb">
-            <template slot="title"><i class="iconfont icon-zidingyi"></i>仪表盘</template>
+            <template slot="title"><i class="iconfont icon-daping"></i>仪表盘</template>
             <el-menu-item 
                 v-for="item in dbList"
                 :key=item.index
-                :index="item.index">{{item.naviName}}</el-menu-item>
+                :index="item.index"><i class="el-icon-s-grid"></i>{{item.naviName}}</el-menu-item>
             
         </el-submenu>
         <!-- <el-menu-item index="/aboutus" class="iconfont icon-guanyuwomen">关于我们</el-menu-item> -->
@@ -154,6 +156,7 @@ export default {
 <style lang="less" scoped>
 .iconfont {
     font-size: 15px;
+    margin-right: 7px;
 }
 
 .nav {

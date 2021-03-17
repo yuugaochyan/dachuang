@@ -4,7 +4,7 @@
             <div class="st-main" id="tb_main">
                 <el-tabs type="border-card">
                     <el-tab-pane>
-                        <span slot="label"><i class="iconfont icon-zidingyi"></i>历史数据管理</span>
+                        <span slot="label"><i class="el-icon-s-tools"></i>历史数据管理</span>
                         <div class="banner2">
                             <h1>{{tableName}}</h1>
                             <el-button @click="addRec"  type="warning" icon="iconfont icon-add">新增数据</el-button>

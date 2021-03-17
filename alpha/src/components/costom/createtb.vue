@@ -140,9 +140,10 @@ export default{
     width: 80%;
     background-color: #ddbb80;
     position: absolute;
-    left:10%;
-    right:10%;
-    top:10%;
+    left:50%;
+    // right:10%;
+    top:50%;
+    transform: translate(-50%,-50%);
     border-radius: 25%;
     box-shadow: 15px -15px 15px #1a1a1a;
     // border: 1px solid #000;
@@ -157,7 +158,7 @@ export default{
 .as {
     display: flex;
     flex: 1;
-    background-color: #1a1a1a;
+    // background-color: #1a1a1a;
     //border-left: 1px solid #000;
     //border-right: 1px solid #000;
 }
@@ -169,11 +170,12 @@ export default{
     // padding: 25px;
 }
 
-h1 {
+.con>h1 {
     font-size: 60px;
     color: #343434;
     padding-top: 75px;
     margin: 0 auto;
+    padding-left: 20%;
     // display: block;
 }
 

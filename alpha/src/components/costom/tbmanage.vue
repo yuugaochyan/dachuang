@@ -7,7 +7,7 @@
                 <el-tabs type="border-card">
 
                     <el-tab-pane >
-                        <span slot="label"><i class="iconfont icon-keshihua"></i>可视化管理</span>
+                        <span slot="label"><i class="el-icon-s-tools"></i>可视化管理</span>
                         <div class="banner2">
                             <el-button @click="gotoAddTB"  type="warning" icon="iconfont icon-add">创建可视化</el-button>
                         </div>
