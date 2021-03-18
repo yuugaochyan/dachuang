@@ -15,19 +15,19 @@
             <span class="title"><br><br></span>
         </div>
         <div class="text t2">
-            <span class="txt2">标题2</span>
+            <span class="txt2">清晰直观的可视化展示</span>
         </div>
         <div class="fixedBg bgi2">
             <span class="title"><br><br></span>
         </div>
         <div class="text t3">
-            <span class="txt1">标题2</span>
+            <span class="txt1">简便的大屏定制功能</span>
         </div>
         <div class="fixedBg bgi3">
             <span class="title"><br><br></span>
         </div>
         <div class=" t4">
-            <span>标题3</span>
+            <span></span>
         </div>
         
         
@@ -61,13 +61,13 @@ export default {
     background-image: url("../assets/pic/niu.gif");
 }
 .bgi1 {
-    background-image: url("../assets/pic/banner3.jpg");
-}
-.bgi2 {
-    background-image: url("../assets/pic/cd-background-2.gif");
+    background-image: url("../assets/pic/pexels-pixabay-159201.jpg");
 }
 .bgi3 {
-    background-image: url("../assets/pic/cd-background-1.jpg");
+    background-image: url("../assets/pic/pexels-lukas-577210.jpg");
+}
+.bgi2 {
+    background-image: url("../assets/pic/pexels-lukas-669615.jpg");
 }
 .text {
     // background: #333;
@@ -97,7 +97,7 @@ export default {
 }
 .txt2 {
     color: #333;
-    font-size: 35px;
+    font-size: 100px;
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     line-height: 500px;
     // vertical-align: middle;

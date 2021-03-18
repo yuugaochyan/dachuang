@@ -66,11 +66,11 @@ export default {
                 password: '',
             },
             imgSrc: [
-            require("../assets/pic/loginbgp.jpg"),
-            require("../assets/pic/cd-background-1.jpg"),
-            require("../assets/pic/cd-background-2.jpg"),
-            require("../assets/pic/cd-background-3.jpg"),
-            require("../assets/pic/cd-background-4.jpg"),
+            require("../assets/pic/pexels-miguel-á-padriñán-3520694.jpg"),
+            require("../assets/pic/pexels-andrea-piacquadio-842548.jpg"),
+            require("../assets/pic/pexels-markus-spiske-2004161.jpg"),
+            require("../assets/pic/pexels-fauxels-3183153.jpg"),
+            require("../assets/pic/pexels-pixabay-265087.jpg"),
             require("../assets/pic/cdbg1.jpg")],
             rules: {
                 username: [

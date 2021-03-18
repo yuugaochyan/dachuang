@@ -85,7 +85,7 @@ export default {
             // 
         // },
         changeisshow() {
-            const tokenstr=localStorage.getItem('token');
+            const tokenstr=localStorage.getItem('userID');
             // const tokenstr="testtoken"
             if(tokenstr){
                 this.isshow=false;

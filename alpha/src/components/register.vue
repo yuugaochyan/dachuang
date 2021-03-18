@@ -1,7 +1,7 @@
 //? 用户名-username 密码-password 邮箱-mail
 <template>
     <div id="app">
-        <div class="container">
+        <div class="reg-container">
 
             <div class="banner">
                 <!-- <el-page-header class="pageHeader" @back="goBack" content="注册页面"> -->
@@ -155,9 +155,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.container {
+.reg-container {
     background-color: rgb(214, 214, 214);
     height: 100%;
+    width:100%
 }
 .banner {
     height: 75px;
