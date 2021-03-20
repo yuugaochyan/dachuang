@@ -153,10 +153,8 @@ export default {
   },
   mounted() {
     this.clientConnect()
-    this.$store.commit(
-        "setHeight",
-        document.documentElement.clientHeight - 110
-    );
+    
+    localStorage.setItem('clientHeight',document.documentElement.clientHeight - 110)
   },
   beforeDestroy() {
     client.end()

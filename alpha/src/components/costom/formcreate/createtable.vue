@@ -112,6 +112,9 @@ export default {
                 userID:userID,
                 pagenum:1,
                 pagesize:1000,
+                dbName:'',
+                naviStatus:-1
+
             })
             const result = axios({
                 method: 'post',

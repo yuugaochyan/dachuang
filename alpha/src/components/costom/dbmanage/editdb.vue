@@ -558,7 +558,9 @@ export default {
             let postData=this.$qs.stringify({
                 userID:userID,
                 pagenum:that.tbCurrentPage,
-                pagesize:that.tbSize
+                pagesize:that.tbSize,
+                graphName:'',
+                graphType:''
             })
             const result = axios({
                 method: 'post',
