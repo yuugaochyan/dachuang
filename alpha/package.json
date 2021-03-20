@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
     "element-ui": "^2.4.5",
+    "lazyload": "^2.0.0-rc.2",
     "mqtt": "^4.2.1",
     "postcss-px2rem": "^0.3.0",
     "qs": "^6.9.4",

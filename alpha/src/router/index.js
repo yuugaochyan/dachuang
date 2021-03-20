@@ -1,70 +1,48 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import login from '@/components/login'
-import register from '@/components/register'
-import homepage from '@/components/homepage'
-import welcome from '@/components/welcome'
-import introduct from '@/components/inroduct/introduct'
-import aboutus from '@/components/aboutus/aboutus'
-import mainfac from '@/components/factory/mainfac'
-import createdb from '@/components/costom/createdb'
-import createtb from '@/components/costom/createtb'
-import createchart from '@/components/costom/formcreate/createchart'
-import createtable from '@/components/costom/formcreate/createtable'
-import createmqttline from '@/components/costom/formcreate/createmqttline'
-import createmqttnum from '@/components/costom/formcreate/createmqttnum'
-import viewdb from '@/components/costom/dbmanage/viewdb'
-import editdb from '@/components/costom/dbmanage/editdb'
-import viewtb from '@/components/costom/dbmanage/viewtb'
-import editchart from '@/components/costom/dbmanage/editchart'
-import edittable from '@/components/costom/dbmanage/edittable'
-import editmqttline from '@/components/costom/dbmanage/editmqttline'
-import editmqttnum from '@/components/costom/dbmanage/editmqttnum'
-import tbmanage from '@/components/costom/tbmanage'
-import staticdata from '@/components/costom/datamanage/staticdata'
-import dynamicdata from '@/components/costom/datamanage/dynamicdata'
+
+
+
+
+
+
 Vue.use(VueRouter)
 
 const routes = [
   {path:'/', redirect:'/login'},
-  {path:'/login', component: login },
-
-  
-  
-
-
-  {path:'/register', component: register },
+  {path:'/login', component:resolve => require(['@/components/login'],resolve)},
+  {path:'/register', component: resolve => require(['@/components/register'],resolve) },
 
   {path:'/homepage', 
-  component: homepage, 
+  component: resolve => require(['@/components/homepage'],resolve), 
   redirect:'/welcome',
   children:[
-    {path:'/welcome', component: welcome},
-    {path:'/intro', component: introduct},
-    {path:'/aboutus', component: aboutus},
+    {path:'/welcome', component: resolve => require(['@/components/welcome'],resolve)},
+    {path:'/intro', component: resolve => require(['@/components/inroduct/introduct'],resolve)},
+    {path:'/aboutus', component: resolve => require(['@/components/aboutus/aboutus'],resolve)},
     
     
-      {path:'/createdb', component: createdb,name:"createdb"},
-      {path:'/tbmanage', component: tbmanage,name:"tbmanage"},
-      {path:'/createtb', component: createtb,name:"createtb"},
-      {path:'/createchart', component: createchart,name:"createchart"},
-      {path:'/createtable', component: createtable,name:"createtable"},
-      {path:'/createmqttline', component: createmqttline,name:"createmqttline"},
-      {path:'/createmqttnum', component: createmqttnum,name:"createmqttnum"},
-      {path:'/viewdb/:dbID', component: viewdb,name:"viewdb"},
-      {path:'/editdb/:dbID', component: editdb,name:"editdb"},
-      {path:'/viewtb/:tbID', component: viewtb,name:"viewtb"},
-      {path:'/editchart/:tbID', component: editchart,name:"editchart"},
-      {path:'/edittable/:tbID', component: edittable,name:"edittable"},
-      {path:'/editmqttline/:tbID', component: editmqttline,name:"editmqttline"},
-      {path:'/editmqttnum/:tbID', component: editmqttnum,name:"editmqttnum"},
-      {path:'/datamanage/:tableID', component: staticdata,name:"staticdata"},
-      {path:'/dynamicdata', component: dynamicdata,name:"dynamicdata"},
+      {path:'/createdb', component: resolve => require(['@/components/costom/createdb'],resolve),name:"createdb"},
+      {path:'/tbmanage', component: resolve => require(['@/components/costom/tbmanage'],resolve),name:"tbmanage"},
+      {path:'/createtb', component: resolve => require(['@/components/costom/createtb'],resolve),name:"createtb"},
+      {path:'/createchart', component: resolve => require(['@/components/costom/formcreate/createchart'],resolve),name:"createchart"},
+      {path:'/createtable', component: resolve => require(['@/components/costom/formcreate/createtable'],resolve),name:"createtable"},
+      {path:'/createmqttline', component: resolve => require(['@/components/costom/formcreate/createmqttline'],resolve),name:"createmqttline"},
+      {path:'/createmqttnum', component: resolve => require(['@/components/costom/formcreate/createmqttnum'],resolve),name:"createmqttnum"},
+      {path:'/viewdb/:dbID', component: resolve => require(['@/components/costom/dbmanage/viewdb'],resolve),name:"viewdb"},
+      {path:'/editdb/:dbID', component: resolve => require(['@/components/costom/dbmanage/editdb'],resolve),name:"editdb"},
+      {path:'/viewtb/:tbID', component: resolve => require(['@/components/costom/dbmanage/viewtb'],resolve),name:"viewtb"},
+      {path:'/editchart/:tbID', component:resolve => require(['@/components/costom/dbmanage/editchart'],resolve),name:"editchart"},
+      {path:'/edittable/:tbID', component: resolve => require(['@/components/costom/dbmanage/edittable'],resolve),name:"edittable"},
+      {path:'/editmqttline/:tbID', component: resolve => require(['@/components/costom/dbmanage/editmqttline'],resolve),name:"editmqttline"},
+      {path:'/editmqttnum/:tbID', component: resolve => require(['@/components/costom/dbmanage/editmqttnum'],resolve),name:"editmqttnum"},
+      {path:'/datamanage/:tableID', component: resolve => require(['@/components/costom/datamanage/staticdata'],resolve),name:"staticdata"},
+      {path:'/dynamicdata', component: resolve => require(['@/components/costom/datamanage/dynamicdata'],resolve),name:"dynamicdata"},
     ,
     
     // {path:'/mainfac', component: mainfac,},
   ] },
-  {path:'/mainfac', component: mainfac,},
+  // {path:'/mainfac', component: mainfac,},
   
 
   

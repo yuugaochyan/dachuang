@@ -260,6 +260,7 @@ export default {
                 "setHeight",
                 document.documentElement.clientHeight - 110
             );
+            that.clientHeight=localStorage.getItem('clientHeight')-150
         };
         
 
@@ -300,7 +301,7 @@ export default {
 .banner2 {
     height: 7%;
     margin-bottom: 10px;
-    text-align: right;
+    text-align: left;
 }
 
 .h1 {

@@ -134,8 +134,15 @@
                             label="可视化类型"
                             width="200">
                         </el-table-column>
-                        
+                        <div class="createTB" slot="empty">
+                        你的可视化里好像没有数据？
+                        <el-link :underline="false" type="warning" @click="gotoCreate">
+                            <i class="el-icon-plus"></i>去创建一些可视化吧！
+                        </el-link>
+                        <!-- <el-button @click="gotoCreate">前往</el-button> -->
+                    </div>
                     </el-table>
+                    
                     <el-pagination
                             background
                             @size-change="tbSizeChange"
@@ -254,11 +261,15 @@ export default {
             isShowHint:'',
             preURL:'',
             pushNav:false,
-            NavName:''
+            NavName:'',
+            
         }
     },
     
     methods: {
+        gotoCreate() {
+            this.$router.push('/createtb')
+        },
         pushToNav() {
             let that=this
             if(this.NavName=='') {
@@ -557,6 +568,7 @@ export default {
                 if(resp.data.status==200) {
                 that.tbData=resp.data.data.list
                 that.tbtotal=resp.data.data.total
+                
             }
             })
         },
@@ -782,7 +794,7 @@ export default {
     outline: none;
 }
 .vue-grid-item {
-  background: #5b5b5f;
+    background: #5b5b5f;
   
 }
 .tb {
@@ -834,7 +846,8 @@ export default {
     position: absolute;
     left: 0;
     border-left:solid 3px #ddbb80;
-    z-index:9
+    z-index:9;
+    transition: 300ms 0ms;
 }
 .drawer-bt:hover {
     cursor:pointer
@@ -844,5 +857,6 @@ html,
 body {
     background-color: #333;
 }
+
 
 </style>

@@ -82,7 +82,7 @@ export default {
           
           if(msg.n=='temp') {
               // console.log(msg.v);
-              that.obj.temp.v=msg.v;
+              that.obj.temp.v=Number(msg.v);
               var time = new Date(msg.t*1000)
               // console.log(msg.t);
               var formatTime = time.toTimeString().substr(0,8)
@@ -90,7 +90,7 @@ export default {
           }
           else if(msg.n=='humi') {
               // console.log(msg.v);
-              that.obj.humi.v=msg.v;
+              that.obj.humi.v=Number(msg.v);
               var time = new Date(msg.t*1000)
               // console.log(msg.t);
               var formatTime = time.toTimeString().substr(0,8)
@@ -98,7 +98,7 @@ export default {
           }
           else if(msg.n=='key') {
               // console.log(msg.v);
-              that.obj.key.v=msg.v;
+              that.obj.key.v=Number(msg.v);
               var time = new Date(msg.t*1000)
               // console.log(msg.t);
               var formatTime = time.toTimeString().substr(0,8)
@@ -106,14 +106,20 @@ export default {
           }
           else if(msg.n=='RSSI') {
               // console.log(msg.v);
-              that.obj.RSSI.v=msg.v;
+              that.obj.RSSI.v=100-Number(msg.v);
               var time = new Date(msg.t*1000)
               // console.log(msg.t);
               var formatTime = time.toTimeString().substr(0,8)
               that.obj.key.t=formatTime
           }
           // console.log(that.obj);
-          this.$store.commit('setClient',that.obj)
+          // window.onresize = function temp() {
+            // that.$store.commit(
+                // "setHeight",
+                // document.documentElement.clientHeight - 110
+            // );
+          // };
+          // this.$store.commit('setClient',that.obj)
           // console.log(msg.v);
           // if(msg.v<max && msg.v>min){
               // that.vlist.push(msg.v);
@@ -147,6 +153,10 @@ export default {
   },
   mounted() {
     this.clientConnect()
+    this.$store.commit(
+        "setHeight",
+        document.documentElement.clientHeight - 110
+    );
   },
   beforeDestroy() {
     client.end()

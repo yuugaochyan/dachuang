@@ -22,8 +22,8 @@ export default {
             vlist:[],
             tlist:[],
             config:{
-                number:[0.0],
-                toFixed: 1,
+                number:[0.00],
+                toFixed: 2,
                 content:this.obdata.tagName+': {nt}',
                 style: {
                     fontSize:120,
@@ -52,7 +52,8 @@ export default {
             for(let key in obj) {
                 // console.log(obj[key]);
                 if(obj[key].n==tag) {
-                    that.config.number[0]=parseInt(obj[key].v)  
+                    that.config.number[0]=parseInt(obj[key].v)
+                    that.config.toFixed=2  
                     if(obj[key].v>max){
                     that.config.style.fill='red'
                     }
@@ -60,7 +61,7 @@ export default {
                         that.config.style.fill='white'
                     }
                     else {
-                        that.config.style.fill='#3de7c9'
+                        that.config.style.fill='#e0bf41'
                     }
                     
                     this.config = { ...this.config }

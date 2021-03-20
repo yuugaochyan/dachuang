@@ -334,6 +334,7 @@ export default {
     width: 100%;
     height: calc(93.6vh);
     background-color: #333;
+    min-height: 100%;
 }
 .tool-banner {
     // background-color: #ddbb80;
@@ -358,12 +359,49 @@ export default {
 .el-drawer:focus {
     outline: none;
 }
-.maincontain {
-    background-color: #333;
+.vue-grid-item {
+    background: #5b5b5f;
+  
+}
+.tb {
+    height: 82%;
+    width: 97%;
+    background-color: #5b5b5f;
+    margin: 0 auto;
+}
+.title {
+    margin: 0 auto;
+    // text-align: center;
+    padding-left: 7%;
+    color: white;
+    height: 17%;
+    font-size: 170%;
+    // padding-right: 1%;
+    // padding-top: 2%;
+}
+.vueGridLayout {
+//   margin: 0 auto;
+    // margin-left: 160px;
+//   height: calc(93.6vh);
+    width: 100%;
+    
+}
+.tool-bt {
+    float: right;
+    margin-right: 5px;
+    margin-top: 2px;
 }
 .cover-nav {
-    height: 67px;
+    // height: 67px;
     width: 100%;
+    // position: absolute;
+    // top: 0;
+}
+
+
+html,
+body {
+    background-color: #333;
 }
 .drawer-bt {
     width: 30px;
@@ -379,6 +417,8 @@ export default {
     font-size: 30px;
     position: absolute;
     left: 0;
+    z-index:9;
+    border-left:solid 3px #ddbb80;
     transition: 300ms 0ms;
 }
 .drawer-bt:hover {

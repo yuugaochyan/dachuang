@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <div class="main">
+        <div class="maintb">
             <div class="as">
                 <transition name="el-zoom-in-bottom" appear="true" >
                 <el-button type="warning" v-if="!stmo" class="bt" @click="goback">
@@ -14,18 +14,17 @@
                 <div class="but">
                     <transition name="el-zoom-in-top" :appear="true">
                     <div class="con" v-if="stmo" @click="staf">
-                        
-                        <h1>历史数据</h1>
-                        <div>
-                            <i class="iconfont icon-jurassic_data"></i>
-                        </div>
-                        
+                        <h2>历史数据</h2>
+                        <!-- <i class="iconfont icon-jurassic_data"></i> -->
+                        <i class="iconfont icon-jurassic_data"></i>
+                        <!-- <i></i> -->
                     </div>
+                    
                     </transition>
 
                     <transition name="el-zoom-in-top" :appear="true">
                     <div class="con" v-if="chtb" @click="chartcreate">
-                        <h1>chart图表</h1>
+                        <h2>chart图表</h2>
                         <i class="iconfont icon-jurassic_chart"></i>
                     </div>
                     </transition>
@@ -36,7 +35,7 @@
 
                     <transition name="el-zoom-in-top" :appear="true">
                     <div class="con" v-if="mqln" @click="mqttlinecreate">
-                        <h1>时间轴图表</h1>
+                        <h2>时间轴图表</h2>
                         <i class="iconfont icon-zhexiantu"></i>
                     </div>
                     </transition>
@@ -47,21 +46,21 @@
                 <div class="but">
                     <transition name="el-zoom-in-top" :appear="true">
                     <div class="con" v-if="stmo" @click="movf">
-                        <h1>实时数据</h1>
+                        <h2>实时数据</h2>
                         <i class="iconfont icon-yun1"></i>
                     </div>
                     </transition>
 
                     <transition name="el-zoom-in-top" :appear="true">
                     <div class="con" v-if="chtb" @click="tablecreate">
-                        <h1>table表格</h1>
+                        <h2>table表格</h2>
                         <i class="iconfont icon-biaoge"></i>
                     </div>
                     </transition>
 
                     <transition name="el-zoom-in-top" :appear="true">
                     <div class="con" v-if="mqln" @click="mqttnumcreate">
-                        <h1>数字翻牌器</h1>
+                        <h2>数字翻牌器</h2>
                         <i class="iconfont icon-shuzi"></i>
                     </div>
                     </transition>
@@ -119,7 +118,7 @@ export default{
 </script>
 
 <style lang="less" scoped>
-.main {
+.maintb {
     width: 100%;
     height: calc(93.6vh);
     background-color: #333;
@@ -166,21 +165,26 @@ export default{
     width: 100%;
     height: 415px;
     border-radius: 25%;
+    // position: relative;
     // text-align: center;
     // padding: 25px;
 }
 
-.con>h1 {
+.con>h2 {
     font-size: 60px;
     color: #343434;
     padding-top: 75px;
     margin: 0 auto;
-    padding-left: 20%;
+    // padding-left: 25%;
+    // position: absolute;
+    // top: 20%;
+    // left: 50%;
+    // transform: translate(-50%,-20%);
     // display: block;
 }
 
 .iconfont {
-    font-size: 150px;
+    font-size: 160px;
     color: #343434;
 }
 .bt {

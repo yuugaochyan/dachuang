@@ -9,6 +9,26 @@
                     <el-tab-pane >
                         <span slot="label"><i class="el-icon-s-tools"></i>可视化管理</span>
                         <div class="banner2">
+                            <div class="search">
+                            <el-input
+                                placeholder="查找可视化"
+                                v-model="nameInput"
+                                @input="debounce"
+                                width:100px>
+                                <i slot="prefix" class="el-input__icon el-icon-search" id="input-icon"></i>
+                            </el-input>
+                            </div>
+                            <div class="search">
+                            <el-select v-model="typeInput" placeholder="请选择类型" @change="debounce">
+                                <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                </el-option>
+                                <i slot="prefix" class="el-input__icon el-icon-search" id="select-icon"></i>
+                            </el-select>
+                            </div>
                             <el-button @click="gotoAddTB"  type="warning" icon="iconfont icon-add">创建可视化</el-button>
                         </div>
                         <el-table
@@ -84,10 +104,72 @@ export default {
             tbSize:10,
             tbCurrentPage:1,
             tbtotal:0,
+            //^搜索
+            nameInput:'',
+            typeInput:'',
+            options: [{
+                value: 'chart',
+                label: 'chart'
+            }, {
+                value: 'table',
+                label: 'table'
+            }, {
+                value: 'mqttline',
+                label: 'mqttline'
+            }, {
+                value: 'mqttnum',
+                label: 'mqttnum'
+            }, {
+                value: '',
+                label: '全部类型'
+            }],
+            timer:null
         }
     },
     methods: {
-        
+        search() {
+            let that = this
+            const userID=localStorage.getItem("userID")
+            let postData=this.$qs.stringify({
+                userID:userID,
+                pagenum:that.tbCurrentPage,
+                pagesize:that.tbSize,
+                graphName:that.nameInput,
+                graphType:that.typeInput
+            })
+            // console.log(postData);
+            // console.log(this.dbCurrentPage);
+            // console.log(this.dbSize);
+            const result = axios({
+                method: 'post',
+                url:'/getGraphList',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.tbData=resp.data.data.list
+            }
+            })
+        },
+        debounce() {
+            // console.log(this.timer);
+            let that = this
+            let input=document.getElementById('input-icon')
+            let select=document.getElementById('select-icon')
+            input.setAttribute('class','el-input__icon el-icon-loading')
+            select.setAttribute('class','el-input__icon el-icon-loading')
+            if(this.timer!==null) {
+                clearTimeout(this.timer)
+                // console.log(this.timer);
+            }
+            this.timer=setTimeout(function(){
+                // console.log(that.timer);
+                that.search()
+                input.setAttribute('class','el-input__icon el-icon-search')
+                select.setAttribute('class','el-input__icon el-icon-search')
+            },1000)
+            
+        },
+        // inputdebounce:debounce("search",500),
         tbSizeChange(val) {
             this.tbSize=val;
             let that = this;
@@ -95,7 +177,9 @@ export default {
             let postData=this.$qs.stringify({
                 userID:userID,
                 pagenum:that.tbCurrentPage,
-                pagesize:that.tbSize
+                pagesize:that.tbSize,
+                graphName:that.nameInput,
+                graphType:that.typeInput
             })
             // console.log(this.dbCurrentPage);
             // console.log(this.dbSize);
@@ -116,7 +200,9 @@ export default {
             let postData=this.$qs.stringify({
                 userID:userID,
                 pagenum:that.tbCurrentPage,
-                pagesize:that.tbSize
+                pagesize:that.tbSize,
+                graphName:that.nameInput,
+                graphType:that.typeInput
             })
             // console.log(this.dbCurrentPage);
             // console.log(this.dbSize);
@@ -140,7 +226,9 @@ export default {
             let postData=this.$qs.stringify({
                 userID:userID,
                 pagenum:that.tbCurrentPage,
-                pagesize:that.tbSize
+                pagesize:that.tbSize,
+                graphName:that.nameInput,
+                graphType:that.typeInput
             })
             const result = axios({
                 method: 'post',
@@ -243,6 +331,7 @@ export default {
                 "setHeight",
                 document.documentElement.clientHeight - 110
             );
+            that.clientHeight=localStorage.getItem('clientHeight')-150
         };
         
 
@@ -285,6 +374,10 @@ export default {
     margin-bottom: 10px;
     text-align: right;
 }
-
+.search {
+    margin-right: 10px;
+    width: 4rem;
+    display: inline-block;
+}
 
 </style>

@@ -175,7 +175,7 @@ export default {
                 that.tableData=resp.data.data.list
                 that.total=resp.data.data.total
                 that.datacol=resp.data.data.datacol
-                that.tableName=resp.data.data.tableName
+                that.tableName=resp.data.data.naviName
                 for(let key in that.tableData) {
                     that.editable[key]=false
                 }
@@ -320,6 +320,7 @@ export default {
                 "setHeight",
                 document.documentElement.clientHeight - 110
             );
+            that.clientHeight=localStorage.getItem('clientHeight')-150
         };
         
 

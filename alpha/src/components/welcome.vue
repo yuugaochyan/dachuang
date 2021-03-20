@@ -38,8 +38,16 @@
 <script>
 import axios from 'axios'
 export default {
-
-    
+    data() {
+        return {
+            img:[
+                require("../assets/pic/niu.gif"),
+                require("../assets/pic/pexels-pixabay-159201.jpg"),
+                require("../assets/pic/pexels-lukas-577210.jpg"),
+                require("../assets/pic/pexels-lukas-669615.jpg"),
+            ]
+        }
+    }
 }
 </script>
 
