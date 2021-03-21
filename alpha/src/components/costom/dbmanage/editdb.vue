@@ -310,6 +310,9 @@ export default {
     },
     
     methods: {
+        gotoAddTB() {
+            this.$router.push('/createtb')
+        },
         search() {
             let that = this
             const userID=localStorage.getItem("userID")
