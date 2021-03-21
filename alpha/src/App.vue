@@ -82,7 +82,7 @@ export default {
           
           if(msg.n=='temp') {
               // console.log(msg.v);
-              that.obj.temp.v=Number(msg.v);
+              that.obj.temp.v=msg.v;
               var time = new Date(msg.t*1000)
               // console.log(msg.t);
               var formatTime = time.toTimeString().substr(0,8)
@@ -90,7 +90,7 @@ export default {
           }
           else if(msg.n=='humi') {
               // console.log(msg.v);
-              that.obj.humi.v=Number(msg.v);
+              that.obj.humi.v=msg.v;
               var time = new Date(msg.t*1000)
               // console.log(msg.t);
               var formatTime = time.toTimeString().substr(0,8)
@@ -98,7 +98,7 @@ export default {
           }
           else if(msg.n=='key') {
               // console.log(msg.v);
-              that.obj.key.v=Number(msg.v);
+              that.obj.key.v=msg.v;
               var time = new Date(msg.t*1000)
               // console.log(msg.t);
               var formatTime = time.toTimeString().substr(0,8)
@@ -106,7 +106,7 @@ export default {
           }
           else if(msg.n=='RSSI') {
               // console.log(msg.v);
-              that.obj.RSSI.v=100-Number(msg.v);
+              that.obj.RSSI.v=100-msg.v;
               var time = new Date(msg.t*1000)
               // console.log(msg.t);
               var formatTime = time.toTimeString().substr(0,8)
@@ -119,31 +119,12 @@ export default {
                 // document.documentElement.clientHeight - 110
             // );
           // };
-          // this.$store.commit('setClient',that.obj)
-          // console.log(msg.v);
-          // if(msg.v<max && msg.v>min){
-              // that.vlist.push(msg.v);
-              // var time = new Date(msg.t*1000)
-              // console.log(msg.t);
-              // var formatTime = time.toTimeString().substr(0,8)
-              // console.log(formatTime);
-              // that.tlist.push(formatTime);
-              // console.log(this.tmplist.length);
-              // if(that.tlist.length>lengs) {
-                  // that.vlist.shift();
-                  // that.tlist.shift();
-              // }
-          // }
-          // console.log(this.datalist);
-          // this.drawBar(this.tmplist,this.timelist,this.linename);
-          // console.log(this.tmplist);
-          // console.log(this.barlist);
-          // this.config.data=this.barlist;
-          // this.draw(this.tlist,this.vlist,legend,tagName,type)
+          this.$store.commit('setClient',that.obj)
+          
       })
-      client.on('reconnect', (error) => {
-          console.log('app正在重连:', error)
-      })
+      // client.on('reconnect', (error) => {
+          // console.log('app正在重连:', error)
+      // })
       // 链接异常处理
       client.on('error', (error) => {
           console.log('app连接失败:', error)

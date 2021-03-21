@@ -5,7 +5,7 @@
                 <el-tabs type="border-card">
                     <el-tab-pane>
                         <span slot="label"><i class="el-icon-s-tools"></i>实时数据管理</span>
-                        <div class="banner2">
+                        <div class="banner3">
                             <h1>MQTT标签管理</h1>
                             <!-- <el-button @click="showAddDB=true"  type="warning" icon="iconfont icon-add">创建仪表盘</el-button> -->
                         </div>
@@ -253,14 +253,14 @@ export default {
         // console.log(this.dbData);
         // console.log(this.dbData);
         const that = this;
-        this.clientHeight=localStorage.getItem('clientHeight')-150
+        this.clientHeight=localStorage.getItem('clientHeight')-125
         // console.log(this.clientHeight);
         window.onresize = function temp() {
             that.$store.commit(
                 "setHeight",
                 document.documentElement.clientHeight - 110
             );
-            that.clientHeight=localStorage.getItem('clientHeight')-150
+            that.clientHeight=localStorage.getItem('clientHeight')-125
         };
         
 
@@ -298,14 +298,16 @@ export default {
     // margin-right: 5px;
     font-size: 20px;
 }
-.banner2 {
+.banner3 {
     height: 7%;
     margin-bottom: 10px;
-    text-align: left;
+    text-align: right;
 }
 
-.h1 {
+.banner3>h1 {
+    float: left;
     display: inline;
     color: #777;
+    padding-left: 20px;
 }
 </style>

@@ -113,6 +113,29 @@
 
 
                 <el-dialog title="添加一些新的可视化" :visible.sync="addTable">
+                    <div class="banner4" v-if="gotoCreate">
+                        <div class="search2">
+                        <el-input
+                            placeholder="查找可视化"
+                            v-model="nameInput"
+                            @input="debounce"
+                            width:100px>
+                            <i slot="prefix" class="el-input__icon el-icon-search" id="input-icon"></i>
+                        </el-input>
+                        </div>
+                        <div class="search2">
+                        <el-select v-model="typeInput" placeholder="请选择类型" @change="debounce">
+                            <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                            <i slot="prefix" class="el-input__icon el-icon-search" id="select-icon"></i>
+                        </el-select>
+                        </div>
+                        <el-button @click="gotoAddTB"  type="warning" icon="iconfont icon-add">创建可视化</el-button>
+                    </div>
                     <el-table
                     :data="tbData"
                     height="450"
@@ -262,11 +285,73 @@ export default {
             preURL:'',
             pushNav:false,
             NavName:'',
-            
+            //^搜索
+            nameInput:'',
+            typeInput:'',
+            options: [{
+                value: 'chart',
+                label: 'chart'
+            }, {
+                value: 'table',
+                label: 'table'
+            }, {
+                value: 'mqttline',
+                label: 'mqttline'
+            }, {
+                value: 'mqttnum',
+                label: 'mqttnum'
+            }, {
+                value: '',
+                label: '全部类型'
+            }],
+            timer:null,
+            gotoCreate:true
         }
     },
     
     methods: {
+        search() {
+            let that = this
+            const userID=localStorage.getItem("userID")
+            let postData=this.$qs.stringify({
+                userID:userID,
+                pagenum:that.tbCurrentPage,
+                pagesize:that.tbSize,
+                graphName:that.nameInput,
+                graphType:that.typeInput
+            })
+            // console.log(postData);
+            // console.log(this.dbCurrentPage);
+            // console.log(this.dbSize);
+            const result = axios({
+                method: 'post',
+                url:'/getGraphList',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                that.tbData=resp.data.data.list
+            }
+            })
+        },
+        debounce() {
+            // console.log(this.timer);
+            let that = this
+            let input=document.getElementById('input-icon')
+            let select=document.getElementById('select-icon')
+            input.setAttribute('class','el-input__icon el-icon-loading')
+            select.setAttribute('class','el-input__icon el-icon-loading')
+            if(this.timer!==null) {
+                clearTimeout(this.timer)
+                // console.log(this.timer);
+            }
+            this.timer=setTimeout(function(){
+                // console.log(that.timer);
+                that.search()
+                input.setAttribute('class','el-input__icon el-icon-search')
+                select.setAttribute('class','el-input__icon el-icon-search')
+            },1000)
+            
+        },
         gotoCreate() {
             this.$router.push('/createtb')
         },
@@ -570,7 +655,9 @@ export default {
                 if(resp.data.status==200) {
                 that.tbData=resp.data.data.list
                 that.tbtotal=resp.data.data.total
-                
+                if(that.tbtotal==0) {
+                    that.gotoCreate=false
+                }
             }
             })
         },
@@ -859,6 +946,15 @@ html,
 body {
     background-color: #333;
 }
-
+.banner4 {
+    height: 7%;
+    margin-bottom: 10px;
+    text-align: right;
+}
+.search2 {
+    margin-right: 10px;
+    width: 4rem;
+    display: inline-block;
+}
 
 </style>

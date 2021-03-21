@@ -368,7 +368,7 @@ export default {
     text-align: right;
 }
 
-h1 {
+.banner2>h1 {
     display: inline;
     color: #777;
     float: left;
