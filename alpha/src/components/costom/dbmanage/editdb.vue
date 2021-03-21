@@ -241,6 +241,10 @@ export default {
                     { required: true, message: '请输入仪表盘的名字！这是必须的', trigger: 'blur' },
                     { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
                 ],
+                info: [
+                    { required: false, message: '好像你的输入不合法？太长啦！', trigger: 'blur' },
+                    { min: 1, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur' }
+                ],
             },
             dbData:[],
             dbID:'',
@@ -485,8 +489,7 @@ export default {
             let that = this;
             this.dbID = this.$route.params.dbID
             // console.log(this.dbID);
-            this.form.name = this.$route.params.dbName
-            this.form.info = this.$route.params.dbInfo
+            
             // console.log(this.form.name);
             // let postData=this.$qs.stringify({
                 // dbID:that.dbID,
@@ -558,6 +561,9 @@ export default {
                 that.layoutData = resp.data.data;
                 localStorage.setItem('pandectDisplace', JSON.stringify(that.layoutData));
                 // that.asideResize();
+                that.form.name = resp.data.DB.dbName
+                that.form.info = resp.data.DB.info
+                that.NavName=resp.data.DB.naviName
             }
         })
         that.asideResize()
