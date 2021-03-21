@@ -51,20 +51,20 @@
                     </el-form>
                 </transition>
 
-                <transition name="el-fade-in" >
-                <el-form :model="dbform" v-show="step3" :rules="rules3" ref="chartformref3">
-                    <el-form-item label="你的仪表盘"  prop="db">
-                    <el-select v-model="dbform.db" placeholder="请选择仪表盘">
-                        <el-option
-                        v-for="item in dbData"
-                        :key="item.dbId"
-                        :label="item.dbName"
-                        :value="item.dbID">
-                        </el-option>
-                    </el-select>
-                    </el-form-item>
-                </el-form>
-                </transition>
+                <!-- <transition name="el-fade-in" > -->
+                <!-- <el-form :model="dbform" v-show="step3" :rules="rules3" ref="chartformref3"> -->
+                    <!-- <el-form-item label="你的仪表盘"  prop="db"> -->
+                    <!-- <el-select v-model="dbform.db" placeholder="请选择仪表盘"> -->
+                        <!-- <el-option -->
+                        <!-- v-for="item in dbData" -->
+                        <!-- :key="item.dbId" -->
+                        <!-- :label="item.dbName" -->
+                        <!-- :value="item.dbID"> -->
+                        <!-- </el-option> -->
+                    <!-- </el-select> -->
+                    <!-- </el-form-item> -->
+                <!-- </el-form> -->
+                <!-- </transition> -->
 
             <div class="bt-next">
                 <el-button type="info"  @click="laststep" >{{steplabel1}}</el-button>

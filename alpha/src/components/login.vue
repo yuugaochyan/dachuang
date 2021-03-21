@@ -114,6 +114,7 @@ export default {
                     // that.$store.commit("setShowHint",true);
                     localStorage.setItem('userID',resp.data.userID)
                     that.$router.push('/homepage')
+                    localStorage.setItem('clientHeight',document.documentElement.clientHeight - 110)
                 }
                 else{
                     that.$message({

@@ -47,7 +47,8 @@ export default {
                 require("../assets/pic/pexels-lukas-669615.jpg"),
             ]
         }
-    }
+    },
+    
 }
 </script>
 
