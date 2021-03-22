@@ -42,9 +42,10 @@
             
             >
             
-            
+                <dv-border-box-6>
                 <div class="title">
                     {{item.objectData.graphName}}
+                    
                     <div class="tool-bt">
                     <el-tooltip  effect="dark" content="删除这个可视化" placement="bottom-start" v-if="editable">
                         <el-button size="mini" @click="deleteTB(item.i)" circle type="info" icon="iconfont icon-delete" ></el-button>
@@ -55,14 +56,17 @@
                         <el-button size="mini" @click="editTB(item)" circle type="warning" icon="iconfont icon-edit" ></el-button>
                     </el-tooltip>
                     </div>
+                    <dv-decoration-4 :reverse="true" style="width:75px;height:5px;" />
                 </div>
                 <div class="tb">
+                    
                     <chart v-if="item.type=='chart'" :id="item.i" :obdata="item.objectData"></chart>
                     <mqttline v-if="item.type=='mqttline'" :id="item.i" :obdata="item.objectData"></mqttline>
                     <sqltb v-if="item.type=='table'" :id="item.i" :obdata="item.objectData"></sqltb>
                     <mqttnum v-if="item.type=='mqttnum'" :id="item.i" :obdata="item.objectData"></mqttnum>
                     
                 </div>
+                </dv-border-box-6>
             </grid-item>
         </grid-layout>
     
@@ -159,7 +163,7 @@
                         </el-table-column>
                         <div class="createTB" slot="empty">
                         你的可视化里好像没有数据？
-                        <el-link :underline="false" type="warning" @click="gotoCreate">
+                        <el-link :underline="false" type="warning" @click="gotoCreateTB">
                             <i class="el-icon-plus"></i>去创建一些可视化吧！
                         </el-link>
                         <!-- <el-button @click="gotoCreate">前往</el-button> -->
@@ -360,7 +364,7 @@ export default {
             },1000)
             
         },
-        gotoCreate() {
+        gotoCreateTB() {
             this.$router.push('/createtb')
         },
         pushToNav() {
@@ -897,8 +901,8 @@ export default {
   
 }
 .tb {
-    height: 82%;
-    width: 97%;
+    height: 75%;
+    width: 93%;
     background-color: #5b5b5f;
     margin: 0 auto;
 }
@@ -909,8 +913,8 @@ export default {
     color: white;
     height: 17%;
     font-size: 170%;
-    // padding-right: 1%;
-    // padding-top: 2%;
+    padding-right: 1%;
+    padding-top: 2%;
 }
 .vueGridLayout {
 //   margin: 0 auto;

@@ -95,7 +95,7 @@ export default {
             let that=this;
             const loading = this.$loading({
                 lock: true,
-                text: '拼命加载中',
+                text: '正在努力加载数据',
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });

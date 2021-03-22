@@ -41,12 +41,13 @@
             
             >
             
-            
+                <dv-border-box-6>
                 <div class="title">
                     {{item.objectData.graphName}}
                     <el-tooltip class="item" effect="dark" content="删除这个可视化" placement="bottom-start" v-if="editable">
                         <el-button size="mini" @click="deleteTB(item.i)" circle type="del" icon="iconfont icon-delete" class="toolbt"></el-button>
                     </el-tooltip>
+                    <dv-decoration-4 :reverse="true" style="width:75px;height:5px;" />
                 </div>
                 <div class="tb">
                     <chart v-if="item.type=='chart'" :id="item.i" :obdata="item.objectData"></chart>
@@ -55,6 +56,7 @@
                     <mqttnum v-if="item.type=='mqttnum'" :id="item.i" :obdata="item.objectData"></mqttnum>
                     
                 </div>
+                </dv-border-box-6>
             </grid-item>
         </grid-layout>
     
@@ -364,8 +366,8 @@ export default {
   
 }
 .tb {
-    height: 82%;
-    width: 97%;
+    height: 75%;
+    width: 93%;
     background-color: #5b5b5f;
     margin: 0 auto;
 }
@@ -378,6 +380,8 @@ export default {
     font-size: 170%;
     // padding-right: 1%;
     // padding-top: 2%;
+    padding-right: 1%;
+    padding-top: 2%;
 }
 .vueGridLayout {
 //   margin: 0 auto;
