@@ -584,8 +584,8 @@ export default {
                     userID:userID,
                     dbID:this.dbID,
                     dbName:this.form.name,
-                    info:this.form.info
-                    
+                    info:this.form.info,
+                    naviStatus:-1,
                 })
                 const result = axios({
                     method: 'post',
