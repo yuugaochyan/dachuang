@@ -337,6 +337,7 @@ export default {
             }).then(function(resp){
                 if(resp.data.status==200) {
                 that.tbData=resp.data.data.list
+                that.tbtotal=resp.data.data.total
             }
             })
         },

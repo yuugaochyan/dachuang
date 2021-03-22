@@ -194,6 +194,7 @@ export default {
             }).then(function(resp){
                 if(resp.data.status==200) {
                 that.dbData=resp.data.data.list
+                that.dbtotal=resp.data.data.total
             }
             })
         },
