@@ -99,7 +99,7 @@ export default {
             },500)
         },
         goback() {
-            this.$router.push('/createtb')
+            this.$router.go(-1)
         }
     
     },

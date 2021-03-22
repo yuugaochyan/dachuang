@@ -364,7 +364,7 @@ export default {
         },
         pushToNav() {
             let that=this
-            if(this.NavName=='') {
+            if(this.NavName==''||this.NavName.length>=10) {
                 let box=document.getElementById('navInput')
                 box.style.cssText="border:solid 0.5px #FF0000"
                 return

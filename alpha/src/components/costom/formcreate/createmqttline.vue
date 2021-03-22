@@ -385,7 +385,7 @@ export default {
         },
         laststep() {
             let that = this;
-            this.$router.push('/createtb')
+            this.$router.go(-1)
         },
         gettag() {
             let that =this;

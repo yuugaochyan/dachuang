@@ -994,7 +994,7 @@ export default {
                 },500)
             }
             if(this.active==1) {
-                this.$router.push('/createtb')
+                this.$router.go(-1)
             }
         },
         changeX() {
