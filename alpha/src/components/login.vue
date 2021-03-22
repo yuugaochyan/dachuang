@@ -93,6 +93,12 @@ export default {
             this.$refs.loginFormRef.validate((valid)=>{
             if(!valid) return;
             let that=this;
+            const loading = this.$loading({
+                lock: true,
+                text: '拼命加载中',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
             const result = axios.post('/queryUserByName',
                 this.$qs.stringify({
                     username:that.loginForm.username,
@@ -115,6 +121,7 @@ export default {
                     localStorage.setItem('userID',resp.data.userID)
                     that.$router.push('/homepage')
                     localStorage.setItem('clientHeight',document.documentElement.clientHeight - 110)
+                    loading.close();
                 }
                 else{
                     that.$message({
@@ -122,7 +129,8 @@ export default {
                     message: '登录失败！密码错误或账号不存在',
                     center: true,
                     type: 'error'
-                });
+                    });
+                    loading.close();
                 }
                 })
             .catch(function (error){
