@@ -87,10 +87,10 @@ export default {
                     that.dataSource=that.tbData.Graph.tagName
                 }
                 else if(that.tbData.type=='table') {
-                    that.dataSource=that.tbData.Graph.tableName
+                    that.dataSource=that.tbData.Graph.naviName
                 }
                 else {
-                    that.dataSource=that.tbData.Graph.dataSource
+                    that.dataSource=that.tbData.Graph.naviName
                 }
                 }
             })
