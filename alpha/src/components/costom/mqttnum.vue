@@ -90,7 +90,7 @@ export default {
                 // console.log(that.obdata);
                 that.drawline(that.obdata);
             },300)
-        },5000)
+        },7000)
     },
     beforeDestroy() {
         clearInterval(this.interval);

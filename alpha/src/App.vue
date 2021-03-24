@@ -79,38 +79,37 @@ export default {
           // console.log(topic);
           // this.datalist.name=msg.n;
           // this.datalist.value=msg.v;
-          
           if(msg.n=='temp') {
               // console.log(msg.v);
               that.obj.temp.v=msg.v;
-              var time = new Date(msg.t*1000)
+              // var time = new Date()
               // console.log(msg.t);
-              var formatTime = time.toTimeString().substr(0,8)
-              that.obj.temp.t=formatTime
+              // var formatTime = time.toTimeString().substr(0,8)
+              // that.obj.temp.t=formatTime
           }
           else if(msg.n=='humi') {
               // console.log(msg.v);
               that.obj.humi.v=msg.v;
-              var time = new Date(msg.t*1000)
+              // var time = new Date()
               // console.log(msg.t);
-              var formatTime = time.toTimeString().substr(0,8)
-              that.obj.humi.t=formatTime
+              // var formatTime = time.toTimeString().substr(0,8)
+              // that.obj.humi.t=formatTime
           }
           else if(msg.n=='key') {
               // console.log(msg.v);
               that.obj.key.v=msg.v;
-              var time = new Date(msg.t*1000)
+              // var time = new Date()
               // console.log(msg.t);
-              var formatTime = time.toTimeString().substr(0,8)
-              that.obj.key.t=formatTime
+              // var formatTime = time.toTimeString().substr(0,8)
+              // that.obj.key.t=formatTime
           }
           else if(msg.n=='RSSI') {
               // console.log(msg.v);
               that.obj.RSSI.v=100-msg.v;
-              var time = new Date(msg.t*1000)
+              // var time = new Date()
               // console.log(msg.t);
-              var formatTime = time.toTimeString().substr(0,8)
-              that.obj.key.t=formatTime
+              // var formatTime = time.toTimeString().substr(0,8)
+              // that.obj.RSSI.t=formatTime
           }
           // console.log(that.obj);
           // window.onresize = function temp() {
@@ -134,7 +133,16 @@ export default {
   },
   mounted() {
     this.clientConnect()
-    
+    let that=this
+    setInterval(()=>{
+      var time = new Date()
+      var formatTime = time.toTimeString().substr(0,8)
+      that.obj.temp.t=formatTime
+      that.obj.humi.t=formatTime
+      that.obj.key.t=formatTime
+      that.obj.RSSI.t=formatTime
+      that.$store.commit('setClient',that.obj)
+    },1000)
     localStorage.setItem('clientHeight',document.documentElement.clientHeight - 110)
   },
   beforeDestroy() {

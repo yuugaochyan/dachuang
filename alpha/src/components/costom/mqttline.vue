@@ -147,7 +147,7 @@ export default {
                 // console.log(that.obdata);
                 that.drawline(that.obdata);
             },300)
-        },5000)
+        },6000)
     },
     beforeDestroy() {
         // client.end()

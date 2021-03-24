@@ -615,10 +615,12 @@ export default {
             let postData=this.$qs.stringify({
                 userID:userID,
                 pagenum:that.tbCurrentPage,
-                pagesize:that.tbSize
+                pagesize:that.tbSize,
+                graphName:that.nameInput,
+                graphType:that.typeInput
             })
-            // console.log(this.dbCurrentPage);
-            // console.log(this.dbSize);
+            console.log(this.tbCurrentPage);
+            console.log(this.tbSize);
             const result = axios({
                 method: 'post',
                 url:'/getGraphList',
@@ -636,10 +638,12 @@ export default {
             let postData=this.$qs.stringify({
                 userID:userID,
                 pagenum:that.tbCurrentPage,
-                pagesize:that.tbSize
+                pagesize:that.tbSize,
+                graphName:that.nameInput,
+                graphType:that.typeInput
             })
-            // console.log(this.dbCurrentPage);
-            // console.log(this.dbSize);
+            console.log(this.tbCurrentPage);
+            console.log(this.tbSize);
             const result = axios({
                 method: 'post',
                 url:'/getGraphList',
