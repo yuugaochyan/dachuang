@@ -456,14 +456,14 @@ export default {
         pushyNum() {
             if(this.yNum<this.colList.length) {
                 this.yNum++;
-                console.log(this.lineChart.yArraySource);
+                // console.log(this.lineChart.yArraySource);
                 this.drawline(this.chartform.graphType)
             }
         },
         popyNum() {
             if(this.yNum>0) {
                 this.lineChart.yArraySource.pop();
-                console.log(this.lineChart.yArraySource);
+                // console.log(this.lineChart.yArraySource);
                 this.yNum--
                 this.drawline(this.chartform.graphType)
             }
@@ -528,7 +528,7 @@ export default {
                             }, 
                             }
                             series.push(obj)
-                            console.log(series);
+                            // console.log(series);
                             legend.push(this.lineChart.name[i])
                             // console.log(this.tableData[key]);
                         }
@@ -684,7 +684,7 @@ export default {
                 series.push(obj)
             
             let chart = this.$echarts.init(document.getElementById('chart'))
-            chart.setOption({
+            let option={
                 
                 tooltip: {
                     trigger: 'axis',
@@ -717,8 +717,9 @@ export default {
                 // },
                 series: series
                 
-            });
-            
+            };
+            chart.setOption(option);
+            chart.setOption(option,true)
             // window.onresize=that.chart.resize,
             window.addEventListener("resize", function () {
                 if(that.chart) {
@@ -733,10 +734,10 @@ export default {
             let postDta=this.$qs.stringify({
                 dataSource:that.chartform.dataSource
             })
-            console.log(that.chartform.dataSource);
+            // console.log(that.chartform.dataSource);
             this.$axios.post("/getTableData",postDta)
             .then((resp)=>{
-                console.log(resp)
+                // console.log(resp)
                 that.colList=resp.data.data.colList,
                 that.tableData=resp.data.data.tableData
                 // for(let key in that.colList) {
@@ -1071,6 +1072,7 @@ export default {
                 }
                 setTimeout(()=>{
                 that.step1=true;
+                // console.log(that.chartform.graphType);
                 that.drawinit(that.chartform.graphType)
                 that.getData()
                 },700)
@@ -1082,7 +1084,7 @@ export default {
             // },1000)
         },
         drawinit(type) {
-            if(type!='pie') {
+            if(type!=='pie') {
             let that=this
             
 
@@ -1172,7 +1174,7 @@ export default {
             }
         
         
-            else if(type=='pie') {
+            else if(type==='pie') {
             let that=this
             
             

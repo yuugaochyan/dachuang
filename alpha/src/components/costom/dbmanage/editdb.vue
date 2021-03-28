@@ -619,8 +619,10 @@ export default {
                 graphName:that.nameInput,
                 graphType:that.typeInput
             })
-            console.log(this.tbCurrentPage);
-            console.log(this.tbSize);
+            // console.log(that.nameInput);
+            // console.log(that.typeInput);
+            // console.log(this.tbCurrentPage);
+            // console.log(this.tbSize);
             const result = axios({
                 method: 'post',
                 url:'/getGraphList',
@@ -642,8 +644,8 @@ export default {
                 graphName:that.nameInput,
                 graphType:that.typeInput
             })
-            console.log(this.tbCurrentPage);
-            console.log(this.tbSize);
+            // console.log(this.tbCurrentPage);
+            // console.log(this.tbSize);
             const result = axios({
                 method: 'post',
                 url:'/getGraphList',
