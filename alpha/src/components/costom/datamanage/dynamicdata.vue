@@ -17,21 +17,21 @@
                         border
                         style="width: 100%">
                             <el-table-column
-                                prop="tag"
-                                label="标签"
+                                v-for="(item,index) in datacol"
+                                :key=index
+                                :prop="item"
+                                :label="item"
                                 width="180">
-                            </el-table-column>
-                            <el-table-column
-                                prop="tagName"
-                                label="标签名字"
-                                width="580">
                                 <template slot-scope="scope">
-                                <span v-if="!editable[scope.$index]">{{scope.row.tagName}}</span>
-                                    
-                                    <el-input v-if="editable[scope.$index]" 
-                                    size="small" v-model="scope.row.tagName"
-                                    :id="scope.row.tagID"></el-input>
-                                    </template>
+                                    <span v-if="!editable[scope.$index]">{{scope.row[item]}}</span>
+                                    <!-- <el-form :model="scope" :rules="rules" ref="editRef" >
+                                        <el-form-item prop=""> -->
+                                            <el-input v-if="editable[scope.$index]" 
+                                            size="small" v-model="scope.row[item]"
+                                            :id="item" :disabled="index==0"></el-input>
+                                        <!-- </el-form-item>
+                                    </el-form> -->
+                                </template>
                             </el-table-column>
                             <el-table-column
                                 label="操作"
@@ -40,10 +40,13 @@
                                     <el-tooltip class="item" effect="dark" content="保存这条修改" placement="bottom-end">
                                         <el-button v-if="editable[scope.$index]" @click="saveRec(scope)" circle type="success" icon="el-icon-check"></el-button>
                                     </el-tooltip>
-                                    <el-tooltip class="item" effect="dark" content="编辑这个仪表盘" placement="bottom">
+                                    <el-tooltip class="item" effect="dark" content="编辑这个标签" placement="bottom">
                                         <el-button @click="editRec(scope)" circle type="warning" icon="iconfont icon-edit"></el-button>
                                     </el-tooltip>
-                                    
+                                    <el-tooltip class="item" effect="dark" content="处理这个报警" placement="bottom-end">
+                                        <el-switch v-model="scope.row.alertStatus" active-color="#13ce66" 
+                                    :active-value=1 :inactive-value=0 @change="changStatus(scope)"></el-switch>
+                                    </el-tooltip>
                                 </template>
                                 
                             </el-table-column>
@@ -80,7 +83,7 @@ export default {
     data() {
         return {
             tableData:[],
-            datacol:[],
+            datacol:["tagID","tagName","tag","highLimit","lowLimit"],
             tableID:'',
             tableName:'test',
             reset:false,
@@ -187,33 +190,36 @@ export default {
                 var dataOb={}
                 // console.log(scope.row);
                 for(let key in scope.row) {
+                    if(key=="alertStatus"){continue}
                     // console.log(scope.row[key]);
                     // console.log(key);
-                    if(scope.row[key]=='' && key!=this.datacol[0]) {
+                    
+                    if(scope.row[key]=='' && key!='tag'&&key!='tagID'&&key!='alertStatus') {
                         
-                        // console.log(scope.$index);
-                        let box=document.getElementById(scope.row.tagID)
+                        // console.log(key);
+                        let box=document.getElementById(key)
                         box.style.cssText="border:solid 0.5px #FF0000"
                         return
                     }
-                    else {
-                        let box=document.getElementById(scope.row.tagID)
+                    else if(key!='alertStatus') {
+                        let box=document.getElementById(key)
                         box.style.cssText=""
                     }
                     // dataList.push(scope.row[key])
                     // console.log(key);
                     dataOb[key]=scope.row[key]
                 }
-                if(dataOb[this.datacol[0]]=='') {
-                    dataOb[this.datacol[0]]=-1
-                }
+                
                 console.log(dataOb);
                 let postData=this.$qs.stringify({
                     // tableID:this.tableID,
                     // rowIndex:this.datacol[0],
                     // row:dataOb
                     tagID:dataOb.tagID,
-                    tagName:dataOb.tagName
+                    tagName:dataOb.tagName,
+                    highLimit:dataOb.highLimit,
+                    lowLimit:dataOb.lowLimit,
+                    alertStatus:-1,
                 })
                 // console.log(postData);
                 const result = axios({
@@ -241,6 +247,55 @@ export default {
                     });
                     }
                 })
+            
+        },
+        changStatus(scope){
+            let that = this
+            
+                this.$messagebox.confirm('要改变是否报警吗', '确认', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let postDta=this.$qs.stringify({
+                        tagID:scope.row.tagID,
+                    tagName:'',
+                    highLimit:1000,
+                    lowLimit:-1000,
+                    alertStatus:scope.row.alertStatus,
+                        })
+                        console.log(postDta);
+                        const result = axios({
+                            method: 'post',
+                            url:'/updateMqttTag',
+                            data:postDta
+                        }).then(function(resp){
+                            if(resp.data.status==200) {
+                                that.reload()
+                                that.$message({
+                                showClose: true,
+                                message: resp.data.msg,
+                                center: true,
+                                type: 'success'
+                                });
+                            }
+                        })
+                }).catch(() => {
+                    this.$message({
+                    type: 'info',
+                    message: '已取消改变'
+                    });
+                    if(scope.row.alertStatus==1){
+                        scope.row.alertStatus=0;
+                    }
+                    else{
+                        scope.row.alertStatus=1
+                    }
+                });
+                
+                        
+                    
+                
             
         },
         

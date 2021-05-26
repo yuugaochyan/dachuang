@@ -21,7 +21,11 @@
         <!-- @click.native="judgetoken" -->
         <el-submenu index="/homepage">
             <template slot="title"><i class="el-icon-s-management"></i>数据管理</template>
-            <el-menu-item index="/dynamicdata"><i class="iconfont icon-yun1"></i>实时数据</el-menu-item>
+            <el-submenu index="/">
+                <template slot="title"><i class="iconfont icon-yun1"></i>实时数据</template>
+                <el-menu-item index="/dynamicdata"><i class="el-icon-collection-tag"></i>标签管理</el-menu-item>
+                <el-menu-item index="/alarm"><i class="el-icon-message-solid"></i>报警管理</el-menu-item>
+            </el-submenu>
             <el-submenu index="/datamanage">
                 <template slot="title"><i class="iconfont icon-jurassic_data"></i>历史数据</template>
                 <el-menu-item 

@@ -38,7 +38,8 @@ const routes = [
       {path:'/editmqttnum/:tbID', component: resolve => require(['@/components/costom/dbmanage/editmqttnum'],resolve),name:"editmqttnum"},
       {path:'/datamanage/:tableID', component: resolve => require(['@/components/costom/datamanage/staticdata'],resolve),name:"staticdata"},
       {path:'/dynamicdata', component: resolve => require(['@/components/costom/datamanage/dynamicdata'],resolve),name:"dynamicdata"},
-    ,
+      {path:'/alarm', component: resolve => require(['@/components/costom/datamanage/alarm'],resolve),name:"alarm"},
+      ,
     
     // {path:'/mainfac', component: mainfac,},
   ] },
