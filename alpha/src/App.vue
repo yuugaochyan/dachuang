@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import mqtt from 'mqtt'
 const options= {
     connectTimeout: 40000,
@@ -49,11 +50,41 @@ export default {
               v:'',
               t:''
             },
-          }
+          },
+        interval:''
     }
   },
 
   methods: {
+    getTbData() {
+            let that = this
+            // const userID=localStorage.getItem("userID")
+            let postData=this.$qs.stringify({
+                pagenum:0,
+                pagesize:0,
+                dataName:'',
+                checkStatus:-1
+            })
+            // console.log(postData);
+            // console.log(this.dbCurrentPage);
+            // console.log(this.dbSize);
+            const result = axios({
+                method: 'post',
+                url:'/getAlertList',
+                data:postData
+            }).then(function(resp){
+                if(resp.data.status==200) {
+                if(resp.data.data.unchecked>0){
+                  that.$notify({
+                        
+                        message: "你现在有未处理的警报待处理，共"+resp.data.data.unchecked+"条",
+                        offset: 100,
+                        type: 'warning'
+                    });
+                }
+                }
+            })
+        },
     reload(){
       this.isRouterAlive = false;
       this.$nextTick(function(){
@@ -130,6 +161,14 @@ export default {
       })
             // console.log(client);
     }
+  },
+  created(){
+    this.getTbData();
+    this.interval =setInterval(()=>{
+            setTimeout(()=>{
+                this.getTbData();
+            },0)
+        },30000)
   },
   mounted() {
     this.clientConnect()
