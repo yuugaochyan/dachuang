@@ -131,7 +131,7 @@ export default {
             tbtotal:0,
             //^搜索
             nameInput:'',
-            typeInput:'',
+            typeInput:-1,
             options: [{
                 value: 1,
                 label: '已处理'
@@ -143,7 +143,8 @@ export default {
                 label: '所有状态'
             }],
             timer:null,
-            multipleSelection: []
+            multipleSelection: [],
+            interval:''
         }
     },
     methods: {
@@ -293,8 +294,15 @@ export default {
         deletemuti(){
             let that = this;
             // const userID=localStorage.getItem("userID")
+            console.log(that.multipleSelection);
+            var list=[]
+            for(let key in that.multipleSelection){
+                // console.log(key);
+                list[key]=that.multipleSelection[key].alertID
+            }
+            console.log(list);
             let postData=this.$qs.stringify({
-                alertID:this.multipleSelection
+                alertID:list
             },{indices:false})
             const result = axios({
                 method: 'post',
@@ -365,9 +373,18 @@ export default {
             this.multipleSelection = val;
         }
     },
-    mounted() {
-
+    created(){
         this.getTbData();
+        this.interval =setInterval(()=>{
+            setTimeout(()=>{
+                this.getTbData();
+            },0)
+        },60000)
+    },
+    mounted() {
+        
+
+        
         const that = this;
         this.clientHeight=localStorage.getItem('clientHeight')-150
         // console.log(this.clientHeight);

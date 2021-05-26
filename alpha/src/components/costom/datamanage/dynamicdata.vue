@@ -19,16 +19,16 @@
                             <el-table-column
                                 v-for="(item,index) in datacol"
                                 :key=index
-                                :prop="item"
-                                :label="item"
+                                :prop="item.va"
+                                :label="item.la"
                                 width="180">
                                 <template slot-scope="scope">
-                                    <span v-if="!editable[scope.$index]">{{scope.row[item]}}</span>
+                                    <span v-if="!editable[scope.$index]">{{scope.row[item.va]}}</span>
                                     <!-- <el-form :model="scope" :rules="rules" ref="editRef" >
                                         <el-form-item prop=""> -->
                                             <el-input v-if="editable[scope.$index]" 
-                                            size="small" v-model="scope.row[item]"
-                                            :id="item" :disabled="index==0"></el-input>
+                                            size="small" v-model="scope.row[item.va]"
+                                            :id="item.va" :disabled="index==0"></el-input>
                                         <!-- </el-form-item>
                                     </el-form> -->
                                 </template>
@@ -83,7 +83,7 @@ export default {
     data() {
         return {
             tableData:[],
-            datacol:["tagID","tagName","tag","highLimit","lowLimit"],
+            datacol:[{va:"tagID",la:"标签ID"},{va:"tagName",la:"标签名"},{va:"tag",la:"订阅地址"},{va:"highLimit",la:"报警上限"},{va:"lowLimit",la:"报警下限"}],
             tableID:'',
             tableName:'test',
             reset:false,
